@@ -1,0 +1,19 @@
+{
+  "name": "nftx-v2-subgraph",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen --output-dir src/types/",
+    "build": "graph build",
+    "prepare-rinkeby": "mustache config/rinkeby.json subgraph.template.yaml > subgraph.yaml",
+    "deploy-rinkeby": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ dan13ram/nftx-v2-rinkeby",
+    "format": "prettier --ignore-path .gitignore --write \"{*,**/*}.{ts,json,md}\""
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.20.0",
+    "@graphprotocol/graph-ts": "0.20.0",
+    "mustache": "^4.2.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.3.0"
+  }
+}

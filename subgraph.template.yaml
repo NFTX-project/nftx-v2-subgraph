@@ -1,0 +1,38 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  # prettier-ignore
+  {{#vaultFactory}}
+  - kind: ethereum/contract
+    name: NFTXVaultFactoryUpgradeable
+    # prettier-ignore
+    network: {{network}}
+    source:
+      # prettier-ignore
+      address: '{{address}}'
+      abi: NFTXVaultFactoryUpgradeable
+      # prettier-ignore
+      startBlock: {{startBlock}}
+    mapping:
+      file: ./src/mappings/factory.ts
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Global
+        - Vault
+      abis:
+        - name: NFTXVaultFactoryUpgradeable
+          file: ./src/abis/NFTXVaultFactoryUpgradeable.json
+        - name: NFTXVaultUpgradeable
+          file: ./src/abis/NFTXVaultUpgradeable.json
+        - name: ERC20Metadata
+          file: ./src/abis/ERC20Metadata.json
+        - name: ERC677Metadata
+          file: ./src/abis/ERC677Metadata.json
+      eventHandlers:
+        - event: NewVault(indexed uint256,address,address)
+          handler: handleNewVault
+  # prettier-ignore
+  {{/vaultFactory}}

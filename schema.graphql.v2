@@ -1,0 +1,204 @@
+type Global @entity {
+  id: ID!
+  treasuryAddress: String!
+  defaultTreasuryAlloc: BigInt!
+  defaultLpAlloc: String!
+  lpStakingAddress: String!
+  nftxVaultFactory: String!
+  totalHoldings: BigInt! # counter
+}
+
+type Vault @entity {
+  id: ID! # address
+  vaultId: BigInt!
+  token: Token!
+  asset: Asset!
+  manager: Manager!
+  description: String!
+  is1155: Boolean!
+  allowAllItems: Boolean!
+  isFinalized: Boolean! # if manager == 0x0
+  holdings: [BigInt!] # NFT IDs, note 1155s can have multiple of same ID
+  eligibility: Elgibility!
+  liquidity: BigDecimal! # Sushiswap
+  mints: [Mint!]!
+  redeems: [Redeem!]!
+  stakingPools: [Pool!]!
+  fees: Fees!
+  features: Features!
+  feeReceivers: [FeeReceiver!]!
+  feeReceipts: [FeeReceipt!]!
+  totalFees: BigInt! # counter
+  treasuryAlloc: BigInt!
+  allocTotal: BigInt!
+  feeDayData: [FeeDayData!]!
+  feeHourData: [FeeHourData!]!
+  vaultDayData: [VaultDayData!]!
+  vaultHourData: [VaultHourData!]!
+}
+
+# Fees - do we need a separate entity for this?
+type Fees @entity {
+  id: ID! # address
+  mintFee: BigInt!
+  redeemFee: BigInt!
+  directRedeemFee: BigInt!
+  swapFee: BigInt!
+}
+
+# Features - do we need a separate entity for this?
+type Features @entity {
+  id: ID! # address
+  enableMint: Boolean!
+  enableRedeem: Boolean!
+  enableDirectRedeem: Boolean!
+  enableSwap: Boolean!
+}
+
+type Eligibility @entity {
+  id: ID! # address
+  owner: Owner!
+  type: String! # Unique, Range, Request
+  vault: Vault!
+  eligibilities: [BigInt!] # NFT IDs, if range eligibilities then loop through each to create full list (?)
+  negateEligibilities: Boolean!
+  allowTrustedApprovals: Boolean!
+  trustedApprovers: [TrustedApprover!]!
+  mintRequests: [MintRequest!]!
+}
+
+enum RequestStatus {
+  pending
+  approved
+  rejected
+}
+
+type MintRequest @entity {
+  id: ID! # tx hash
+  user: User!
+  asset: Asset!
+  vault: Vault!
+  status: RequestStatus! # pending, approved or rejected
+  requestedAtDate: Int! # date
+  respondedAtDate: Int! # date
+}
+
+type TrustedApprover @entity {
+  id: ID! # address
+  vaults: [Vault!]!
+  mintRequests: [MintRequest!]!
+}
+
+type Token @entity {
+  id: ID! # address
+  name: String!
+  symbol: String!
+  totalSupply: BigInt!
+}
+
+type Asset @entity {
+  id: ID! # address
+  name: String!
+  symbol: String!
+  # vaults: [Vault!]!
+}
+
+type Manager @entity {
+  id: ID! # address
+  vaults: [Vault!]!
+  mintRequests: [MintRequest!]!
+}
+
+type FeeReceiver @entity {
+  id: ID! # address
+  vault: Vault!
+  allocPoint: BigInt!
+}
+
+type FeeReceipt @entity {
+  id: ID! # tx hash
+  token: Token!
+  amount: BigInt!
+}
+
+type Pool @entity {
+  id: ID! # address
+  vault: Vault!
+  rewardToken: Token!
+  stakingToken: Token!
+  dividendToken: Token!
+  totalRewards: BigInt!
+}
+
+type Mint @entity {
+  id: ID! # tx
+  date: Int!
+  user: User!
+  vault: Vault!
+  nftIds: [BigInt!]
+}
+
+enum RedeemType {
+  random
+  direct
+}
+
+type Redeem @entity {
+  id: ID! # tx
+  date: Int!
+  user: User!
+  type: RedeemType! # random, direct
+  vault: Vault!
+  nftIds: [BigInt!]
+}
+
+type User @entity {
+  id: ID! # address
+  vaults: [Vault!]!
+  vTokens: [Token!]!
+  mintRequests: [MintRequest!]!
+  mints: [Mint!]!
+  redeems: [Redeem!]!
+}
+
+# Fee activity grouped by day
+type FeeDayData @entity {
+  id: ID! # tx ID
+  date: Int! # end of range
+  mintFees: Int!
+  redeemFees: Int!
+  directRedeemFees: Int!
+  swapFees: Int!
+}
+
+# Fee activity grouped by hour
+type FeeHourData @entity {
+  id: ID! # tx ID
+  date: Int! # end of range
+  mintFees: Int!
+  redeemFees: Int!
+  directRedeemFees: Int!
+  swapFees: Int!
+}
+
+# Vault activity grouped by day
+type VaultDayData @entity {
+  id: ID! # tx ID
+  date: Int! # end of range
+  mints: Int!
+  redeems: Int!
+  directRedeems: Int!
+  swaps: Int!
+  holdingsCount: BigInt!
+}
+
+# Vault activity grouped by hour
+type VaultHourData @entity {
+  id: ID! # tx ID
+  date: Int! # end of range
+  mints: Int!
+  redeems: Int!
+  directRedeems: Int!
+  swaps: Int!
+  holdingsCount: BigInt!
+}
