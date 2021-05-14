@@ -1,5 +1,5 @@
 import { dataSource, BigInt, Address } from '@graphprotocol/graph-ts';
-import { Global, Asset, Token, Manager } from '../types/schema';
+import { Global, Asset, Token, Manager, Fees, Features } from '../types/schema';
 import { ERC20Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC20Metadata';
 import { ERC677Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC677Metadata';
 
@@ -44,4 +44,28 @@ export function getManager(managerAddress: Address): Manager {
     manager.vaults = new Array<string>();
   }
   return manager as Manager;
+}
+
+export function getFees(feesAddress: Address): Fees {
+  let fees = Fees.load(feesAddress.toHexString());
+  if (fees == null) {
+    fees = new Fees(feesAddress.toHexString());
+    fees.mintFee = BigInt.fromI32(0);
+    fees.redeemFee = BigInt.fromI32(0);
+    fees.directRedeemFee = BigInt.fromI32(0);
+    fees.swapFee = BigInt.fromI32(0);
+  }
+  return fees as Fees;
+}
+
+export function getFeatures(featuresAddress: Address): Features {
+  let features = Features.load(featuresAddress.toHexString());
+  if (features == null) {
+    features = new Features(featuresAddress.toHexString());
+    features.enableMint = false;
+    features.enableRedeem = false;
+    features.enableDirectRedeem = false;
+    features.enableSwap = false;
+  }
+  return features as Features;
 }

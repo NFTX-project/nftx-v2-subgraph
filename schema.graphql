@@ -1,10 +1,11 @@
 type Global @entity {
   id: ID!
-  # treasuryAddress: Bytes!
-  # defaultTreasuryAlloc: BigInt!
-  # defaultLpAlloc: String!
-  # lpStakingAddress: Bytes!
+  treasuryAddress: Bytes!
+  defaultTreasuryAlloc: BigInt!
+  defaultLpAlloc: BigInt!
+  lpStakingAddress: Bytes!
   nftxVaultFactory: Bytes!
+  feeDistributorAddress: Bytes!
   totalHoldings: BigInt! # counter
 }
 
@@ -17,17 +18,17 @@ type Vault @entity {
   is1155: Boolean!
   allowAllItems: Boolean!
   isFinalized: Boolean! # if manager == 0x0
-  # holdings: [BigInt!] # NFT IDs, note 1155s can have multiple of same ID
-  # mints: [Mint!]!
-  # redeems: [Redeem!]!
-  # stakingPools: [Pool!]!
-  # fees: Fees!
-  # features: Features!
-  # feeReceivers: [FeeReceiver!]!
-  # feeReceipts: [FeeReceipt!]!
-  # totalFees: BigInt! # counter
-  # treasuryAlloc: BigInt!
-  # allocTotal: BigInt!
+  holdings: [BigInt!] # NFT IDs, note 1155s can have multiple of same ID
+  mints: [Mint!]!
+  redeems: [Redeem!]!
+  stakingPools: [Pool!]!
+  fees: Fees!
+  features: Features!
+  feeReceivers: [FeeReceiver!]!
+  feeReceipts: [FeeReceipt!]!
+  totalFees: BigInt! # counter
+  treasuryAlloc: BigInt!
+  allocTotal: BigInt!
 }
 
 type Fees @entity {
