@@ -1,4 +1,4 @@
-import { dataSource, BigInt, Address } from '@graphprotocol/graph-ts';
+import { dataSource, Bytes, BigInt, Address } from '@graphprotocol/graph-ts';
 import { NFTXVaultUpgradeable as NFTXVault } from '../types/NFTXVaultFactoryUpgradeable/NFTXVaultUpgradeable';
 import {
   Global,
@@ -8,6 +8,9 @@ import {
   Fees,
   Features,
   Vault,
+  FeeReceiver,
+  FeeReceipt,
+  Pool,
 } from '../types/schema';
 import { ERC20Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC20Metadata';
 import { ERC677Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC677Metadata';
@@ -122,10 +125,10 @@ export function getVault(vaultAddress: Address): Vault {
     features.save();
 
     vault.holdings = new Array<BigInt>();
-    vault.mints = new Array<string>();
-    vault.redeems = new Array<string>();
-    vault.stakingPools = new Array<string>();
-    vault.feeReceivers = new Array<string>();
+    // vault.mints = new Array<string>();
+    // vault.redeems = new Array<string>();
+    // vault.stakingPools = new Array<string>();
+    // vault.feeReceivers = new Array<string>();
     vault.feeReceipts = new Array<string>();
     vault.totalFees = BigInt.fromI32(0);
     vault.treasuryAlloc = BigInt.fromI32(0);
@@ -133,4 +136,42 @@ export function getVault(vaultAddress: Address): Vault {
   }
 
   return vault as Vault;
+}
+
+export function getFeeReceiver(
+  vaultId: BigInt,
+  feeReceiverAddress: Address,
+): FeeReceiver {
+  let feeReceiverId =
+    vaultId.toHexString() + '-' + feeReceiverAddress.toHexString();
+  let feeReceiver = FeeReceiver.load(feeReceiverId);
+  if (feeReceiver == null) {
+    feeReceiver = new FeeReceiver(feeReceiverId);
+    feeReceiver.allocPoint = BigInt.fromI32(0);
+    // vault not set
+  }
+  return feeReceiver as FeeReceiver;
+}
+
+export function getFeeReceipt(txHash: Bytes): FeeReceipt {
+  let feeReceiptId = txHash.toHexString();
+  let feeReceipt = FeeReceipt.load(feeReceiptId);
+  if (feeReceipt == null) {
+    feeReceipt = new FeeReceipt(feeReceiptId);
+    feeReceipt.amount = BigInt.fromI32(0);
+    // vault not set
+    // token not set
+  }
+  return feeReceipt as FeeReceipt;
+}
+
+export function getPool(poolAddress: Address): Pool {
+  let poolId = poolAddress.toHexString();
+  let pool = Pool.load(poolId);
+  if (pool == null) {
+    pool = new Pool(poolId);
+    pool.totalRewards = BigInt.fromI32(0);
+    // vault and tokens not set
+  }
+  return pool as Pool;
 }

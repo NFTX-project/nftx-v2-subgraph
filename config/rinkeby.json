@@ -1,12 +1,18 @@
 {
   "network": "rinkeby",
-  "staking": "0x2C556ffBdCBd5ABaE92FeD0231e2d1752a29d493",
-  "vaultTemplate": "0x0B8Ee2Ee7d6f3bFB73C9aE2127558D1172B65fb1",
-  "feeDistributor": "0xa4AA7Bc937DFf9C5f5cbEe7F8C440A55680bEAFd",
-  "vaultFactory": [
-    {
-      "address": "0x3Cd6Fc37B2CDC4E7039a2dF096d83F47253f30eF",
-      "startBlock": "8571423"
-    }
-  ]
+  "staking": {
+    "address": "0x2C556ffBdCBd5ABaE92FeD0231e2d1752a29d493",
+    "startBlock": "8571420"
+  },
+  "feeDistributor": {
+    "address": "0xa4AA7Bc937DFf9C5f5cbEe7F8C440A55680bEAFd",
+    "startBlock": "8571422"
+  },
+  "vaultFactory": {
+    "address": "0x3Cd6Fc37B2CDC4E7039a2dF096d83F47253f30eF",
+    "startBlock": "8571423"
+  },
+  "vaults": {
+    "startBlock": "8571423"
+  }
 }
