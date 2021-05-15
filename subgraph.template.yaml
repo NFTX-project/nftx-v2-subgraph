@@ -40,8 +40,6 @@ dataSources:
           handler: handlePoolCreated
         - event: PoolUpdated(uint256,address)
           handler: handlePoolUpdated
-        - event: FeesReceived(uint256,uint256)
-          handler: handleFeesReceived
   - kind: ethereum/contract
     name: NFTXFeeDistributor
     # prettier-ignore
@@ -146,3 +144,50 @@ templates:
           handler: handleMint
         - event: Redeemed(uint256[],address)
           handler: handleRedeem
+        - event: ManagerSet(address)
+          handler: handleManagerSet
+        - event: EnableMintUpdated(bool)
+          handler: handleEnableMintUpdated
+        - event: EnableRedeemUpdated(bool) # TODO: change this to Random
+          handler: handleEnableRandomRedeemUpdated
+        - event: EnableDirectRedeemUpdated(bool)
+          handler: handleEnableDirectRedeemUpdated
+        - event: EnableSwapUpdated(bool)
+          handler: handleEnableSwapUpdated
+        - event: MintFeeUpdated(uint256)
+          handler: handleMintFeeUpdated
+        - event: RedeemFeeUpdated(uint256) # TODO: change this to Random and Target
+          handler: handleRedeemFeeUpdated
+  - kind: ethereum/contract
+    name: RewardDistributionTokenUpgradeable
+    # prettier-ignore
+    network: {{network}}
+    source:
+      abi: RewardDistributionTokenUpgradeable
+    mapping:
+      file: ./src/mappings/pool.ts
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - StakedLpUser
+        - Pool
+        - Rewards
+      abis:
+        - name: RewardDistributionTokenUpgradeable
+          file: ./src/abis/RewardDistributionTokenUpgradeable.json
+        - name: NFTXLPStaking
+          file: ./src/abis/NFTXLPStaking.json
+        - name: NFTXVaultFactoryUpgradeable
+          file: ./src/abis/NFTXVaultFactoryUpgradeable.json
+        - name: NFTXFeeDistributor
+          file: ./src/abis/NFTXFeeDistributor.json
+        - name: NFTXVaultUpgradeable
+          file: ./src/abis/NFTXVaultUpgradeable.json
+        - name: ERC20Metadata
+          file: ./src/abis/ERC20Metadata.json
+        - name: ERC677Metadata
+          file: ./src/abis/ERC677Metadata.json
+      eventHandlers:
+        - event: RewardWithdrawn(indexed address,uint256)
+          handler: handleRewardWithdrawn

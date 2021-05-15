@@ -20,6 +20,8 @@ import {
   User,
   Mint,
   Redeem,
+  StakedLpUser,
+  Rewards,
 } from '../types/schema';
 import { ERC20Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC20Metadata';
 import { ERC677Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC677Metadata';
@@ -69,7 +71,6 @@ export function getManager(managerAddress: Address): Manager {
   let manager = Manager.load(managerAddress.toHexString());
   if (manager == null) {
     manager = new Manager(managerAddress.toHexString());
-    manager.vaults = new Array<string>();
   }
   return manager as Manager;
 }
@@ -79,7 +80,7 @@ export function getFees(feesAddress: Address): Fees {
   if (fees == null) {
     fees = new Fees(feesAddress.toHexString());
     fees.mintFee = BigInt.fromI32(0);
-    fees.redeemFee = BigInt.fromI32(0);
+    fees.randomRedeemFee = BigInt.fromI32(0);
     fees.directRedeemFee = BigInt.fromI32(0);
     fees.swapFee = BigInt.fromI32(0);
   }
@@ -91,7 +92,7 @@ export function getFeatures(featuresAddress: Address): Features {
   if (features == null) {
     features = new Features(featuresAddress.toHexString());
     features.enableMint = false;
-    features.enableRedeem = false;
+    features.enableRandomRedeem = false;
     features.enableDirectRedeem = false;
     features.enableSwap = false;
   }
@@ -232,4 +233,45 @@ export function updateHoldings(
   }
   vault.holdings = holdings;
   return vault;
+}
+
+export function getStakedLpUser(userAddress: Address): StakedLpUser {
+  let user = StakedLpUser.load(userAddress.toHexString());
+  if (user == null) {
+    user = new StakedLpUser(userAddress.toHexString());
+    user.pools = new Array<string>();
+    user.userRewards = new Array<string>();
+  }
+  return user as StakedLpUser;
+}
+
+export function getRewards(txHash: Bytes): Rewards {
+  let rewardId = txHash.toHexString();
+  let rewards = Rewards.load(rewardId);
+  if (rewards == null) {
+    rewards = new Rewards(rewardId);
+  }
+  return rewards as Rewards;
+}
+
+export function updatePools(
+  user: StakedLpUser,
+  poolAddress: Address,
+): StakedLpUser {
+  let poolsMap = new TypedMap<string, boolean>();
+  let userPools = user.pools;
+  for (let i = 0; i < userPools.length; i = i + 1) {
+    poolsMap.set(userPools[i], true);
+  }
+  poolsMap.set(poolAddress.toHexString(), true);
+  let pools = new Array<string>();
+  let entries = poolsMap.entries;
+  for (let i = 0; i < entries.length; i = i + 1) {
+    let entry = entries[i];
+    if (entry.value == true) {
+      pools.push(entry.key);
+    }
+  }
+  user.pools = pools;
+  return user;
 }

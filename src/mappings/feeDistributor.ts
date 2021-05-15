@@ -29,7 +29,7 @@ export function handleAddFeeReceiver(event: AddFeeReceiverEvent): void {
   vault.allocTotal = feeDistributorInstance.allocTotal(vaultId);
   let treasuryAlloc = feeDistributorInstance.specificTreasuryAlloc(vaultId);
   if (treasuryAlloc == BigInt.fromI32(0)) {
-      treasuryAlloc = feeDistributorInstance.defaultTreasuryAlloc();
+    treasuryAlloc = feeDistributorInstance.defaultTreasuryAlloc();
   }
   vault.treasuryAlloc = treasuryAlloc;
   vault.save();
@@ -58,7 +58,7 @@ export function handleFeeReceiverAllocChange(
   vault.allocTotal = feeDistributorInstance.allocTotal(vaultId);
   let treasuryAlloc = feeDistributorInstance.specificTreasuryAlloc(vaultId);
   if (treasuryAlloc == BigInt.fromI32(0)) {
-      treasuryAlloc = feeDistributorInstance.defaultTreasuryAlloc();
+    treasuryAlloc = feeDistributorInstance.defaultTreasuryAlloc();
   }
   vault.treasuryAlloc = treasuryAlloc;
   vault.save();
@@ -82,7 +82,7 @@ export function handleRemoveFeeReceiver(event: RemoveFeeReceiverEvent): void {
   vault.allocTotal = feeDistributorInstance.allocTotal(vaultId);
   let treasuryAlloc = feeDistributorInstance.specificTreasuryAlloc(vaultId);
   if (treasuryAlloc == BigInt.fromI32(0)) {
-      treasuryAlloc = feeDistributorInstance.defaultTreasuryAlloc();
+    treasuryAlloc = feeDistributorInstance.defaultTreasuryAlloc();
   }
   vault.treasuryAlloc = treasuryAlloc;
   vault.save();

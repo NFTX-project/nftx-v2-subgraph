@@ -33,16 +33,18 @@ type Vault @entity {
 
 type Fees @entity {
   id: ID! # address
+  vault: Vault! @derivedFrom(field: "fees")
   mintFee: BigInt!
-  redeemFee: BigInt!
+  randomRedeemFee: BigInt!
   directRedeemFee: BigInt!
   swapFee: BigInt!
 }
 
 type Features @entity {
   id: ID! # address
+  vault: Vault! @derivedFrom(field: "features")
   enableMint: Boolean!
-  enableRedeem: Boolean!
+  enableRandomRedeem: Boolean!
   enableDirectRedeem: Boolean!
   enableSwap: Boolean!
 }
@@ -56,7 +58,7 @@ type Asset @entity {
 
 type Manager @entity {
   id: ID! # address
-  vaults: [Vault!]!
+  vaults: [Vault!]! @derivedFrom(field: "manager")
 }
 
 type FeeReceiver @entity {
@@ -124,7 +126,7 @@ type StakedLpUser @entity {
 }
 
 type Rewards @entity {
-  id: ID! # address
+  id: ID! # tx
   date: BigInt!
   pool: Pool!
   reward: BigInt!

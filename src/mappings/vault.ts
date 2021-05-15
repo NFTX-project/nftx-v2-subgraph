@@ -2,6 +2,13 @@ import {
   Transfer as TransferEvent,
   Minted as MintEvent,
   Redeemed as RedeemEvent,
+  ManagerSet as ManagerSetEvent,
+  EnableMintUpdated as EnableMintUpdatedEvent,
+  EnableRedeemUpdated as EnableRandomRedeemUpdatedEvent, // TODO: change this to Random
+  EnableDirectRedeemUpdated as EnableDirectRedeemUpdatedEvent,
+  EnableSwapUpdated as EnableSwapUpdatedEvent,
+  MintFeeUpdated as MintFeeUpdatedEvent,
+  RedeemFeeUpdated as RedeemFeeUpdatedEvent, // TODO: change this to Random and Target
 } from '../types/NFTXVaultUpgradeable/NFTXVaultUpgradeable';
 import {
   getGlobal,
@@ -10,7 +17,10 @@ import {
   getMint,
   getUser,
   getRedeem,
+  getManager,
   updateHoldings,
+  getFeatures,
+  getFees,
 } from './helpers';
 
 export function handleTransfer(event: TransferEvent): void {
@@ -45,7 +55,7 @@ export function handleMint(event: MintEvent): void {
   user.save();
 
   let vault = getVault(vaultAddress);
-  updateHoldings(vault, event.params.nftIds)
+  updateHoldings(vault, event.params.nftIds);
   vault.save();
 }
 
@@ -64,6 +74,58 @@ export function handleRedeem(event: RedeemEvent): void {
   user.save();
 
   let vault = getVault(vaultAddress);
-  updateHoldings(vault, event.params.nftIds, false)
+  updateHoldings(vault, event.params.nftIds, false);
   vault.save();
+}
+
+export function handleManagerSet(event: ManagerSetEvent): void {
+  let managerAddress = event.params.manager;
+  let manager = getManager(managerAddress);
+  manager.save();
+
+  let vault = getVault(event.address);
+  vault.manager = manager.id;
+  vault.save();
+}
+
+export function handleEnableMintUpdated(event: EnableMintUpdatedEvent): void {
+  let features = getFeatures(event.address);
+  features.enableMint = event.params.enabled;
+  features.save();
+}
+
+export function handleEnableRandomRedeemUpdated(
+  event: EnableRandomRedeemUpdatedEvent,
+): void {
+  let features = getFeatures(event.address);
+  features.enableRandomRedeem = event.params.enabled;
+  features.save();
+}
+
+export function handleEnableDirectRedeemUpdated(
+  event: EnableDirectRedeemUpdatedEvent,
+): void {
+  let features = getFeatures(event.address);
+  features.enableDirectRedeem = event.params.enabled;
+  features.save();
+}
+
+export function handleEnableSwapUpdated(event: EnableSwapUpdatedEvent): void {
+  let features = getFeatures(event.address);
+  features.enableSwap = event.params.enabled;
+  features.save();
+}
+
+export function handleMintFeeUpdated(event: MintFeeUpdatedEvent): void {
+  let fees = getFees(event.address);
+  fees.mintFee = event.params.mintFee;
+  fees.save();
+}
+
+export function handleRedeemFeeUpdated(event: RedeemFeeUpdatedEvent): void {
+  // TODO: change this to Random and Target
+  let fees = getFees(event.address);
+  fees.randomRedeemFee = event.params.redeemFee;
+  fees.directRedeemFee = event.params.redeemFee;
+  fees.save();
 }
