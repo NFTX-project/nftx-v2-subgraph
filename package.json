@@ -2,10 +2,13 @@
   "name": "nftx-v2-subgraph",
   "license": "UNLICENSED",
   "scripts": {
+    "auth": "graph auth https://api.thegraph.com/deploy/ $GRAPH_ACCESS_TOKEN",
     "codegen": "graph codegen --output-dir src/types/",
     "build": "graph build",
     "prepare-rinkeby": "mustache config/rinkeby.json subgraph.template.yaml > subgraph.yaml",
     "deploy-rinkeby": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ dan13ram/nftx-v2-rinkeby",
+    "prepare-mainnet": "mustache config/mainnet.json subgraph.template.yaml > subgraph.yaml",
+    "deploy-mainnet": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ dan13ram/nftx-v2-mainnet",
     "format": "prettier --ignore-path .gitignore --write \"{*,**/*}.{ts,json,md}\""
   },
   "dependencies": {
