@@ -1,12 +1,12 @@
 type Global @entity {
   id: ID!
-  treasuryAddress: Bytes!
+  totalHoldings: BigInt! # counter
   defaultTreasuryAlloc: BigInt!
   defaultLpAlloc: BigInt!
+  treasuryAddress: Bytes!
   lpStakingAddress: Bytes!
   nftxVaultFactory: Bytes!
   feeDistributorAddress: Bytes!
-  totalHoldings: BigInt! # counter
 }
 
 type Vault @entity {

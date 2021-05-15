@@ -1,7 +1,17 @@
 import { dataSource, BigInt, Address } from '@graphprotocol/graph-ts';
-import { Global, Asset, Token, Manager, Fees, Features } from '../types/schema';
+import { NFTXVaultUpgradeable as NFTXVault } from '../types/NFTXVaultFactoryUpgradeable/NFTXVaultUpgradeable';
+import {
+  Global,
+  Asset,
+  Token,
+  Manager,
+  Fees,
+  Features,
+  Vault,
+} from '../types/schema';
 import { ERC20Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC20Metadata';
 import { ERC677Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC677Metadata';
+import { ADDRESS_ZERO } from './constants';
 
 export function getGlobal(): Global {
   let global_id = dataSource.network();
@@ -9,6 +19,12 @@ export function getGlobal(): Global {
   if (global == null) {
     global = new Global(global_id);
     global.totalHoldings = BigInt.fromI32(0);
+    global.defaultTreasuryAlloc = BigInt.fromI32(0);
+    global.defaultLpAlloc = BigInt.fromI32(0);
+    global.treasuryAddress = ADDRESS_ZERO;
+    global.lpStakingAddress = ADDRESS_ZERO;
+    global.nftxVaultFactory = ADDRESS_ZERO;
+    global.feeDistributorAddress = ADDRESS_ZERO;
   }
   return global as Global;
 }
@@ -68,4 +84,53 @@ export function getFeatures(featuresAddress: Address): Features {
     features.enableSwap = false;
   }
   return features as Features;
+}
+
+export function getVault(vaultAddress: Address): Vault {
+  let vault = Vault.load(vaultAddress.toHexString());
+  if (vault == null) {
+    vault = new Vault(vaultAddress.toHexString());
+    let vaultInstance = NFTXVault.bind(vaultAddress);
+    vault.is1155 = vaultInstance.is1155();
+    vault.allowAllItems = vaultInstance.allowAllItems();
+    vault.vaultId = BigInt.fromI32(0);
+
+    let token = getToken(vaultAddress);
+    vault.token = token.id;
+    token.save();
+
+    let assetAddress = vaultInstance.assetAddress();
+    let asset = getAsset(assetAddress);
+    vault.asset = asset.id;
+    let assetVaults = asset.vaults;
+    assetVaults.push(vault.id);
+    asset.vaults = assetVaults;
+    asset.save();
+
+    let managerAddress = vaultInstance.manager();
+    let manager = getManager(managerAddress);
+
+    vault.manager = manager.id;
+    vault.isFinalized = false;
+
+    let fees = getFees(vaultAddress);
+    vault.fees = fees.id;
+    fees.save();
+
+    let features = getFeatures(vaultAddress);
+    vault.features = features.id;
+    features.save();
+
+    vault.holdings = new Array<BigInt>();
+    vault.mints = new Array<string>();
+    vault.redeems = new Array<string>();
+    vault.stakingPools = new Array<string>();
+    vault.feeReceivers = new Array<string>();
+    vault.feeReceipts = new Array<string>();
+    vault.totalFees = BigInt.fromI32(0);
+    vault.treasuryAlloc = BigInt.fromI32(0);
+    vault.allocTotal = BigInt.fromI32(0);
+  }
+
+  return vault as Vault;
 }
