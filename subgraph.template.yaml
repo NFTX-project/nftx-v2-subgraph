@@ -123,16 +123,13 @@ dataSources:
           handler: handleNewVault
   # prettier-ignore
   {{/vaultFactory}}
-  # prettier-ignore
-  {{#vaults}}
+templates:
   - kind: ethereum/contract
     name: NFTXVaultUpgradeable
     # prettier-ignore
     network: {{network}}
     source:
       abi: NFTXVaultUpgradeable
-      # prettier-ignore
-      startBlock: {{startBlock}}
     mapping:
       file: ./src/mappings/vault.ts
       kind: ethereum/events
@@ -140,6 +137,9 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - FeeReceipt
+        - Mint
+        - Redeem
+        - User
       abis:
         - name: NFTXVaultFactoryUpgradeable
           file: ./src/abis/NFTXVaultFactoryUpgradeable.json
@@ -154,5 +154,3 @@ dataSources:
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
-  # prettier-ignore
-  {{/vaults}}

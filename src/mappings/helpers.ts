@@ -129,7 +129,7 @@ export function getVault(vaultAddress: Address): Vault {
     // vault.redeems = new Array<string>();
     // vault.stakingPools = new Array<string>();
     // vault.feeReceivers = new Array<string>();
-    vault.feeReceipts = new Array<string>();
+    // vault.feeReceipts = new Array<string>();
     vault.totalFees = BigInt.fromI32(0);
     vault.treasuryAlloc = BigInt.fromI32(0);
     vault.allocTotal = BigInt.fromI32(0);
