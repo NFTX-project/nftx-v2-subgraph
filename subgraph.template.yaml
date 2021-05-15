@@ -3,14 +3,12 @@ description: Mint and trade NFT index tokens
 schema:
   file: ./schema.graphql
 dataSources:
-  # prettier-ignore
-  {{#staking}}
   - kind: ethereum/contract
     name: NFTXLPStaking
     # prettier-ignore
     network: {{network}}
     source:
-      address: '{{address}}'
+      address: '{{staking}}'
       abi: NFTXLPStaking
       # prettier-ignore
       startBlock: {{startBlock}}
@@ -44,16 +42,12 @@ dataSources:
           handler: handlePoolUpdated
         - event: FeesReceived(uint256,uint256)
           handler: handleFeesReceived
-  # prettier-ignore
-  {{/staking}}
-  # prettier-ignore
-  {{#feeDistributor}}
   - kind: ethereum/contract
     name: NFTXFeeDistributor
     # prettier-ignore
     network: {{network}}
     source:
-      address: '{{address}}'
+      address: '{{feeDistributor}}'
       abi: NFTXFeeDistributor
       # prettier-ignore
       startBlock: {{startBlock}}
@@ -83,16 +77,12 @@ dataSources:
           handler: handleFeeReceiverAllocChange
         - event: RemoveFeeReceiver(uint256,address)
           handler: handleRemoveFeeReceiver
-  # prettier-ignore
-  {{/feeDistributor}}
-  # prettier-ignore
-  {{#vaultFactory}}
   - kind: ethereum/contract
     name: NFTXVaultFactoryUpgradeable
     # prettier-ignore
     network: {{network}}
     source:
-      address: '{{address}}'
+      address: '{{vaultFactory}}'
       abi: NFTXVaultFactoryUpgradeable
       # prettier-ignore
       startBlock: {{startBlock}}
@@ -121,8 +111,6 @@ dataSources:
           handler: handleNewFeeDistributor
         - event: NewVault(indexed uint256,address,address)
           handler: handleNewVault
-  # prettier-ignore
-  {{/vaultFactory}}
 templates:
   - kind: ethereum/contract
     name: NFTXVaultUpgradeable
