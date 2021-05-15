@@ -142,3 +142,7 @@ templates:
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
+        - event: Minted(uint256[],uint256[],address)
+          handler: handleMint
+        - event: Redeemed(uint256[],address)
+          handler: handleRedeem

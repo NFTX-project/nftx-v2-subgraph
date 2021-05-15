@@ -1,4 +1,10 @@
-import { dataSource, Bytes, BigInt, Address } from '@graphprotocol/graph-ts';
+import {
+  dataSource,
+  Bytes,
+  BigInt,
+  Address,
+  TypedMap,
+} from '@graphprotocol/graph-ts';
 import { NFTXVaultUpgradeable as NFTXVault } from '../types/NFTXVaultFactoryUpgradeable/NFTXVaultUpgradeable';
 import {
   Global,
@@ -11,6 +17,9 @@ import {
   FeeReceiver,
   FeeReceipt,
   Pool,
+  User,
+  Mint,
+  Redeem,
 } from '../types/schema';
 import { ERC20Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC20Metadata';
 import { ERC677Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC677Metadata';
@@ -174,4 +183,53 @@ export function getPool(poolAddress: Address): Pool {
     // vault and tokens not set
   }
   return pool as Pool;
+}
+
+export function getUser(userAddress: Address): User {
+  let user = User.load(userAddress.toHexString());
+  if (user == null) {
+    user = new User(userAddress.toHexString());
+  }
+  return user as User;
+}
+
+export function getMint(txHash: Bytes): Mint {
+  let mint = Mint.load(txHash.toHexString());
+  if (mint == null) {
+    mint = new Mint(txHash.toHexString());
+  }
+  return mint as Mint;
+}
+
+export function getRedeem(txHash: Bytes): Redeem {
+  let redeem = Redeem.load(txHash.toHexString());
+  if (redeem == null) {
+    redeem = new Redeem(txHash.toHexString());
+  }
+  return redeem as Redeem;
+}
+
+export function updateHoldings(
+  vault: Vault,
+  nftIds: BigInt[],
+  add: boolean = true,
+): Vault {
+  let holdingsMap = new TypedMap<BigInt, boolean>();
+  let vaultHoldings = vault.holdings;
+  for (let i = 0; i < vaultHoldings.length; i = i + 1) {
+    holdingsMap.set(vaultHoldings[i], true);
+  }
+  for (let i = 0; i < nftIds.length; i = i + 1) {
+    holdingsMap.set(nftIds[i], add);
+  }
+  let holdings = new Array<BigInt>();
+  let entries = holdingsMap.entries;
+  for (let i = 0; i < entries.length; i = i + 1) {
+    let entry = entries[i];
+    if (entry.value == true) {
+      holdings.push(entry.key);
+    }
+  }
+  vault.holdings = holdings;
+  return vault;
 }
