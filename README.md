@@ -4,7 +4,7 @@ Subgraph for NFTX Protocol V2
 
 Rinkeby Subgraph: https://thegraph.com/explorer/subgraph/dan13ram/nftx-v2-rinkeby
 
-Mainnet Subgraph: 
+Mainnet Subgraph:
 
 ## Scripts
 

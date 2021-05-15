@@ -3,8 +3,8 @@ import {
   FeeReceiverAllocChange as FeeReceiverAllocChangeEvent,
   RemoveFeeReceiver as RemoveFeeReceiverEvent,
   NFTXFeeDistributor,
-} from '../types/NFTXFeeDistributor/NFTXFeeDistributor';
-import { NFTXVaultFactoryUpgradeable as NFTXVaultFactory } from '../types/NFTXFeeDistributor/NFTXVaultFactoryUpgradeable';
+} from '../types/templates/NFTXFeeDistributor/NFTXFeeDistributor';
+import { NFTXVaultFactoryUpgradeable as NFTXVaultFactory } from '../types/templates/NFTXFeeDistributor/NFTXVaultFactoryUpgradeable';
 import { getFeeReceiver, getVault } from './helpers';
 import { BigInt, store } from '@graphprotocol/graph-ts';
 

@@ -2,11 +2,11 @@ import {
   PoolCreated as PoolCreatedEvent,
   PoolUpdated as PoolUpdatedEvent,
   NFTXLPStaking,
-} from '../types/NFTXLPStaking/NFTXLPStaking';
-import { NFTXVaultFactoryUpgradeable as NFTXVaultFactory } from '../types/NFTXLPStaking/NFTXVaultFactoryUpgradeable';
-import { StakingTokenProvider } from '../types/NFTXLPStaking/StakingTokenProvider';
+} from '../types/templates/NFTXLPStaking/NFTXLPStaking';
+import { NFTXVaultFactoryUpgradeable as NFTXVaultFactory } from '../types/templates/NFTXLPStaking/NFTXVaultFactoryUpgradeable';
+import { StakingTokenProvider } from '../types/templates/NFTXLPStaking/StakingTokenProvider';
 import { getPool, getToken } from './helpers';
-import { RewardDistributionTokenUpgradeable as PoolToken } from '../types/templates';
+import { RewardDistributionTokenUpgradeable as RewardDistributionTokenTemplate } from '../types/templates';
 import { Address, BigInt } from '@graphprotocol/graph-ts';
 
 function newPool(
@@ -41,7 +41,7 @@ function newPool(
   pool.vault = vaultAddress.toHexString();
   pool.save();
 
-  PoolToken.create(poolAddress);
+  RewardDistributionTokenTemplate.create(poolAddress);
 }
 
 export function handlePoolCreated(event: PoolCreatedEvent): void {
