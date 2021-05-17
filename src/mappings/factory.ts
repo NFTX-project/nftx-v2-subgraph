@@ -2,6 +2,7 @@ import {
   NewVault as NewVaultEvent,
   // TODO: update this to NewFeeDistributor
   NewFeeReceiver as NewFeeDistributorEvent,
+  NFTXVaultFactoryUpgradeable as NFTXVaultFactory,
 } from '../types/NFTXVaultFactoryUpgradeable/NFTXVaultFactoryUpgradeable';
 import { NFTXFeeDistributor } from '../types/NFTXVaultFactoryUpgradeable/NFTXFeeDistributor';
 import { getGlobal, getVault } from './helpers';
@@ -10,11 +11,17 @@ import {
   NFTXFeeDistributor as NFTXFeeDistributorTemplate,
   NFTXLPStaking as NFTXLPStakingTemplate,
 } from '../types/templates';
+import { Address } from '@graphprotocol/graph-ts';
 
-export function handleNewFeeDistributor(event: NewFeeDistributorEvent): void {
+function newFeeDistributor(
+  nftxVaultFactoryAddress: Address,
+  feeDistributorAddress: Address,
+): void {
   let global = getGlobal();
-  global.nftxVaultFactory = event.address;
-  let feeDistributorAddress = event.params.newReceiver;
+  if (global.feeDistributorAddress == feeDistributorAddress) {
+    return;
+  }
+  global.nftxVaultFactory = nftxVaultFactoryAddress;
   let feeDistributor = NFTXFeeDistributor.bind(feeDistributorAddress);
   global.feeDistributorAddress = feeDistributorAddress;
   global.treasuryAddress = feeDistributor.treasury();
@@ -28,6 +35,13 @@ export function handleNewFeeDistributor(event: NewFeeDistributorEvent): void {
   NFTXLPStakingTemplate.create(lpStakingAddress);
 }
 
+export function handleNewFeeDistributor(event: NewFeeDistributorEvent): void {
+  let nftxVaultFactoryAddress = event.address;
+  let feeDistributorAddress = event.params.newReceiver;
+
+  newFeeDistributor(nftxVaultFactoryAddress, feeDistributorAddress);
+}
+
 export function handleNewVault(event: NewVaultEvent): void {
   let vaultAddress = event.params.vaultAddress;
 
@@ -36,4 +50,10 @@ export function handleNewVault(event: NewVaultEvent): void {
   vault.save();
 
   NFTXVaultTemplate.create(vaultAddress);
+
+  let nftxVaultFactoryAddress = event.address;
+  let vaultFactory = NFTXVaultFactory.bind(nftxVaultFactoryAddress);
+  let feeDistributorAddress = vaultFactory.feeReceiver(); // TODO: update this to FeeDistributor
+
+  newFeeDistributor(nftxVaultFactoryAddress, feeDistributorAddress);
 }
