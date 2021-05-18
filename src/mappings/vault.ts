@@ -57,7 +57,7 @@ export function handleMint(event: MintEvent): void {
   user.save();
 
   let vault = getVault(vaultAddress);
-  updateHoldings(vault, event.params.nftIds);
+  vault = updateHoldings(vault, event.params.nftIds);
   vault.save();
 }
 
@@ -82,14 +82,14 @@ export function handleRedeem(event: RedeemEvent): void {
   user.save();
 
   let vault = getVault(vaultAddress);
-  updateHoldings(vault, event.params.nftIds, false);
+  vault = updateHoldings(vault, event.params.nftIds, false);
   vault.save();
 }
 
 export function handleManagerSet(event: ManagerSetEvent): void {
   let managerAddress = event.params.manager;
   let vault = getVault(event.address);
-  updateManager(vault, managerAddress);
+  vault = updateManager(vault, managerAddress);
   vault.save();
 }
 

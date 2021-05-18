@@ -16,7 +16,7 @@ export function handleRewardWithdrawn(event: RewardWithdrawnEvent): void {
   rewards.save();
 
   let user = getStakedLpUser(userAddress);
-  updatePools(user, poolAddress);
+  user = updatePools(user, poolAddress);
   let userRewards = user.userRewards;
   userRewards.push(rewards.id);
   user.userRewards = userRewards;

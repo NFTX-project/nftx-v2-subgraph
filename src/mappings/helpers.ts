@@ -47,9 +47,13 @@ export function getAsset(assetAddress: Address): Asset {
   let asset = Asset.load(assetAddress.toHexString());
   if (asset == null) {
     asset = new Asset(assetAddress.toHexString());
+
     let erc677 = ERC677Metadata.bind(assetAddress);
-    asset.name = erc677.name();
-    asset.symbol = erc677.symbol();
+    let symbol = erc677.try_symbol();
+    let name = erc677.try_name();
+
+    asset.symbol = symbol.reverted ? '' : symbol.value;
+    asset.name = name.reverted ? '' : name.value;
   }
   return asset as Asset;
 }
@@ -58,10 +62,15 @@ export function getToken(tokenAddress: Address): Token {
   let token = Token.load(tokenAddress.toHexString());
   if (token == null) {
     token = new Token(tokenAddress.toHexString());
+
     let erc20 = ERC20Metadata.bind(tokenAddress);
-    token.name = erc20.name();
-    token.symbol = erc20.symbol();
-    token.totalSupply = erc20.totalSupply();
+    let symbol = erc20.try_symbol();
+    let name = erc20.try_name();
+    let totalSupply = erc20.try_totalSupply();
+
+    token.symbol = symbol.reverted ? '' : symbol.value;
+    token.name = name.reverted ? '' : name.value;
+    token.totalSupply = totalSupply.reverted ? BigInt.fromI32(0) : totalSupply.value;
   }
   return token as Token;
 }
@@ -113,22 +122,31 @@ export function getVault(vaultAddress: Address): Vault {
   let vault = Vault.load(vaultAddress.toHexString());
   if (vault == null) {
     vault = new Vault(vaultAddress.toHexString());
+
     let vaultInstance = NFTXVault.bind(vaultAddress);
-    vault.is1155 = vaultInstance.is1155();
-    vault.allowAllItems = vaultInstance.allowAllItems();
+    let assetAddressFromInstance = vaultInstance.try_assetAddress();
+    let managerAddressFromInstance = vaultInstance.try_manager();
+    let is1155FromInstance = vaultInstance.try_is1155();
+    let allowAllItemsFromInstance = vaultInstance.try_allowAllItems();
+
+    let assetAddress = assetAddressFromInstance.reverted ? ADDRESS_ZERO : assetAddressFromInstance.value;
+    let managerAddress = managerAddressFromInstance.reverted ? ADDRESS_ZERO : managerAddressFromInstance.value;
+    let is1155 = is1155FromInstance.reverted ? false : is1155FromInstance.value;
+    let allowAllItems = allowAllItemsFromInstance.reverted ? false : allowAllItemsFromInstance.value;
+
+    vault.is1155 = is1155;
+    vault.allowAllItems = allowAllItems;
     vault.vaultId = BigInt.fromI32(0);
 
     let token = getToken(vaultAddress);
     vault.token = token.id;
     token.save();
 
-    let assetAddress = vaultInstance.assetAddress();
     let asset = getAsset(assetAddress);
     vault.asset = asset.id;
     asset.save();
 
-    let managerAddress = vaultInstance.manager();
-    updateManager(vault as Vault, managerAddress);
+    vault = updateManager(vault as Vault, managerAddress);
 
     let fees = getFees(vaultAddress);
     vault.fees = fees.id;
