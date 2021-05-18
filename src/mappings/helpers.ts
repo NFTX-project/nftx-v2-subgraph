@@ -50,7 +50,6 @@ export function getAsset(assetAddress: Address): Asset {
     let erc677 = ERC677Metadata.bind(assetAddress);
     asset.name = erc677.name();
     asset.symbol = erc677.symbol();
-    asset.vaults = new Array<string>();
   }
   return asset as Asset;
 }
@@ -99,6 +98,17 @@ export function getFeatures(featuresAddress: Address): Features {
   return features as Features;
 }
 
+export function updateManager(vault: Vault, managerAddress: Address): Vault {
+  let manager = getManager(managerAddress);
+  manager.save();
+
+  vault.manager = manager.id;
+  vault.isFinalized =
+    managerAddress.toHexString() == ADDRESS_ZERO.toHexString();
+
+  return vault;
+}
+
 export function getVault(vaultAddress: Address): Vault {
   let vault = Vault.load(vaultAddress.toHexString());
   if (vault == null) {
@@ -115,16 +125,10 @@ export function getVault(vaultAddress: Address): Vault {
     let assetAddress = vaultInstance.assetAddress();
     let asset = getAsset(assetAddress);
     vault.asset = asset.id;
-    let assetVaults = asset.vaults;
-    assetVaults.push(vault.id);
-    asset.vaults = assetVaults;
     asset.save();
 
     let managerAddress = vaultInstance.manager();
-    let manager = getManager(managerAddress);
-
-    vault.manager = manager.id;
-    vault.isFinalized = false;
+    updateManager(vault as Vault, managerAddress);
 
     let fees = getFees(vaultAddress);
     vault.fees = fees.id;
@@ -135,11 +139,6 @@ export function getVault(vaultAddress: Address): Vault {
     features.save();
 
     vault.holdings = new Array<BigInt>();
-    // vault.mints = new Array<string>();
-    // vault.redeems = new Array<string>();
-    // vault.stakingPools = new Array<string>();
-    // vault.feeReceivers = new Array<string>();
-    // vault.feeReceipts = new Array<string>();
     vault.totalFees = BigInt.fromI32(0);
     vault.treasuryAlloc = BigInt.fromI32(0);
     vault.allocTotal = BigInt.fromI32(0);
@@ -274,4 +273,30 @@ export function updatePools(
   }
   user.pools = pools;
   return user;
+}
+
+var METHOD_SIGNATURE_LENGTH = 4;
+var BYTES32_LENGTH = 32;
+var reedemCall = Bytes.fromHexString('0xc4a0db96') as Bytes;
+var reedemToCall = Bytes.fromHexString('0x9d54def6') as Bytes;
+
+export function getSpecificIds(txData: Bytes): BigInt[] {
+  let data = txData.subarray(METHOD_SIGNATURE_LENGTH);
+  let method = txData.subarray(0, METHOD_SIGNATURE_LENGTH) as Bytes;
+
+  if (method == reedemCall) {
+    data = data.subarray(2 * BYTES32_LENGTH, data.length - BYTES32_LENGTH);
+  } else if (method == reedemToCall) {
+    data = data.subarray(3 * BYTES32_LENGTH, data.length - BYTES32_LENGTH);
+  } else {
+    return new Array<BigInt>();
+  }
+  let num = data.length / BYTES32_LENGTH;
+  let specificIds = new Array<BigInt>();
+  for (let i = 0; i < num; i = i + 1) {
+    let idBytes = data.subarray(0, BYTES32_LENGTH) as Bytes;
+    data = data.subarray(BYTES32_LENGTH);
+    specificIds.push(BigInt.fromUnsignedBytes(idBytes));
+  }
+  return specificIds;
 }

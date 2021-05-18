@@ -17,11 +17,13 @@ import {
   getMint,
   getUser,
   getRedeem,
-  getManager,
+  updateManager,
   updateHoldings,
   getFeatures,
   getFees,
+  getSpecificIds,
 } from './helpers';
+import { BigInt } from '@graphprotocol/graph-ts';
 
 export function handleTransfer(event: TransferEvent): void {
   let global = getGlobal();
@@ -64,11 +66,17 @@ export function handleRedeem(event: RedeemEvent): void {
 
   let txHash = event.transaction.hash;
   let redeem = getRedeem(txHash);
+  let nftIds = event.params.nftIds;
+  let specificIds = getSpecificIds(event.transaction.input);
   let user = getUser(event.params.sender);
+
   redeem.user = user.id;
   redeem.vault = vaultAddress.toHexString();
   redeem.date = event.block.timestamp;
-  redeem.nftIds = event.params.nftIds;
+  redeem.nftIds = nftIds;
+  redeem.specificIds = specificIds;
+  redeem.directCount = BigInt.fromI32(specificIds.length);
+  redeem.randomCount = BigInt.fromI32(nftIds.length - specificIds.length);
 
   redeem.save();
   user.save();
@@ -80,11 +88,8 @@ export function handleRedeem(event: RedeemEvent): void {
 
 export function handleManagerSet(event: ManagerSetEvent): void {
   let managerAddress = event.params.manager;
-  let manager = getManager(managerAddress);
-  manager.save();
-
   let vault = getVault(event.address);
-  vault.manager = manager.id;
+  updateManager(vault, managerAddress);
   vault.save();
 }
 

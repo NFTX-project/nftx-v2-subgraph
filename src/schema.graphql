@@ -53,7 +53,7 @@ type Asset @entity {
   id: ID! # address
   name: String!
   symbol: String!
-  vaults: [Vault!]!
+  vaults: [Vault!]! @derivedFrom(field: "asset")
 }
 
 type Manager @entity {
@@ -99,18 +99,15 @@ type Mint @entity {
   amounts: [BigInt!]
 }
 
-enum RedeemType {
-  random
-  direct
-}
-
 type Redeem @entity {
   id: ID! # tx
   date: BigInt!
   user: User!
-  # type: RedeemType! # random, direct
   vault: Vault!
-  nftIds: [BigInt!]
+  nftIds: [BigInt!]!
+  specificIds: [BigInt!]!
+  directCount: BigInt!
+  randomCount: BigInt!
 }
 
 type User @entity {
