@@ -11,8 +11,8 @@ import {
   Asset,
   Token,
   Manager,
-  Fees,
-  Features,
+  Fee,
+  Feature,
   Vault,
   FeeReceiver,
   FeeReceipt,
@@ -21,7 +21,7 @@ import {
   Mint,
   Redeem,
   StakedLpUser,
-  Rewards,
+  Reward,
 } from '../types/schema';
 import { ERC20Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC20Metadata';
 import { ERC677Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC677Metadata';
@@ -83,28 +83,28 @@ export function getManager(managerAddress: Address): Manager {
   return manager as Manager;
 }
 
-export function getFees(feesAddress: Address): Fees {
-  let fees = Fees.load(feesAddress.toHexString());
+export function getFee(feesAddress: Address): Fee {
+  let fees = Fee.load(feesAddress.toHexString());
   if (fees == null) {
-    fees = new Fees(feesAddress.toHexString());
+    fees = new Fee(feesAddress.toHexString());
     fees.mintFee = BigInt.fromI32(0);
     fees.randomRedeemFee = BigInt.fromI32(0);
     fees.directRedeemFee = BigInt.fromI32(0);
     fees.swapFee = BigInt.fromI32(0);
   }
-  return fees as Fees;
+  return fees as Fee;
 }
 
-export function getFeatures(featuresAddress: Address): Features {
-  let features = Features.load(featuresAddress.toHexString());
+export function getFeature(featuresAddress: Address): Feature {
+  let features = Feature.load(featuresAddress.toHexString());
   if (features == null) {
-    features = new Features(featuresAddress.toHexString());
+    features = new Feature(featuresAddress.toHexString());
     features.enableMint = false;
     features.enableRandomRedeem = false;
     features.enableDirectRedeem = false;
     features.enableSwap = false;
   }
-  return features as Features;
+  return features as Feature;
 }
 
 export function updateManager(vault: Vault, managerAddress: Address): Vault {
@@ -148,11 +148,11 @@ export function getVault(vaultAddress: Address): Vault {
 
     vault = updateManager(vault as Vault, managerAddress);
 
-    let fees = getFees(vaultAddress);
+    let fees = getFee(vaultAddress);
     vault.fees = fees.id;
     fees.save();
 
-    let features = getFeatures(vaultAddress);
+    let features = getFeature(vaultAddress);
     vault.features = features.id;
     features.save();
 
@@ -262,13 +262,13 @@ export function getStakedLpUser(userAddress: Address): StakedLpUser {
   return user as StakedLpUser;
 }
 
-export function getRewards(txHash: Bytes): Rewards {
+export function getReward(txHash: Bytes): Reward {
   let rewardId = txHash.toHexString();
-  let rewards = Rewards.load(rewardId);
+  let rewards = Reward.load(rewardId);
   if (rewards == null) {
-    rewards = new Rewards(rewardId);
+    rewards = new Reward(rewardId);
   }
-  return rewards as Rewards;
+  return rewards as Reward;
 }
 
 export function updatePools(

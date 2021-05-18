@@ -1,5 +1,5 @@
 import { RewardWithdrawn as RewardWithdrawnEvent } from '../types/templates/RewardDistributionTokenUpgradeable/RewardDistributionTokenUpgradeable';
-import { getRewards, getStakedLpUser, getPool, updatePools } from './helpers';
+import { getReward, getStakedLpUser, getPool, updatePools } from './helpers';
 
 export function handleRewardWithdrawn(event: RewardWithdrawnEvent): void {
   let poolAddress = event.address;
@@ -9,7 +9,7 @@ export function handleRewardWithdrawn(event: RewardWithdrawnEvent): void {
   let userAddress = event.params.to;
   let amount = event.params.weiAmount;
 
-  let rewards = getRewards(txHash);
+  let rewards = getReward(txHash);
   rewards.date = event.block.timestamp;
   rewards.pool = pool.id;
   rewards.reward = amount;

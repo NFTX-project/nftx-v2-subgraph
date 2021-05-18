@@ -22,8 +22,8 @@ type Vault @entity {
   mints: [Mint!]! @derivedFrom(field: "vault")
   redeems: [Redeem!]! @derivedFrom(field: "vault")
   stakingPools: [Pool!]! @derivedFrom(field: "vault")
-  fees: Fees!
-  features: Features!
+  fees: Fee!
+  features: Feature!
   feeReceivers: [FeeReceiver!]! @derivedFrom(field: "vault")
   feeReceipts: [FeeReceipt!]! @derivedFrom(field: "vault")
   totalFees: BigInt! # counter
@@ -31,7 +31,7 @@ type Vault @entity {
   allocTotal: BigInt!
 }
 
-type Fees @entity {
+type Fee @entity {
   id: ID! # address
   vault: Vault! @derivedFrom(field: "fees")
   mintFee: BigInt!
@@ -40,7 +40,7 @@ type Fees @entity {
   swapFee: BigInt!
 }
 
-type Features @entity {
+type Feature @entity {
   id: ID! # address
   vault: Vault! @derivedFrom(field: "features")
   enableMint: Boolean!
@@ -119,10 +119,10 @@ type User @entity {
 type StakedLpUser @entity {
   id: ID! # address
   pools: [Pool!]!
-  userRewards: [Rewards!]!
+  userRewards: [Reward!]!
 }
 
-type Rewards @entity {
+type Reward @entity {
   id: ID! # tx
   date: BigInt!
   pool: Pool!

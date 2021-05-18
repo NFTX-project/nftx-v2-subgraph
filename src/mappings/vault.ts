@@ -19,8 +19,8 @@ import {
   getRedeem,
   updateManager,
   updateHoldings,
-  getFeatures,
-  getFees,
+  getFeature,
+  getFee,
   getSpecificIds,
 } from './helpers';
 import { BigInt } from '@graphprotocol/graph-ts';
@@ -94,7 +94,7 @@ export function handleManagerSet(event: ManagerSetEvent): void {
 }
 
 export function handleEnableMintUpdated(event: EnableMintUpdatedEvent): void {
-  let features = getFeatures(event.address);
+  let features = getFeature(event.address);
   features.enableMint = event.params.enabled;
   features.save();
 }
@@ -102,7 +102,7 @@ export function handleEnableMintUpdated(event: EnableMintUpdatedEvent): void {
 export function handleEnableRandomRedeemUpdated(
   event: EnableRandomRedeemUpdatedEvent,
 ): void {
-  let features = getFeatures(event.address);
+  let features = getFeature(event.address);
   features.enableRandomRedeem = event.params.enabled;
   features.save();
 }
@@ -110,26 +110,26 @@ export function handleEnableRandomRedeemUpdated(
 export function handleEnableDirectRedeemUpdated(
   event: EnableDirectRedeemUpdatedEvent,
 ): void {
-  let features = getFeatures(event.address);
+  let features = getFeature(event.address);
   features.enableDirectRedeem = event.params.enabled;
   features.save();
 }
 
 export function handleEnableSwapUpdated(event: EnableSwapUpdatedEvent): void {
-  let features = getFeatures(event.address);
+  let features = getFeature(event.address);
   features.enableSwap = event.params.enabled;
   features.save();
 }
 
 export function handleMintFeeUpdated(event: MintFeeUpdatedEvent): void {
-  let fees = getFees(event.address);
+  let fees = getFee(event.address);
   fees.mintFee = event.params.mintFee;
   fees.save();
 }
 
 export function handleRedeemFeeUpdated(event: RedeemFeeUpdatedEvent): void {
   // TODO: change this to Random and Target
-  let fees = getFees(event.address);
+  let fees = getFee(event.address);
   fees.randomRedeemFee = event.params.redeemFee;
   fees.directRedeemFee = event.params.redeemFee;
   fees.save();
