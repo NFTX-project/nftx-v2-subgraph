@@ -22,15 +22,19 @@ import {
   getFeature,
   getFee,
   getSpecificIds,
+  getToken,
 } from './helpers';
 import { BigInt } from '@graphprotocol/graph-ts';
-import {ADDRESS_ZERO} from './constants';
+import { ADDRESS_ZERO } from './constants';
 
 export function handleTransfer(event: TransferEvent): void {
   let global = getGlobal();
-  if (event.params.from == ADDRESS_ZERO && event.params.to == global.feeDistributorAddress) {
+  let vaultAddress = event.address;
+  if (
+    event.params.from == ADDRESS_ZERO &&
+    event.params.to == global.feeDistributorAddress
+  ) {
     let feeReceipt = getFeeReceipt(event.transaction.hash);
-    let vaultAddress = event.address;
     feeReceipt.vault = vaultAddress.toHexString();
     feeReceipt.token = vaultAddress.toHexString();
     feeReceipt.amount = event.params.value;
@@ -41,6 +45,9 @@ export function handleTransfer(event: TransferEvent): void {
     vault.totalFees = vault.totalFees.plus(event.params.value);
     vault.save();
   }
+
+  let token = getToken(vaultAddress);
+  token.save();
 }
 
 export function handleMint(event: MintEvent): void {

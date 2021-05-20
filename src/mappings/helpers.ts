@@ -22,6 +22,7 @@ import {
   Redeem,
   StakedLpUser,
   Reward,
+  Deposit,
 } from '../types/schema';
 import { ERC20Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC20Metadata';
 import { ERC677Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC677Metadata';
@@ -62,16 +63,17 @@ export function getToken(tokenAddress: Address): Token {
   let token = Token.load(tokenAddress.toHexString());
   if (token == null) {
     token = new Token(tokenAddress.toHexString());
-
-    let erc20 = ERC20Metadata.bind(tokenAddress);
-    let symbol = erc20.try_symbol();
-    let name = erc20.try_name();
-    let totalSupply = erc20.try_totalSupply();
-
-    token.symbol = symbol.reverted ? '' : symbol.value;
-    token.name = name.reverted ? '' : name.value;
-    token.totalSupply = totalSupply.reverted ? BigInt.fromI32(0) : totalSupply.value;
   }
+  let erc20 = ERC20Metadata.bind(tokenAddress);
+  let symbol = erc20.try_symbol();
+  let name = erc20.try_name();
+  let totalSupply = erc20.try_totalSupply();
+
+  token.symbol = symbol.reverted ? '' : symbol.value;
+  token.name = name.reverted ? '' : name.value;
+  token.totalSupply = totalSupply.reverted
+    ? BigInt.fromI32(0)
+    : totalSupply.value;
   return token as Token;
 }
 
@@ -129,10 +131,16 @@ export function getVault(vaultAddress: Address): Vault {
     let is1155FromInstance = vaultInstance.try_is1155();
     let allowAllItemsFromInstance = vaultInstance.try_allowAllItems();
 
-    let assetAddress = assetAddressFromInstance.reverted ? ADDRESS_ZERO : assetAddressFromInstance.value;
-    let managerAddress = managerAddressFromInstance.reverted ? ADDRESS_ZERO : managerAddressFromInstance.value;
+    let assetAddress = assetAddressFromInstance.reverted
+      ? ADDRESS_ZERO
+      : assetAddressFromInstance.value;
+    let managerAddress = managerAddressFromInstance.reverted
+      ? ADDRESS_ZERO
+      : managerAddressFromInstance.value;
     let is1155 = is1155FromInstance.reverted ? false : is1155FromInstance.value;
-    let allowAllItems = allowAllItemsFromInstance.reverted ? false : allowAllItemsFromInstance.value;
+    let allowAllItems = allowAllItemsFromInstance.reverted
+      ? false
+      : allowAllItemsFromInstance.value;
 
     vault.is1155 = is1155;
     vault.allowAllItems = allowAllItems;
@@ -199,6 +207,7 @@ export function getPool(poolAddress: Address): Pool {
   if (pool == null) {
     pool = new Pool(poolId);
     pool.totalRewards = BigInt.fromI32(0);
+    pool.vaultTokensStaked = BigInt.fromI32(0);
     // vault and tokens not set
   }
   return pool as Pool;
@@ -258,7 +267,7 @@ export function getStakedLpUser(userAddress: Address): StakedLpUser {
   if (user == null) {
     user = new StakedLpUser(userAddress.toHexString());
     user.pools = new Array<string>();
-    user.userRewards = new Array<string>();
+    user.activePools = new Array<string>();
   }
   return user as StakedLpUser;
 }
@@ -275,13 +284,14 @@ export function getReward(txHash: Bytes): Reward {
 export function updatePools(
   user: StakedLpUser,
   poolAddress: Address,
+  add: boolean = true,
 ): StakedLpUser {
   let poolsMap = new TypedMap<string, boolean>();
   let userPools = user.pools;
   for (let i = 0; i < userPools.length; i = i + 1) {
     poolsMap.set(userPools[i], true);
   }
-  poolsMap.set(poolAddress.toHexString(), true);
+  poolsMap.set(poolAddress.toHexString(), add);
   let pools = new Array<string>();
   let entries = poolsMap.entries;
   for (let i = 0; i < entries.length; i = i + 1) {
@@ -290,7 +300,10 @@ export function updatePools(
       pools.push(entry.key);
     }
   }
-  user.pools = pools;
+  if (add == true) {
+    user.pools = pools;
+  }
+  user.activePools = pools;
   return user;
 }
 
@@ -318,4 +331,15 @@ export function getSpecificIds(txData: Bytes): BigInt[] {
     specificIds.push(BigInt.fromUnsignedBytes(idBytes));
   }
   return specificIds;
+}
+
+export function getDeposit(txHash: Bytes): Deposit {
+  let depositId = txHash.toHexString();
+  let deposit = Deposit.load(depositId);
+  if (deposit == null) {
+    deposit = new Deposit(depositId);
+    deposit.deposit = BigInt.fromI32(0);
+    deposit.date = BigInt.fromI32(0);
+  }
+  return deposit as Deposit;
 }

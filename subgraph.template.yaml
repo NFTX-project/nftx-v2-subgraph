@@ -185,3 +185,5 @@ templates:
       eventHandlers:
         - event: RewardWithdrawn(indexed address,uint256)
           handler: handleRewardWithdrawn
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer

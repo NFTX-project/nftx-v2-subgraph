@@ -81,6 +81,7 @@ type Pool @entity {
   rewardToken: Token!
   stakingToken: Token!
   dividendToken: Token!
+  vaultTokensStaked: BigInt!
   totalRewards: BigInt!
 }
 
@@ -122,12 +123,23 @@ type User @entity {
 type StakedLpUser @entity {
   id: ID! # address
   pools: [Pool!]!
-  userRewards: [Reward!]!
+  activePools: [Pool!]!
+  userRewards: [Reward!]! @derivedFrom(field: "user")
+  deposits: [Deposit!]! @derivedFrom(field: "user")
 }
 
 type Reward @entity {
   id: ID! # tx
   date: BigInt!
   pool: Pool!
+  user: StakedLpUser!
   reward: BigInt!
+}
+
+type Deposit @entity {
+  id: ID! # tx
+  date: BigInt!
+  pool: Pool!
+  user: StakedLpUser!
+  deposit: BigInt!
 }
