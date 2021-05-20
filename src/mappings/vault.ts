@@ -24,15 +24,17 @@ import {
   getSpecificIds,
 } from './helpers';
 import { BigInt } from '@graphprotocol/graph-ts';
+import {ADDRESS_ZERO} from './constants';
 
 export function handleTransfer(event: TransferEvent): void {
   let global = getGlobal();
-  let vaultAddress = event.address;
-  if (event.params.from == global.feeDistributorAddress) {
+  if (event.params.from == ADDRESS_ZERO && event.params.to == global.feeDistributorAddress) {
     let feeReceipt = getFeeReceipt(event.transaction.hash);
+    let vaultAddress = event.address;
     feeReceipt.vault = vaultAddress.toHexString();
     feeReceipt.token = vaultAddress.toHexString();
     feeReceipt.amount = event.params.value;
+    feeReceipt.date = event.block.timestamp;
     feeReceipt.save();
 
     let vault = getVault(vaultAddress);
@@ -52,6 +54,13 @@ export function handleMint(event: MintEvent): void {
   mint.date = event.block.timestamp;
   mint.nftIds = event.params.nftIds;
   mint.amounts = event.params.amounts;
+
+  let feeReceipt = getFeeReceipt(event.transaction.hash);
+  feeReceipt.vault = vaultAddress.toHexString();
+  feeReceipt.token = vaultAddress.toHexString();
+  feeReceipt.date = event.block.timestamp;
+  feeReceipt.save();
+  mint.feeReceipt = feeReceipt.id;
 
   mint.save();
   user.save();
@@ -77,6 +86,13 @@ export function handleRedeem(event: RedeemEvent): void {
   redeem.specificIds = specificIds;
   redeem.directCount = BigInt.fromI32(specificIds.length);
   redeem.randomCount = BigInt.fromI32(nftIds.length - specificIds.length);
+
+  let feeReceipt = getFeeReceipt(event.transaction.hash);
+  feeReceipt.vault = vaultAddress.toHexString();
+  feeReceipt.token = vaultAddress.toHexString();
+  feeReceipt.date = event.block.timestamp;
+  feeReceipt.save();
+  redeem.feeReceipt = feeReceipt.id;
 
   redeem.save();
   user.save();

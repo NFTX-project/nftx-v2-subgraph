@@ -72,6 +72,7 @@ type FeeReceipt @entity {
   vault: Vault!
   token: Token!
   amount: BigInt!
+  date: BigInt!
 }
 
 type Pool @entity {
@@ -97,6 +98,7 @@ type Mint @entity {
   vault: Vault!
   nftIds: [BigInt!]
   amounts: [BigInt!]
+  feeReceipt: FeeReceipt!
 }
 
 type Redeem @entity {
@@ -108,6 +110,7 @@ type Redeem @entity {
   specificIds: [BigInt!]!
   directCount: BigInt!
   randomCount: BigInt!
+  feeReceipt: FeeReceipt!
 }
 
 type User @entity {

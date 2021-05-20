@@ -186,6 +186,7 @@ export function getFeeReceipt(txHash: Bytes): FeeReceipt {
   if (feeReceipt == null) {
     feeReceipt = new FeeReceipt(feeReceiptId);
     feeReceipt.amount = BigInt.fromI32(0);
+    feeReceipt.date = BigInt.fromI32(0);
     // vault not set
     // token not set
   }
