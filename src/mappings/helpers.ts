@@ -1,4 +1,5 @@
 import {
+  store,
   dataSource,
   Bytes,
   BigInt,
@@ -23,6 +24,7 @@ import {
   StakedLpUser,
   Reward,
   Deposit,
+  Holding,
 } from '../types/schema';
 import { ERC20Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC20Metadata';
 import { ERC677Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC677Metadata';
@@ -164,7 +166,6 @@ export function getVault(vaultAddress: Address): Vault {
     vault.features = features.id;
     features.save();
 
-    vault.holdings = new Array<BigInt>();
     vault.totalFees = BigInt.fromI32(0);
     vault.treasuryAlloc = BigInt.fromI32(0);
     vault.allocTotal = BigInt.fromI32(0);
@@ -235,31 +236,6 @@ export function getRedeem(txHash: Bytes): Redeem {
     redeem = new Redeem(txHash.toHexString());
   }
   return redeem as Redeem;
-}
-
-export function updateHoldings(
-  vault: Vault,
-  nftIds: BigInt[],
-  add: boolean = true,
-): Vault {
-  let holdingsMap = new TypedMap<BigInt, boolean>();
-  let vaultHoldings = vault.holdings;
-  for (let i = 0; i < vaultHoldings.length; i = i + 1) {
-    holdingsMap.set(vaultHoldings[i], true);
-  }
-  for (let i = 0; i < nftIds.length; i = i + 1) {
-    holdingsMap.set(nftIds[i], add);
-  }
-  let holdings = new Array<BigInt>();
-  let entries = holdingsMap.entries;
-  for (let i = 0; i < entries.length; i = i + 1) {
-    let entry = entries[i];
-    if (entry.value == true) {
-      holdings.push(entry.key);
-    }
-  }
-  vault.holdings = holdings;
-  return vault;
 }
 
 export function getStakedLpUser(userAddress: Address): StakedLpUser {
@@ -342,4 +318,54 @@ export function getDeposit(txHash: Bytes): Deposit {
     deposit.date = BigInt.fromI32(0);
   }
   return deposit as Deposit;
+}
+
+export function getHolding(tokenId: BigInt, vaultAddress: Address): Holding {
+  let holdingId = tokenId.toHexString() + '-' + vaultAddress.toHexString();
+  let holding = Holding.load(holdingId);
+  if (holding == null) {
+    holding = new Holding(holdingId);
+    holding.tokenId = tokenId;
+    holding.amount = BigInt.fromI32(0);
+    holding.vault = vaultAddress.toHexString();
+  }
+  return holding as Holding;
+}
+
+export function addToHoldings(
+  vaultAddress: Address,
+  nftIds: BigInt[],
+  amounts: BigInt[],
+): void {
+  let vault = getVault(vaultAddress);
+  let is1155 = vault.is1155;
+  for (let i = 0; i < nftIds.length; i = i + 1) {
+    let tokenId = nftIds[i];
+    let holding = getHolding(tokenId, vaultAddress);
+    if (is1155) {
+      let amount = amounts[i];
+      holding.amount = holding.amount.plus(amount);
+    } else {
+      holding.amount = BigInt.fromI32(1);
+    }
+    holding.save();
+  }
+}
+
+export function removeFromHoldings(
+  vaultAddress: Address,
+  nftIds: BigInt[],
+): void {
+  for (let i = 0; i < nftIds.length; i = i + 1) {
+    let tokenId = nftIds[i];
+    let holding = getHolding(tokenId, vaultAddress);
+    holding.amount =
+      holding.amount == BigInt.fromI32(0)
+        ? BigInt.fromI32(0)
+        : holding.amount.minus(BigInt.fromI32(1));
+    holding.save();
+    if (holding.amount == BigInt.fromI32(0)) {
+      store.remove('Holding', holding.id);
+    }
+  }
 }

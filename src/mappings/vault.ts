@@ -18,11 +18,12 @@ import {
   getUser,
   getRedeem,
   updateManager,
-  updateHoldings,
   getFeature,
   getFee,
   getSpecificIds,
   getToken,
+  addToHoldings,
+  removeFromHoldings,
 } from './helpers';
 import { BigInt } from '@graphprotocol/graph-ts';
 import { ADDRESS_ZERO } from './constants';
@@ -72,9 +73,7 @@ export function handleMint(event: MintEvent): void {
   mint.save();
   user.save();
 
-  let vault = getVault(vaultAddress);
-  vault = updateHoldings(vault, event.params.nftIds);
-  vault.save();
+  addToHoldings(vaultAddress, event.params.nftIds, event.params.amounts);
 }
 
 export function handleRedeem(event: RedeemEvent): void {
@@ -104,9 +103,7 @@ export function handleRedeem(event: RedeemEvent): void {
   redeem.save();
   user.save();
 
-  let vault = getVault(vaultAddress);
-  vault = updateHoldings(vault, event.params.nftIds, false);
-  vault.save();
+  removeFromHoldings(vaultAddress, event.params.nftIds);
 }
 
 export function handleManagerSet(event: ManagerSetEvent): void {
