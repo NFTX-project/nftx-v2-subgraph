@@ -1,5 +1,6 @@
 {
   "network": "mainnet",
   "startBlock": "",
-  "vaultFactory": ""
+  "vaultFactory": "",
+  "callFilterEnabled": "true"
 }

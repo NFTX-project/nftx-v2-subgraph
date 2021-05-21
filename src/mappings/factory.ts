@@ -12,7 +12,7 @@ import {
   NFTXLPStaking as NFTXLPStakingTemplate,
 } from '../types/templates';
 import { Address, BigInt } from '@graphprotocol/graph-ts';
-import {ADDRESS_ZERO} from './constants';
+import { ADDRESS_ZERO } from './constants';
 
 function newFeeDistributor(
   nftxVaultFactoryAddress: Address,
@@ -24,15 +24,24 @@ function newFeeDistributor(
   }
 
   let feeDistributor = NFTXFeeDistributor.bind(feeDistributorAddress);
-  let treasuryAddressFromInstance = feeDistributor.try_treasury()
-  let lpStakingAddressFromInstance = feeDistributor.try_lpStaking()
-  let defaultLPAllocFromInstance = feeDistributor.try_defaultLPAlloc()
-  let defaultTreasuryAllocFromInstance = feeDistributor.try_defaultTreasuryAlloc()
+  let treasuryAddressFromInstance = feeDistributor.try_treasury();
+  let lpStakingAddressFromInstance = feeDistributor.try_lpStaking();
+  let defaultLPAllocFromInstance = feeDistributor.try_defaultLPAlloc();
+  let defaultTreasuryAllocFromInstance =
+    feeDistributor.try_defaultTreasuryAlloc();
 
-  let treasuryAddress = treasuryAddressFromInstance.reverted ? ADDRESS_ZERO : treasuryAddressFromInstance.value;
-  let lpStakingAddress = lpStakingAddressFromInstance.reverted ? ADDRESS_ZERO : lpStakingAddressFromInstance.value;
-  let defaultLPAlloc = defaultLPAllocFromInstance.reverted ? BigInt.fromI32(0) : defaultLPAllocFromInstance.value;
-  let defaultTreasuryAlloc = defaultTreasuryAllocFromInstance.reverted ? BigInt.fromI32(0) : defaultTreasuryAllocFromInstance.value;
+  let treasuryAddress = treasuryAddressFromInstance.reverted
+    ? ADDRESS_ZERO
+    : treasuryAddressFromInstance.value;
+  let lpStakingAddress = lpStakingAddressFromInstance.reverted
+    ? ADDRESS_ZERO
+    : lpStakingAddressFromInstance.value;
+  let defaultLPAlloc = defaultLPAllocFromInstance.reverted
+    ? BigInt.fromI32(0)
+    : defaultLPAllocFromInstance.value;
+  let defaultTreasuryAlloc = defaultTreasuryAllocFromInstance.reverted
+    ? BigInt.fromI32(0)
+    : defaultTreasuryAllocFromInstance.value;
 
   global.nftxVaultFactory = nftxVaultFactoryAddress;
   global.feeDistributorAddress = feeDistributorAddress;
@@ -58,6 +67,7 @@ export function handleNewVault(event: NewVaultEvent): void {
 
   let vault = getVault(vaultAddress);
   vault.vaultId = event.params.vaultId;
+  vault.createdAt = event.block.timestamp;
   vault.save();
 
   NFTXVaultTemplate.create(vaultAddress);
@@ -66,7 +76,9 @@ export function handleNewVault(event: NewVaultEvent): void {
 
   let vaultFactory = NFTXVaultFactory.bind(nftxVaultFactoryAddress);
   let feeDistributorAddressFromInstance = vaultFactory.try_feeReceiver(); // TODO: update this to FeeDistributor
-  let feeDistributorAddress = feeDistributorAddressFromInstance.reverted ? ADDRESS_ZERO : feeDistributorAddressFromInstance.value;
+  let feeDistributorAddress = feeDistributorAddressFromInstance.reverted
+    ? ADDRESS_ZERO
+    : feeDistributorAddressFromInstance.value;
 
   newFeeDistributor(nftxVaultFactoryAddress, feeDistributorAddress);
 }

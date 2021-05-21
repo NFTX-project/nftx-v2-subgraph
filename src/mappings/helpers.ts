@@ -25,10 +25,13 @@ import {
   Reward,
   Deposit,
   Holding,
+  VaultDayData,
+  VaultHourData,
 } from '../types/schema';
 import { ERC20Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC20Metadata';
 import { ERC677Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC677Metadata';
 import { ADDRESS_ZERO } from './constants';
+import { getDateString, getTimeString } from './datetime';
 
 export function getGlobal(): Global {
   let global_id = dataSource.network();
@@ -169,6 +172,12 @@ export function getVault(vaultAddress: Address): Vault {
     vault.totalFees = BigInt.fromI32(0);
     vault.treasuryAlloc = BigInt.fromI32(0);
     vault.allocTotal = BigInt.fromI32(0);
+
+    vault.createdAt = BigInt.fromI32(0);
+
+    vault.totalMints = BigInt.fromI32(0);
+    vault.totalRedeems = BigInt.fromI32(0);
+    vault.totalHoldings = BigInt.fromI32(0);
   }
 
   return vault as Vault;
@@ -208,7 +217,6 @@ export function getPool(poolAddress: Address): Pool {
   if (pool == null) {
     pool = new Pool(poolId);
     pool.totalRewards = BigInt.fromI32(0);
-    pool.vaultTokensStaked = BigInt.fromI32(0);
     // vault and tokens not set
   }
   return pool as Pool;
@@ -336,12 +344,16 @@ export function addToHoldings(
   vaultAddress: Address,
   nftIds: BigInt[],
   amounts: BigInt[],
-): void {
+): BigInt {
   let vault = getVault(vaultAddress);
   let is1155 = vault.is1155;
+  let added = BigInt.fromI32(0);
   for (let i = 0; i < nftIds.length; i = i + 1) {
     let tokenId = nftIds[i];
     let holding = getHolding(tokenId, vaultAddress);
+    if (holding.amount == BigInt.fromI32(0)) {
+      added = added.plus(BigInt.fromI32(1));
+    }
     if (is1155) {
       let amount = amounts[i];
       holding.amount = holding.amount.plus(amount);
@@ -350,12 +362,14 @@ export function addToHoldings(
     }
     holding.save();
   }
+  return added;
 }
 
 export function removeFromHoldings(
   vaultAddress: Address,
   nftIds: BigInt[],
-): void {
+): BigInt {
+  let removed = BigInt.fromI32(0);
   for (let i = 0; i < nftIds.length; i = i + 1) {
     let tokenId = nftIds[i];
     let holding = getHolding(tokenId, vaultAddress);
@@ -365,7 +379,52 @@ export function removeFromHoldings(
         : holding.amount.minus(BigInt.fromI32(1));
     holding.save();
     if (holding.amount == BigInt.fromI32(0)) {
+      removed = removed.plus(BigInt.fromI32(1));
       store.remove('Holding', holding.id);
     }
   }
+  return removed;
+}
+
+export function getVaultDayData(
+  vaultAddress: Address,
+  date: BigInt,
+): VaultDayData {
+  // let dateString = date.toHexString();
+  let dateString = getDateString(date);
+  let vaultDayDataId = dateString + '-' + vaultAddress.toHexString();
+  let vaultDayData = VaultDayData.load(vaultDayDataId);
+  if (vaultDayData == null) {
+    vaultDayData = new VaultDayData(vaultDayDataId);
+    vaultDayData.date = date;
+    vaultDayData.mintsCount = BigInt.fromI32(0);
+    vaultDayData.redeemsCount = BigInt.fromI32(0);
+    vaultDayData.holdingsCount = BigInt.fromI32(0);
+    vaultDayData.totalMints = BigInt.fromI32(0);
+    vaultDayData.totalRedeems = BigInt.fromI32(0);
+    vaultDayData.totalHoldings = BigInt.fromI32(0);
+    vaultDayData.vault = vaultAddress.toHexString();
+  }
+  return vaultDayData as VaultDayData;
+}
+
+export function getVaultHourData(
+  vaultAddress: Address,
+  date: BigInt,
+): VaultHourData {
+  let timeString = getTimeString(date);
+  let vaultHourDataId = timeString + '-' + vaultAddress.toHexString();
+  let vaultHourData = VaultHourData.load(vaultHourDataId);
+  if (vaultHourData == null) {
+    vaultHourData = new VaultHourData(vaultHourDataId);
+    vaultHourData.date = date;
+    vaultHourData.mintsCount = BigInt.fromI32(0);
+    vaultHourData.redeemsCount = BigInt.fromI32(0);
+    vaultHourData.holdingsCount = BigInt.fromI32(0);
+    vaultHourData.totalMints = BigInt.fromI32(0);
+    vaultHourData.totalRedeems = BigInt.fromI32(0);
+    vaultHourData.totalHoldings = BigInt.fromI32(0);
+    vaultHourData.vault = vaultAddress.toHexString();
+  }
+  return vaultHourData as VaultHourData;
 }

@@ -29,6 +29,11 @@ type Vault @entity {
   totalFees: BigInt! # counter
   treasuryAlloc: BigInt!
   allocTotal: BigInt!
+  createdAt: BigInt!
+  vaultDayData: [VaultDayData!]! @derivedFrom(field: "vault")
+  totalMints: BigInt!
+  totalRedeems: BigInt!
+  totalHoldings: BigInt!
 }
 
 type Holding @entity {
@@ -69,7 +74,7 @@ type Manager @entity {
 }
 
 type FeeReceiver @entity {
-  id: ID! # address
+  id: ID!
   vault: Vault!
   allocPoint: BigInt!
 }
@@ -88,7 +93,6 @@ type Pool @entity {
   rewardToken: Token!
   stakingToken: Token!
   dividendToken: Token!
-  vaultTokensStaked: BigInt!
   totalRewards: BigInt!
 }
 
@@ -149,4 +153,28 @@ type Deposit @entity {
   pool: Pool!
   user: StakedLpUser!
   deposit: BigInt!
+}
+
+type VaultDayData @entity {
+  id: ID!
+  date: BigInt! # end of range
+  mintsCount: BigInt!
+  redeemsCount: BigInt!
+  holdingsCount: BigInt!
+  totalMints: BigInt!
+  totalRedeems: BigInt!
+  totalHoldings: BigInt!
+  vault: Vault!
+}
+
+type VaultHourData @entity {
+  id: ID!
+  date: BigInt! # end of range
+  mintsCount: BigInt!
+  redeemsCount: BigInt!
+  holdingsCount: BigInt!
+  totalMints: BigInt!
+  totalRedeems: BigInt!
+  totalHoldings: BigInt!
+  vault: Vault!
 }

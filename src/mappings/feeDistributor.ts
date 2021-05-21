@@ -7,18 +7,30 @@ import {
 import { NFTXVaultFactoryUpgradeable as NFTXVaultFactory } from '../types/templates/NFTXFeeDistributor/NFTXVaultFactoryUpgradeable';
 import { getFeeReceiver, getVault } from './helpers';
 import { BigInt, store, Address } from '@graphprotocol/graph-ts';
-import {ADDRESS_ZERO} from './constants';
-import {Vault} from '../types/schema';
+import { ADDRESS_ZERO } from './constants';
+import { Vault } from '../types/schema';
 
-function updateAlloc(vaultId: BigInt, vault: Vault, feeDistributorInstance: NFTXFeeDistributor): Vault {
+function updateAlloc(
+  vaultId: BigInt,
+  vault: Vault,
+  feeDistributorInstance: NFTXFeeDistributor,
+): Vault {
   let allocTotalFromInstance = feeDistributorInstance.try_allocTotal(vaultId);
-  let allocTotal = allocTotalFromInstance.reverted ? BigInt.fromI32(0) : allocTotalFromInstance.value;
+  let allocTotal = allocTotalFromInstance.reverted
+    ? BigInt.fromI32(0)
+    : allocTotalFromInstance.value;
 
-  let specificTreasuryAllocFromInstance = feeDistributorInstance.try_specificTreasuryAlloc(vaultId);
-  let specificTreasuryAlloc = specificTreasuryAllocFromInstance.reverted ? BigInt.fromI32(0) : specificTreasuryAllocFromInstance.value;
+  let specificTreasuryAllocFromInstance =
+    feeDistributorInstance.try_specificTreasuryAlloc(vaultId);
+  let specificTreasuryAlloc = specificTreasuryAllocFromInstance.reverted
+    ? BigInt.fromI32(0)
+    : specificTreasuryAllocFromInstance.value;
 
-  let defaultTreasuryAllocFromInstance = feeDistributorInstance.try_defaultTreasuryAlloc();
-  let defaultTreasuryAlloc = defaultTreasuryAllocFromInstance.reverted ? BigInt.fromI32(0) : defaultTreasuryAllocFromInstance.value;
+  let defaultTreasuryAllocFromInstance =
+    feeDistributorInstance.try_defaultTreasuryAlloc();
+  let defaultTreasuryAlloc = defaultTreasuryAllocFromInstance.reverted
+    ? BigInt.fromI32(0)
+    : defaultTreasuryAllocFromInstance.value;
 
   vault.allocTotal = allocTotal;
   let treasuryAlloc = specificTreasuryAlloc;
@@ -30,13 +42,21 @@ function updateAlloc(vaultId: BigInt, vault: Vault, feeDistributorInstance: NFTX
   return vault;
 }
 
-function getVaultAddress(vaultId: BigInt, feeDistributorInstance: NFTXFeeDistributor): Address {
-  let vaultFactoryAddressFromInstance = feeDistributorInstance.try_nftxVaultFactory();
-  let vaultFactoryAddress = vaultFactoryAddressFromInstance.reverted ? ADDRESS_ZERO : vaultFactoryAddressFromInstance.value;
+function getVaultAddress(
+  vaultId: BigInt,
+  feeDistributorInstance: NFTXFeeDistributor,
+): Address {
+  let vaultFactoryAddressFromInstance =
+    feeDistributorInstance.try_nftxVaultFactory();
+  let vaultFactoryAddress = vaultFactoryAddressFromInstance.reverted
+    ? ADDRESS_ZERO
+    : vaultFactoryAddressFromInstance.value;
 
   let vaultFactoryInstance = NFTXVaultFactory.bind(vaultFactoryAddress);
   let vaultAddressFromInstance = vaultFactoryInstance.try_vault(vaultId);
-  let vaultAddress = vaultAddressFromInstance.reverted ? ADDRESS_ZERO : vaultAddressFromInstance.value;
+  let vaultAddress = vaultAddressFromInstance.reverted
+    ? ADDRESS_ZERO
+    : vaultAddressFromInstance.value;
 
   return vaultAddress;
 }

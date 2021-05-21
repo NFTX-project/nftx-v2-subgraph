@@ -24,9 +24,12 @@ import {
   getToken,
   addToHoldings,
   removeFromHoldings,
+  getVaultDayData,
+  getVaultHourData,
 } from './helpers';
-import { BigInt } from '@graphprotocol/graph-ts';
+import { BigInt, ethereum, dataSource } from '@graphprotocol/graph-ts';
 import { ADDRESS_ZERO } from './constants';
+import { SECS_PER_DAY, SECS_PER_HOUR, getDay, getHour } from './datetime';
 
 export function handleTransfer(event: TransferEvent): void {
   let global = getGlobal();
@@ -73,7 +76,20 @@ export function handleMint(event: MintEvent): void {
   mint.save();
   user.save();
 
-  addToHoldings(vaultAddress, event.params.nftIds, event.params.amounts);
+  let added = addToHoldings(
+    vaultAddress,
+    event.params.nftIds,
+    event.params.amounts,
+  );
+
+  let vault = getVault(vaultAddress);
+  vault.totalMints = vault.totalMints.plus(BigInt.fromI32(1));
+  vault.totalHoldings = vault.totalHoldings.plus(added);
+  vault.save();
+
+  let global = getGlobal();
+  global.totalHoldings = global.totalHoldings.plus(added);
+  global.save();
 }
 
 export function handleRedeem(event: RedeemEvent): void {
@@ -103,7 +119,16 @@ export function handleRedeem(event: RedeemEvent): void {
   redeem.save();
   user.save();
 
-  removeFromHoldings(vaultAddress, event.params.nftIds);
+  let removed = removeFromHoldings(vaultAddress, event.params.nftIds);
+
+  let vault = getVault(vaultAddress);
+  vault.totalRedeems = vault.totalRedeems.plus(BigInt.fromI32(1));
+  vault.totalHoldings = vault.totalHoldings.minus(removed);
+  vault.save();
+
+  let global = getGlobal();
+  global.totalHoldings = global.totalHoldings.minus(removed);
+  global.save();
 }
 
 export function handleManagerSet(event: ManagerSetEvent): void {
@@ -153,4 +178,47 @@ export function handleRedeemFeeUpdated(event: RedeemFeeUpdatedEvent): void {
   fees.randomRedeemFee = event.params.redeemFee;
   fees.directRedeemFee = event.params.redeemFee;
   fees.save();
+}
+
+var ONE_DAY = BigInt.fromI32(SECS_PER_DAY);
+var ONE_HOUR = BigInt.fromI32(SECS_PER_HOUR);
+
+export function handleBlock(block: ethereum.Block): void {
+  let timestamp = block.timestamp;
+  let vaultAddress = dataSource.address();
+  let vault = getVault(vaultAddress);
+  let vaultCreatedAt = vault.createdAt;
+  if (vaultCreatedAt.gt(BigInt.fromI32(0))) {
+    let lastDay = getDay(timestamp);
+    let lastDayData = getVaultDayData(vaultAddress, lastDay);
+    let day = lastDay.plus(ONE_DAY);
+    let vaultDayData = getVaultDayData(vaultAddress, day);
+    vaultDayData.mintsCount = vault.totalMints.minus(lastDayData.totalMints);
+    vaultDayData.redeemsCount = vault.totalRedeems.minus(
+      lastDayData.totalRedeems,
+    );
+    vaultDayData.holdingsCount = vault.totalHoldings.minus(
+      lastDayData.totalHoldings,
+    );
+    vaultDayData.totalMints = vault.totalMints;
+    vaultDayData.totalRedeems = vault.totalRedeems;
+    vaultDayData.totalHoldings = vault.totalHoldings;
+    vaultDayData.save();
+
+    let lastHour = getHour(timestamp);
+    let lastHourData = getVaultHourData(vaultAddress, lastHour);
+    let hour = lastHour.plus(ONE_HOUR);
+    let vaultHourData = getVaultHourData(vaultAddress, hour);
+    vaultHourData.mintsCount = vault.totalMints.minus(lastHourData.totalMints);
+    vaultHourData.redeemsCount = vault.totalRedeems.minus(
+      lastHourData.totalRedeems,
+    );
+    vaultHourData.holdingsCount = vault.totalHoldings.minus(
+      lastHourData.totalHoldings,
+    );
+    vaultHourData.totalMints = vault.totalMints;
+    vaultHourData.totalRedeems = vault.totalRedeems;
+    vaultHourData.totalHoldings = vault.totalHoldings;
+    vaultHourData.save();
+  }
 }

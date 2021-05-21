@@ -152,6 +152,13 @@ templates:
           handler: handleMintFeeUpdated
         - event: RedeemFeeUpdated(uint256) # TODO: change this to Random and Target
           handler: handleRedeemFeeUpdated
+      blockHandlers:
+        - handler: handleBlock
+          {{#callFilterEnabled}}
+          filter:
+            kind: call
+          {{/callFilterEnabled}}
+
   - kind: ethereum/contract
     name: RewardDistributionTokenUpgradeable
     # prettier-ignore
