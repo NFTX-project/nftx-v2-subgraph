@@ -1,7 +1,6 @@
 import {
   NewVault as NewVaultEvent,
-  // TODO: update this to NewFeeDistributor
-  NewFeeReceiver as NewFeeDistributorEvent,
+  NewFeeDistributor as NewFeeDistributorEvent,
   NFTXVaultFactoryUpgradeable as NFTXVaultFactory,
 } from '../types/NFTXVaultFactoryUpgradeable/NFTXVaultFactoryUpgradeable';
 import { NFTXFeeDistributor } from '../types/NFTXVaultFactoryUpgradeable/NFTXFeeDistributor';
@@ -75,7 +74,7 @@ export function handleNewVault(event: NewVaultEvent): void {
   let nftxVaultFactoryAddress = event.address;
 
   let vaultFactory = NFTXVaultFactory.bind(nftxVaultFactoryAddress);
-  let feeDistributorAddressFromInstance = vaultFactory.try_feeReceiver(); // TODO: update this to FeeDistributor
+  let feeDistributorAddressFromInstance = vaultFactory.try_feeDistributor();
   let feeDistributorAddress = feeDistributorAddressFromInstance.reverted
     ? ADDRESS_ZERO
     : feeDistributorAddressFromInstance.value;

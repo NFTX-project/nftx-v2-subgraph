@@ -20,6 +20,7 @@ import {
   Pool,
   User,
   Mint,
+  Swap,
   Redeem,
   StakedLpUser,
   Reward,
@@ -96,7 +97,7 @@ export function getFee(feesAddress: Address): Fee {
     fees = new Fee(feesAddress.toHexString());
     fees.mintFee = BigInt.fromI32(0);
     fees.randomRedeemFee = BigInt.fromI32(0);
-    fees.directRedeemFee = BigInt.fromI32(0);
+    fees.targetRedeemFee = BigInt.fromI32(0);
     fees.swapFee = BigInt.fromI32(0);
   }
   return fees as Fee;
@@ -108,7 +109,7 @@ export function getFeature(featuresAddress: Address): Feature {
     features = new Feature(featuresAddress.toHexString());
     features.enableMint = false;
     features.enableRandomRedeem = false;
-    features.enableDirectRedeem = false;
+    features.enableTargetRedeem = false;
     features.enableSwap = false;
   }
   return features as Feature;
@@ -176,6 +177,7 @@ export function getVault(vaultAddress: Address): Vault {
     vault.createdAt = BigInt.fromI32(0);
 
     vault.totalMints = BigInt.fromI32(0);
+    vault.totalSwaps = BigInt.fromI32(0);
     vault.totalRedeems = BigInt.fromI32(0);
     vault.totalHoldings = BigInt.fromI32(0);
   }
@@ -238,6 +240,14 @@ export function getMint(txHash: Bytes): Mint {
   return mint as Mint;
 }
 
+export function getSwap(txHash: Bytes): Swap {
+  let swap = Swap.load(txHash.toHexString());
+  if (swap == null) {
+    swap = new Swap(txHash.toHexString());
+  }
+  return swap as Swap;
+}
+
 export function getRedeem(txHash: Bytes): Redeem {
   let redeem = Redeem.load(txHash.toHexString());
   if (redeem == null) {
@@ -289,32 +299,6 @@ export function updatePools(
   }
   user.activePools = pools;
   return user;
-}
-
-var METHOD_SIGNATURE_LENGTH = 4;
-var BYTES32_LENGTH = 32;
-var reedemCall = Bytes.fromHexString('0xc4a0db96') as Bytes;
-var reedemToCall = Bytes.fromHexString('0x9d54def6') as Bytes;
-
-export function getSpecificIds(txData: Bytes): BigInt[] {
-  let data = txData.subarray(METHOD_SIGNATURE_LENGTH);
-  let method = txData.subarray(0, METHOD_SIGNATURE_LENGTH) as Bytes;
-
-  if (method == reedemCall) {
-    data = data.subarray(2 * BYTES32_LENGTH, data.length - BYTES32_LENGTH);
-  } else if (method == reedemToCall) {
-    data = data.subarray(3 * BYTES32_LENGTH, data.length - BYTES32_LENGTH);
-  } else {
-    return new Array<BigInt>();
-  }
-  let num = data.length / BYTES32_LENGTH;
-  let specificIds = new Array<BigInt>();
-  for (let i = 0; i < num; i = i + 1) {
-    let idBytes = data.subarray(0, BYTES32_LENGTH) as Bytes;
-    data = data.subarray(BYTES32_LENGTH);
-    specificIds.push(BigInt.fromUnsignedBytes(idBytes));
-  }
-  return specificIds;
 }
 
 export function getDeposit(txHash: Bytes): Deposit {
@@ -390,7 +374,6 @@ export function getVaultDayData(
   vaultAddress: Address,
   date: BigInt,
 ): VaultDayData {
-  // let dateString = date.toHexString();
   let dateString = getDateString(date);
   let vaultDayDataId = dateString + '-' + vaultAddress.toHexString();
   let vaultDayData = VaultDayData.load(vaultDayDataId);
@@ -398,9 +381,11 @@ export function getVaultDayData(
     vaultDayData = new VaultDayData(vaultDayDataId);
     vaultDayData.date = date;
     vaultDayData.mintsCount = BigInt.fromI32(0);
+    vaultDayData.swapsCount = BigInt.fromI32(0);
     vaultDayData.redeemsCount = BigInt.fromI32(0);
     vaultDayData.holdingsCount = BigInt.fromI32(0);
     vaultDayData.totalMints = BigInt.fromI32(0);
+    vaultDayData.totalSwaps = BigInt.fromI32(0);
     vaultDayData.totalRedeems = BigInt.fromI32(0);
     vaultDayData.totalHoldings = BigInt.fromI32(0);
     vaultDayData.vault = vaultAddress.toHexString();
@@ -419,9 +404,11 @@ export function getVaultHourData(
     vaultHourData = new VaultHourData(vaultHourDataId);
     vaultHourData.date = date;
     vaultHourData.mintsCount = BigInt.fromI32(0);
+    vaultHourData.swapsCount = BigInt.fromI32(0);
     vaultHourData.redeemsCount = BigInt.fromI32(0);
     vaultHourData.holdingsCount = BigInt.fromI32(0);
     vaultHourData.totalMints = BigInt.fromI32(0);
+    vaultHourData.totalSwaps = BigInt.fromI32(0);
     vaultHourData.totalRedeems = BigInt.fromI32(0);
     vaultHourData.totalHoldings = BigInt.fromI32(0);
     vaultHourData.vault = vaultAddress.toHexString();

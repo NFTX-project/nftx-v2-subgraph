@@ -2,11 +2,6 @@
   "contractName": "NFTXVaultUpgradeable",
   "abi": [
     {
-      "inputs": [],
-      "stateMutability": "nonpayable",
-      "type": "constructor"
-    },
-    {
       "anonymous": false,
       "inputs": [
         {
@@ -37,16 +32,9 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "directRedeemFee",
+          "name": "moduleIndex",
           "type": "uint256"
-        }
-      ],
-      "name": "DirectRedeemFeeUpdated",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
+        },
         {
           "indexed": false,
           "internalType": "address",
@@ -55,19 +43,6 @@
         }
       ],
       "name": "EligibilityDeployed",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "bool",
-          "name": "enabled",
-          "type": "bool"
-        }
-      ],
-      "name": "EnableDirectRedeemUpdated",
       "type": "event"
     },
     {
@@ -93,7 +68,7 @@
           "type": "bool"
         }
       ],
-      "name": "EnableRedeemUpdated",
+      "name": "EnableRandomRedeemUpdated",
       "type": "event"
     },
     {
@@ -107,6 +82,19 @@
         }
       ],
       "name": "EnableSwapUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "enabled",
+          "type": "bool"
+        }
+      ],
+      "name": "EnableTargetRedeemUpdated",
       "type": "event"
     },
     {
@@ -153,7 +141,7 @@
         {
           "indexed": false,
           "internalType": "address",
-          "name": "sender",
+          "name": "to",
           "type": "address"
         }
       ],
@@ -185,11 +173,11 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "redeemFee",
+          "name": "randomRedeemFee",
           "type": "uint256"
         }
       ],
-      "name": "RedeemFeeUpdated",
+      "name": "RandomRedeemFeeUpdated",
       "type": "event"
     },
     {
@@ -203,63 +191,18 @@
         },
         {
           "indexed": false,
+          "internalType": "uint256[]",
+          "name": "specificIds",
+          "type": "uint256[]"
+        },
+        {
+          "indexed": false,
           "internalType": "address",
-          "name": "sender",
+          "name": "to",
           "type": "address"
         }
       ],
       "name": "Redeemed",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "addr",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "bool",
-          "name": "isGuardian",
-          "type": "bool"
-        }
-      ],
-      "name": "SetIsGuardian",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "lockId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "bool",
-          "name": "paused",
-          "type": "bool"
-        }
-      ],
-      "name": "SetPaused",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "swapFee",
-          "type": "uint256"
-        }
-      ],
-      "name": "SwapFeeUpdated",
       "type": "event"
     },
     {
@@ -285,12 +228,31 @@
         },
         {
           "indexed": false,
+          "internalType": "uint256[]",
+          "name": "redeemedIds",
+          "type": "uint256[]"
+        },
+        {
+          "indexed": false,
           "internalType": "address",
-          "name": "sender",
+          "name": "to",
           "type": "address"
         }
       ],
       "name": "Swapped",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "targetRedeemFee",
+          "type": "uint256"
+        }
+      ],
+      "name": "TargetRedeemFeeUpdated",
       "type": "event"
     },
     {
@@ -495,19 +457,6 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "amount",
-          "type": "uint256"
-        }
-      ],
-      "name": "burn",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
       "inputs": [],
       "name": "decimals",
       "outputs": [
@@ -583,38 +532,12 @@
     },
     {
       "inputs": [],
-      "name": "directRedeemFee",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
       "name": "eligibilityStorage",
       "outputs": [
         {
           "internalType": "contract INFTXEligibility",
           "name": "",
           "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "enableDirectRedeem",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
         }
       ],
       "stateMutability": "view",
@@ -635,7 +558,7 @@
     },
     {
       "inputs": [],
-      "name": "enableRedeem",
+      "name": "enableRandomRedeem",
       "outputs": [
         {
           "internalType": "bool",
@@ -649,6 +572,19 @@
     {
       "inputs": [],
       "name": "enableSwap",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "enableTargetRedeem",
       "outputs": [
         {
           "internalType": "bool",
@@ -985,19 +921,6 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "lockId",
-          "type": "uint256"
-        }
-      ],
-      "name": "onlyOwnerIfPaused",
-      "outputs": [],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [],
       "name": "owner",
       "outputs": [
@@ -1011,16 +934,16 @@
       "type": "function"
     },
     {
-      "inputs": [
+      "inputs": [],
+      "name": "randomRedeemFee",
+      "outputs": [
         {
           "internalType": "uint256",
-          "name": "lockId",
+          "name": "",
           "type": "uint256"
         }
       ],
-      "name": "pause",
-      "outputs": [],
-      "stateMutability": "nonpayable",
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -1045,19 +968,6 @@
         }
       ],
       "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "redeemFee",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -1099,58 +1009,22 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "_newEligibility",
-          "type": "address"
-        }
-      ],
-      "name": "setEligibilityStorage",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
           "internalType": "uint256",
           "name": "_mintFee",
           "type": "uint256"
         },
         {
           "internalType": "uint256",
-          "name": "_redeemFee",
+          "name": "_randomRedeemFee",
           "type": "uint256"
         },
         {
           "internalType": "uint256",
-          "name": "_directRedeemFee",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_swapFee",
+          "name": "_targetRedeemFee",
           "type": "uint256"
         }
       ],
       "name": "setFees",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "addr",
-          "type": "address"
-        },
-        {
-          "internalType": "bool",
-          "name": "_isGuardian",
-          "type": "bool"
-        }
-      ],
-      "name": "setIsGuardian",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -1177,12 +1051,12 @@
         },
         {
           "internalType": "bool",
-          "name": "_enableRedeem",
+          "name": "_enableRandomRedeem",
           "type": "bool"
         },
         {
           "internalType": "bool",
-          "name": "_enableDirectRedeem",
+          "name": "_enableTargetRedeem",
           "type": "bool"
         },
         {
@@ -1245,19 +1119,6 @@
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "swapFee",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [
         {
           "internalType": "uint256[]",
@@ -1299,6 +1160,19 @@
           "internalType": "string",
           "name": "",
           "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "targetRedeemFee",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -1379,19 +1253,6 @@
         }
       ],
       "name": "transferOwnership",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "lockId",
-          "type": "uint256"
-        }
-      ],
-      "name": "unpause",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"

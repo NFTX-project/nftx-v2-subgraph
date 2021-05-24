@@ -32,8 +32,7 @@ dataSources:
         - name: ERC677Metadata
           file: ./src/abis/ERC677Metadata.json
       eventHandlers:
-        # TODO: change this to NewFeeDistributor
-        - event: NewFeeReceiver(address,address)
+        - event: NewFeeDistributor(address,address)
           handler: handleNewFeeDistributor
         - event: NewVault(indexed uint256,address,address)
           handler: handleNewVault
@@ -100,10 +99,22 @@ templates:
       eventHandlers:
         - event: AddFeeReceiver(uint256,address,uint256)
           handler: handleAddFeeReceiver
-        - event: FeeReceiverAllocChange(uint256,address,uint256)
-          handler: handleFeeReceiverAllocChange
+        - event: UpdateFeeReceiverAlloc(uint256,address,uint256)
+          handler: handleUpdateFeeReceiverAlloc
+        - event: UpdateFeeReceiverAddress(uint256,address,address)
+          handler: handleUpdateFeeReceiverAddress
         - event: RemoveFeeReceiver(uint256,address)
           handler: handleRemoveFeeReceiver
+        - event: UpdateTreasuryAddress(address)
+          handler: handleUpdateTreasuryAddress
+        - event: UpdateDefaultTreasuryAlloc(uint256)
+          handler: handleUpdateDefaultTreasuryAlloc
+        - event: UpdateSpecificTreasuryAlloc(uint256,uint256)
+          handler: handleUpdateSpecificTreasuryAlloc
+        - event: UpdateLPStakingAddress(address)
+          handler: handleUpdateLPStakingAddress
+        - event: UpdateDefaultLPAlloc(uint256)
+          handler: handleUpdateDefaultLPAlloc
   - kind: ethereum/contract
     name: NFTXVaultUpgradeable
     # prettier-ignore
@@ -136,22 +147,26 @@ templates:
           handler: handleTransfer
         - event: Minted(uint256[],uint256[],address)
           handler: handleMint
-        - event: Redeemed(uint256[],address)
+        - event: Redeemed(uint256[],uint256[],address)
           handler: handleRedeem
+        - event: Swapped(uint256[],uint256[],uint256[],uint256[],address)
+          handler: handleSwapped
         - event: ManagerSet(address)
           handler: handleManagerSet
         - event: EnableMintUpdated(bool)
           handler: handleEnableMintUpdated
-        - event: EnableRedeemUpdated(bool) # TODO: change this to Random
+        - event: EnableRandomRedeemUpdated(bool)
           handler: handleEnableRandomRedeemUpdated
-        - event: EnableDirectRedeemUpdated(bool)
-          handler: handleEnableDirectRedeemUpdated
+        - event: EnableTargetRedeemUpdated(bool)
+          handler: handleEnableTargetRedeemUpdated
         - event: EnableSwapUpdated(bool)
           handler: handleEnableSwapUpdated
         - event: MintFeeUpdated(uint256)
           handler: handleMintFeeUpdated
-        - event: RedeemFeeUpdated(uint256) # TODO: change this to Random and Target
-          handler: handleRedeemFeeUpdated
+        - event: RandomRedeemFeeUpdated(uint256)
+          handler: handleRandomRedeemFeeUpdated
+        - event: TargetRedeemFeeUpdated(uint256)
+          handler: handleTargetRedeemFeeUpdated
       blockHandlers:
         - handler: handleBlock
           {{#callFilterEnabled}}

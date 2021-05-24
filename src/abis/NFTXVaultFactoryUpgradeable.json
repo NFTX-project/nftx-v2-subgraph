@@ -7,6 +7,25 @@
         {
           "indexed": false,
           "internalType": "address",
+          "name": "oldEligManager",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "newEligManager",
+          "type": "address"
+        }
+      ],
+      "name": "NewEligibilityManager",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
           "name": "oldReceiver",
           "type": "address"
         },
@@ -17,7 +36,7 @@
           "type": "address"
         }
       ],
-      "name": "NewFeeReceiver",
+      "name": "NewFeeDistributor",
       "type": "event"
     },
     {
@@ -124,12 +143,7 @@
         },
         {
           "internalType": "address",
-          "name": "_prevContract",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "_feeReceiver",
+          "name": "_feeDistributor",
           "type": "address"
         }
       ],
@@ -224,7 +238,7 @@
     },
     {
       "inputs": [],
-      "name": "feeReceiver",
+      "name": "feeDistributor",
       "outputs": [
         {
           "internalType": "address",
@@ -243,6 +257,44 @@
           "internalType": "address",
           "name": "",
           "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "lockId",
+          "type": "uint256"
+        }
+      ],
+      "name": "isLocked",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "isPaused",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
         }
       ],
       "stateMutability": "view",
@@ -302,19 +354,6 @@
     },
     {
       "inputs": [],
-      "name": "prevContract",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
       "name": "renounceOwnership",
       "outputs": [],
       "stateMutability": "nonpayable",
@@ -324,11 +363,24 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "_feeReceiver",
+          "name": "_eligibilityManager",
           "type": "address"
         }
       ],
-      "name": "setFeeReceiver",
+      "name": "setEligibilityManager",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_feeDistributor",
+          "type": "address"
+        }
+      ],
+      "name": "setFeeDistributor",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
