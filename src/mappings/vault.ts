@@ -84,6 +84,9 @@ export function handleMint(event: MintEvent): void {
     event.params.amounts,
   );
 
+  let token = getToken(vaultAddress);
+  token.save();
+
   let vault = getVault(vaultAddress);
   vault.totalMints = vault.totalMints.plus(BigInt.fromI32(1));
   vault.totalHoldings = vault.totalHoldings.plus(added);
@@ -128,6 +131,9 @@ export function handleSwap(event: SwapEvent): void {
   let added = addToHoldings(vaultAddress, nftIds, amounts);
   let removed = removeFromHoldings(vaultAddress, redeemedIds);
 
+  let token = getToken(vaultAddress);
+  token.save();
+
   let vault = getVault(vaultAddress);
   vault.totalSwaps = vault.totalRedeems.plus(BigInt.fromI32(1));
   vault.totalHoldings = vault.totalHoldings.plus(added).minus(removed);
@@ -166,6 +172,9 @@ export function handleRedeem(event: RedeemEvent): void {
   user.save();
 
   let removed = removeFromHoldings(vaultAddress, event.params.nftIds);
+
+  let token = getToken(vaultAddress);
+  token.save();
 
   let vault = getVault(vaultAddress);
   vault.totalRedeems = vault.totalRedeems.plus(BigInt.fromI32(1));
