@@ -36,6 +36,12 @@ type Vault @entity {
   totalSwaps: BigInt!
   totalRedeems: BigInt!
   totalHoldings: BigInt!
+  createdBy: VaultCreator
+}
+
+type VaultCreator @entity {
+  id: ID! #address
+  vaults: [Vault!]! @derivedFrom(field: "createdBy")
 }
 
 type Holding @entity {

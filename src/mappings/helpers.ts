@@ -28,6 +28,7 @@ import {
   Holding,
   VaultDayData,
   VaultHourData,
+  VaultCreator,
 } from '../types/schema';
 import { ERC20Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC20Metadata';
 import { ERC677Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC677Metadata';
@@ -183,6 +184,14 @@ export function getVault(vaultAddress: Address): Vault {
   }
 
   return vault as Vault;
+}
+
+export function getVaultCreator(address: Address): VaultCreator {
+  let vaultCreator = VaultCreator.load(address.toHexString());
+  if (vaultCreator == null) {
+    vaultCreator = new VaultCreator(address.toHexString());
+  }
+  return vaultCreator as VaultCreator;
 }
 
 export function getFeeReceiver(

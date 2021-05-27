@@ -4,7 +4,7 @@ import {
   NFTXVaultFactoryUpgradeable as NFTXVaultFactory,
 } from '../types/NFTXVaultFactoryUpgradeable/NFTXVaultFactoryUpgradeable';
 import { NFTXFeeDistributor } from '../types/NFTXVaultFactoryUpgradeable/NFTXFeeDistributor';
-import { getGlobal, getVault } from './helpers';
+import { getGlobal, getVault, getVaultCreator } from './helpers';
 import {
   NFTXVaultUpgradeable as NFTXVaultTemplate,
   NFTXFeeDistributor as NFTXFeeDistributorTemplate,
@@ -63,10 +63,15 @@ export function handleNewFeeDistributor(event: NewFeeDistributorEvent): void {
 
 export function handleNewVault(event: NewVaultEvent): void {
   let vaultAddress = event.params.vaultAddress;
+  let vaultCreatorAddress = event.transaction.from;
+
+  let vaultCreator = getVaultCreator(vaultCreatorAddress);
+  vaultCreator.save();
 
   let vault = getVault(vaultAddress);
   vault.vaultId = event.params.vaultId;
   vault.createdAt = event.block.timestamp;
+  vault.createdBy = vaultCreator.id;
   vault.save();
 
   NFTXVaultTemplate.create(vaultAddress);
