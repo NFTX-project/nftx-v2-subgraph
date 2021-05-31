@@ -4,7 +4,13 @@ Subgraph for NFTX Protocol V2
 
 Rinkeby Subgraph: https://thegraph.com/explorer/subgraph/dan13ram/nftx-v2-rinkeby
 
-Mainnet Subgraph:
+Mainnet Subgraph: <i>yet to be deployed</i>
+
+## Config
+
+The subgraph requires only the NFTXVaultFactoryUpgradable contract address and starting block number.
+
+This network specific config can be configured by editing `config/<network>.json`
 
 ## Scripts
 
