@@ -7,6 +7,7 @@ type Global @entity {
   lpStakingAddress: Bytes!
   nftxVaultFactory: Bytes!
   feeDistributorAddress: Bytes!
+  eligibilityManagerAddress: Bytes
 }
 
 type Vault @entity {
@@ -37,6 +38,18 @@ type Vault @entity {
   totalRedeems: BigInt!
   totalHoldings: BigInt!
   createdBy: VaultCreator
+  eligibilityModule: EligibilityModule
+}
+
+type EligibilityModule @entity {
+  id: ID! # address
+  eligibilityManager: Bytes! # address
+  targetAsset: Asset!
+  name: String!
+  finalizedOnDeploy: Boolean!
+  finalized: Boolean! # if manager is set to 0x0000...0000
+  eligibleIds: [BigInt!] # null if not set
+  eligibleRange: [BigInt!] # i.e. [100, 200] start 100 end 200. null if not set.
 }
 
 type VaultCreator @entity {

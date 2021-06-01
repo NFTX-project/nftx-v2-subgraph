@@ -7,7 +7,7 @@
         {
           "indexed": false,
           "internalType": "address",
-          "name": "impl",
+          "name": "implementation",
           "type": "address"
         },
         {
@@ -38,7 +38,7 @@
         {
           "indexed": false,
           "internalType": "address",
-          "name": "impl",
+          "name": "implementation",
           "type": "address"
         },
         {
@@ -117,13 +117,18 @@
           "components": [
             {
               "internalType": "address",
-              "name": "impl",
+              "name": "implementation",
               "type": "address"
             },
             {
               "internalType": "address",
               "name": "targetAsset",
               "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
             }
           ],
           "internalType": "struct NFTXEligibilityManager.EligibilityModule[]",
@@ -170,26 +175,18 @@
       "outputs": [
         {
           "internalType": "address",
-          "name": "impl",
+          "name": "implementation",
           "type": "address"
         },
         {
           "internalType": "address",
           "name": "targetAsset",
           "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "nftxVaultFactory",
-      "outputs": [
+        },
         {
-          "internalType": "contract INFTXVaultFactory",
-          "name": "",
-          "type": "address"
+          "internalType": "string",
+          "name": "name",
+          "type": "string"
         }
       ],
       "stateMutability": "view",

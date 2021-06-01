@@ -29,6 +29,7 @@ import {
   VaultDayData,
   VaultHourData,
   VaultCreator,
+  EligibilityModule,
 } from '../types/schema';
 import { ERC20Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC20Metadata';
 import { ERC677Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC677Metadata';
@@ -423,4 +424,51 @@ export function getVaultHourData(
     vaultHourData.vault = vaultAddress.toHexString();
   }
   return vaultHourData as VaultHourData;
+}
+
+export function getEligibilityModule(
+  moduleAddress: Address,
+): EligibilityModule {
+  let module = EligibilityModule.load(moduleAddress.toHexString());
+  if (module == null) {
+    module = new EligibilityModule(moduleAddress.toHexString());
+    module.eligibilityManager = ADDRESS_ZERO;
+    module.targetAsset = ADDRESS_ZERO.toHexString();
+    module.finalized = false;
+    module.finalizedOnDeploy = false;
+    module.name = '';
+  }
+  return module as EligibilityModule;
+}
+
+export function updateEligibleTokenIds(
+  module: EligibilityModule,
+  tokenIds: BigInt[],
+  add: boolean = true,
+): EligibilityModule {
+  let idsMap = new TypedMap<BigInt, boolean>();
+  let moduleIds =
+    module.eligibleIds == null
+      ? new Array<BigInt>()
+      : (module.eligibleIds as BigInt[]);
+  for (let i = 0; i < moduleIds.length; i = i + 1) {
+    idsMap.set(moduleIds[i], true);
+  }
+  for (let i = 0; i < tokenIds.length; i = i + 1) {
+    idsMap.set(tokenIds[i], add);
+  }
+  let ids = new Array<BigInt>();
+  let entries = idsMap.entries;
+  for (let i = 0; i < entries.length; i = i + 1) {
+    let entry = entries[i];
+    if (entry.value == true) {
+      ids.push(entry.key);
+    }
+  }
+  if (ids.length == 0) {
+    module.eligibleIds = null;
+  } else {
+    module.eligibleIds = ids;
+  }
+  return module;
 }

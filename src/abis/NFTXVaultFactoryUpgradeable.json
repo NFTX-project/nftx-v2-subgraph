@@ -26,13 +26,13 @@
         {
           "indexed": false,
           "internalType": "address",
-          "name": "oldReceiver",
+          "name": "oldDistributor",
           "type": "address"
         },
         {
           "indexed": false,
           "internalType": "address",
-          "name": "newReceiver",
+          "name": "newDistributor",
           "type": "address"
         }
       ],
@@ -62,6 +62,25 @@
         }
       ],
       "name": "NewVault",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "oldZap",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "newZap",
+          "type": "address"
+        }
+      ],
+      "name": "NewZapContract",
       "type": "event"
     },
     {
@@ -407,6 +426,19 @@
       "inputs": [
         {
           "internalType": "address",
+          "name": "_zapContract",
+          "type": "address"
+        }
+      ],
+      "name": "setZapContract",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
           "name": "newOwner",
           "type": "address"
         }
@@ -475,6 +507,19 @@
         }
       ],
       "name": "vaultsForAsset",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "zapContract",
       "outputs": [
         {
           "internalType": "address",

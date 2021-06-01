@@ -1,6 +1,7 @@
 import {
   NewVault as NewVaultEvent,
   NewFeeDistributor as NewFeeDistributorEvent,
+  NewEligibilityManager as NewEligibilityManagerEvent,
   NFTXVaultFactoryUpgradeable as NFTXVaultFactory,
 } from '../types/NFTXVaultFactoryUpgradeable/NFTXVaultFactoryUpgradeable';
 import { NFTXFeeDistributor } from '../types/NFTXVaultFactoryUpgradeable/NFTXFeeDistributor';
@@ -9,6 +10,7 @@ import {
   NFTXVaultUpgradeable as NFTXVaultTemplate,
   NFTXFeeDistributor as NFTXFeeDistributorTemplate,
   NFTXLPStaking as NFTXLPStakingTemplate,
+  NFTXEligibilityManager as NFTXEligibilityManagerTemplate,
 } from '../types/templates';
 import { Address, BigInt } from '@graphprotocol/graph-ts';
 import { ADDRESS_ZERO } from './constants';
@@ -56,9 +58,20 @@ function newFeeDistributor(
 
 export function handleNewFeeDistributor(event: NewFeeDistributorEvent): void {
   let nftxVaultFactoryAddress = event.address;
-  let feeDistributorAddress = event.params.newReceiver;
+  let feeDistributorAddress = event.params.newDistributor;
 
   newFeeDistributor(nftxVaultFactoryAddress, feeDistributorAddress);
+}
+
+export function handleNewEligibilityManager(
+  event: NewEligibilityManagerEvent,
+): void {
+  let eligibilityManagerAddress = event.params.newEligManager;
+  let global = getGlobal();
+  global.eligibilityManagerAddress = eligibilityManagerAddress;
+  global.save();
+
+  NFTXEligibilityManagerTemplate.create(eligibilityManagerAddress);
 }
 
 export function handleNewVault(event: NewVaultEvent): void {

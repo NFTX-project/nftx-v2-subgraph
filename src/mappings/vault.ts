@@ -7,11 +7,12 @@ import {
   EnableMintUpdated as EnableMintUpdatedEvent,
   EnableRandomRedeemUpdated as EnableRandomRedeemUpdatedEvent,
   EnableTargetRedeemUpdated as EnableTargetRedeemUpdatedEvent,
-  EnableSwapUpdated as EnableSwapUpdatedEvent,
   MintFeeUpdated as MintFeeUpdatedEvent,
   RandomRedeemFeeUpdated as RandomRedeemFeeUpdatedEvent,
   TargetRedeemFeeUpdated as TargetRedeemFeeUpdatedEvent,
+  EligibilityDeployed as EligibilityDeployedEvent,
 } from '../types/templates/NFTXVaultUpgradeable/NFTXVaultUpgradeable';
+import { EligibilityModule as EligibilityModuleContract } from '../types/templates/EligibilityModule/EligibilityModule';
 import {
   getGlobal,
   getSwap,
@@ -28,6 +29,7 @@ import {
   removeFromHoldings,
   getVaultDayData,
   getVaultHourData,
+  getEligibilityModule,
 } from './helpers';
 import { BigInt, ethereum, dataSource } from '@graphprotocol/graph-ts';
 import { ADDRESS_ZERO } from './constants';
@@ -196,6 +198,9 @@ export function handleManagerSet(event: ManagerSetEvent): void {
 export function handleEnableMintUpdated(event: EnableMintUpdatedEvent): void {
   let features = getFeature(event.address);
   features.enableMint = event.params.enabled;
+  features.enableSwap =
+    features.enableMint &&
+    (features.enableRandomRedeem || features.enableTargetRedeem);
   features.save();
 }
 
@@ -204,6 +209,9 @@ export function handleEnableRandomRedeemUpdated(
 ): void {
   let features = getFeature(event.address);
   features.enableRandomRedeem = event.params.enabled;
+  features.enableSwap =
+    features.enableMint &&
+    (features.enableRandomRedeem || features.enableTargetRedeem);
   features.save();
 }
 
@@ -212,12 +220,9 @@ export function handleEnableTargetRedeemUpdated(
 ): void {
   let features = getFeature(event.address);
   features.enableTargetRedeem = event.params.enabled;
-  features.save();
-}
-
-export function handleEnableSwapUpdated(event: EnableSwapUpdatedEvent): void {
-  let features = getFeature(event.address);
-  features.enableSwap = event.params.enabled;
+  features.enableSwap =
+    features.enableMint &&
+    (features.enableRandomRedeem || features.enableTargetRedeem);
   features.save();
 }
 
@@ -284,4 +289,26 @@ export function handleBlock(block: ethereum.Block): void {
     vaultHourData.totalHoldings = vault.totalHoldings;
     vaultHourData.save();
   }
+}
+
+export function handleEligibilityDeployed(
+  event: EligibilityDeployedEvent,
+): void {
+  let vault = getVault(event.address);
+  vault.eligibilityModule = event.params.eligibilityAddr.toHexString();
+
+  vault.save();
+
+  let moduleAddress = event.params.eligibilityAddr;
+  let module = getEligibilityModule(moduleAddress);
+
+  let instance = EligibilityModuleContract.bind(moduleAddress);
+  let finalizedFromInstance = instance.try_finalized();
+  let finalized = finalizedFromInstance.reverted
+    ? module.finalizedOnDeploy
+    : finalizedFromInstance.value;
+
+  module.finalized = finalized;
+
+  module.save();
 }
