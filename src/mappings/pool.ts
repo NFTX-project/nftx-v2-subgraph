@@ -55,12 +55,12 @@ export function handleTransfer(event: TransferEvent): void {
   let pool = getPool(poolAddress);
 
   let txHash = event.transaction.hash;
-  let userAddress = event.params.to;
   let amount = event.params.value;
 
-  let user = getStakedLpUser(userAddress);
 
   if (event.params.from == ADDRESS_ZERO) {
+    let userAddress = event.params.to;
+    let user = getStakedLpUser(userAddress);
     let deposit = getDeposit(txHash);
     deposit.pool = pool.id;
     deposit.user = user.id;
@@ -71,6 +71,8 @@ export function handleTransfer(event: TransferEvent): void {
     deposit.deposit = amount;
     deposit.save();
   } else if (event.params.to == ADDRESS_ZERO) {
+    let userAddress = event.params.from;
+    let user = getStakedLpUser(userAddress);
     let poolInstance = RewardDistributionToken.bind(poolAddress);
     let balanceFromInstance = poolInstance.try_balanceOf(userAddress);
     let balance = balanceFromInstance.reverted

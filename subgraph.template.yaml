@@ -31,6 +31,10 @@ dataSources:
           file: ./src/abis/ERC20Metadata.json
         - name: ERC677Metadata
           file: ./src/abis/ERC677Metadata.json
+        - name: NFTXEligibilityManager
+          file: ./src/abis/NFTXEligibilityManager.json
+        - name: EligibilityModule
+          file: ./src/abis/ElibilityModule.json
       eventHandlers:
         - event: NewFeeDistributor(address,address)
           handler: handleNewFeeDistributor
@@ -144,6 +148,10 @@ templates:
           file: ./src/abis/ERC20Metadata.json
         - name: ERC677Metadata
           file: ./src/abis/ERC677Metadata.json
+        - name: NFTXEligibilityManager
+          file: ./src/abis/NFTXEligibilityManager.json
+        - name: EligibilityModule
+          file: ./src/abis/ElibilityModule.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
@@ -226,6 +234,8 @@ templates:
       abis:
         - name: NFTXEligibilityManager
           file: ./src/abis/NFTXEligibilityManager.json
+        - name: EligibilityModule
+          file: ./src/abis/ElibilityModule.json
       eventHandlers:
         - event: ModuleAdded(address,address,string,bool)
           handler: handleModuleAdded
@@ -245,6 +255,8 @@ templates:
       entities:
         - EligibilityModule
       abis:
+        - name: NFTXEligibilityManager
+          file: ./src/abis/NFTXEligibilityManager.json
         - name: EligibilityModule
           file: ./src/abis/ElibilityModule.json
       eventHandlers:

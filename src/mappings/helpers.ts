@@ -270,7 +270,6 @@ export function getStakedLpUser(userAddress: Address): StakedLpUser {
   let user = StakedLpUser.load(userAddress.toHexString());
   if (user == null) {
     user = new StakedLpUser(userAddress.toHexString());
-    user.pools = new Array<string>();
     user.activePools = new Array<string>();
   }
   return user as StakedLpUser;
@@ -290,24 +289,37 @@ export function updatePools(
   poolAddress: Address,
   add: boolean = true,
 ): StakedLpUser {
-  let poolsMap = new TypedMap<string, boolean>();
-  let userPools = user.pools;
-  for (let i = 0; i < userPools.length; i = i + 1) {
-    poolsMap.set(userPools[i], true);
+  // let poolsMap = new TypedMap<string, boolean>();
+  // let userPools = user.stakedPools;
+  // for (let i = 0; i < userPools.length; i = i + 1) {
+  //   poolsMap.set(userPools[i], true);
+  // }
+  // poolsMap.set(poolAddress.toHexString(), true);
+  // let pools = new Array<string>();
+  // let poolsEntries = poolsMap.entries;
+  // for (let i = 0; i < poolsEntries.length; i = i + 1) {
+  //   let entry = poolsEntries[i];
+  //   if (entry.value == true) {
+  //     pools.push(entry.key);
+  //   }
+  // }
+  // user.stakedPools = pools;
+
+  let activePoolsMap = new TypedMap<string, boolean>();
+  let userActivePools = user.activePools;
+  for (let i = 0; i < userActivePools.length; i = i + 1) {
+    activePoolsMap.set(userActivePools[i], true);
   }
-  poolsMap.set(poolAddress.toHexString(), add);
-  let pools = new Array<string>();
-  let entries = poolsMap.entries;
-  for (let i = 0; i < entries.length; i = i + 1) {
-    let entry = entries[i];
+  activePoolsMap.set(poolAddress.toHexString(), add);
+  let activePools = new Array<string>();
+  let activePoolsEntries = activePoolsMap.entries;
+  for (let i = 0; i < activePoolsEntries.length; i = i + 1) {
+    let entry = activePoolsEntries[i];
     if (entry.value == true) {
-      pools.push(entry.key);
+      activePools.push(entry.key);
     }
   }
-  if (add == true) {
-    user.pools = pools;
-  }
-  user.activePools = pools;
+  user.activePools = activePools;
   return user;
 }
 

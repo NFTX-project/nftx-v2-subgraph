@@ -168,7 +168,6 @@ type User @entity {
 
 type StakedLpUser @entity {
   id: ID! # address
-  pools: [Pool!]!
   activePools: [Pool!]!
   userRewards: [Reward!]! @derivedFrom(field: "user")
   deposits: [Deposit!]! @derivedFrom(field: "user")
