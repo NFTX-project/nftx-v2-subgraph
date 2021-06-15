@@ -219,29 +219,6 @@ templates:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer
   - kind: ethereum/contract
-    name: NFTXEligibilityManager
-    # prettier-ignore
-    network: {{network}}
-    source:
-      abi: NFTXEligibilityManager
-    mapping:
-      file: ./src/mappings/eligibility.ts
-      kind: ethereum/events
-      apiVersion: 0.0.4
-      language: wasm/assemblyscript
-      entities:
-        - EligibilityModule
-      abis:
-        - name: NFTXEligibilityManager
-          file: ./src/abis/NFTXEligibilityManager.json
-        - name: EligibilityModule
-          file: ./src/abis/ElibilityModule.json
-      eventHandlers:
-        - event: ModuleAdded(address,address,string,bool)
-          handler: handleModuleAdded
-        - event: ModuleUpdated(address,string,bool)
-          handler: handleModuleUpdated
-  - kind: ethereum/contract
     name: EligibilityModule
     # prettier-ignore
     network: {{network}}

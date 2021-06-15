@@ -57,7 +57,6 @@ export function handleTransfer(event: TransferEvent): void {
   let txHash = event.transaction.hash;
   let amount = event.params.value;
 
-
   if (event.params.from == ADDRESS_ZERO) {
     let userAddress = event.params.to;
     let user = getStakedLpUser(userAddress);

@@ -7,7 +7,7 @@ type Global @entity {
   lpStakingAddress: Bytes!
   nftxVaultFactory: Bytes!
   feeDistributorAddress: Bytes!
-  eligibilityManagerAddress: Bytes
+  eligibilityManagerAddress: Bytes!
 }
 
 type Vault @entity {

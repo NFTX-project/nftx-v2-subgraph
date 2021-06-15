@@ -10,7 +10,6 @@ import {
   NFTXVaultUpgradeable as NFTXVaultTemplate,
   NFTXFeeDistributor as NFTXFeeDistributorTemplate,
   NFTXLPStaking as NFTXLPStakingTemplate,
-  NFTXEligibilityManager as NFTXEligibilityManagerTemplate,
 } from '../types/templates';
 import { Address, BigInt } from '@graphprotocol/graph-ts';
 import { ADDRESS_ZERO } from './constants';
@@ -70,8 +69,6 @@ export function handleNewEligibilityManager(
   let global = getGlobal();
   global.eligibilityManagerAddress = eligibilityManagerAddress;
   global.save();
-
-  NFTXEligibilityManagerTemplate.create(eligibilityManagerAddress);
 }
 
 export function handleNewVault(event: NewVaultEvent): void {

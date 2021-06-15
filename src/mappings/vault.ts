@@ -1,3 +1,4 @@
+import { Address } from '@graphprotocol/graph-ts';
 import {
   Transfer as TransferEvent,
   Minted as MintEvent,
@@ -12,7 +13,9 @@ import {
   TargetRedeemFeeUpdated as TargetRedeemFeeUpdatedEvent,
   EligibilityDeployed as EligibilityDeployedEvent,
 } from '../types/templates/NFTXVaultUpgradeable/NFTXVaultUpgradeable';
+import { EligibilityModule as EligibilityModuleTemplate } from '../types/templates';
 import { EligibilityModule as EligibilityModuleContract } from '../types/templates/EligibilityModule/EligibilityModule';
+import { NFTXEligibilityManager as NFTXEligibilityManagerContract } from '../types/templates/EligibilityModule/NFTXEligibilityManager';
 import {
   getGlobal,
   getSwap,
@@ -30,6 +33,7 @@ import {
   getVaultDayData,
   getVaultHourData,
   getEligibilityModule,
+  getAsset,
 } from './helpers';
 import { BigInt, ethereum, dataSource } from '@graphprotocol/graph-ts';
 import { ADDRESS_ZERO } from './constants';
@@ -294,12 +298,23 @@ export function handleBlock(block: ethereum.Block): void {
 export function handleEligibilityDeployed(
   event: EligibilityDeployedEvent,
 ): void {
-  let vault = getVault(event.address);
-  vault.eligibilityModule = event.params.eligibilityAddr.toHexString();
+  let vaultAddress = event.address;
+  let moduleAddress = event.params.eligibilityAddr;
 
+  let vault = getVault(vaultAddress);
+  vault.eligibilityModule = moduleAddress.toHexString();
   vault.save();
 
-  let moduleAddress = event.params.eligibilityAddr;
+  let global = getGlobal();
+  let eligibilityManagerAddress = global.eligibilityManagerAddress;
+
+  let eligibilityManager = NFTXEligibilityManagerContract.bind(
+    eligibilityManagerAddress as Address,
+  );
+  let moduleDataFromInstance = eligibilityManager.try_modules(
+    event.params.moduleIndex,
+  );
+
   let module = getEligibilityModule(moduleAddress);
 
   let instance = EligibilityModuleContract.bind(moduleAddress);
@@ -308,7 +323,17 @@ export function handleEligibilityDeployed(
     ? module.finalizedOnDeploy
     : finalizedFromInstance.value;
 
+  if (!moduleDataFromInstance.reverted) {
+    let moduleData = moduleDataFromInstance.value;
+    module.targetAsset = vault.asset;
+    module.name = moduleData.value2;
+  }
+  module.eligibilityManager = eligibilityManagerAddress as Address;
+  module.finalizedOnDeploy = module.finalizedOnDeploy
+    ? module.finalizedOnDeploy
+    : module.finalized;
   module.finalized = finalized;
-
   module.save();
+
+  EligibilityModuleTemplate.create(moduleAddress);
 }

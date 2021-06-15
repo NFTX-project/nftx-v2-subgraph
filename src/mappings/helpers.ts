@@ -48,6 +48,7 @@ export function getGlobal(): Global {
     global.lpStakingAddress = ADDRESS_ZERO;
     global.nftxVaultFactory = ADDRESS_ZERO;
     global.feeDistributorAddress = ADDRESS_ZERO;
+    global.eligibilityManagerAddress = ADDRESS_ZERO;
   }
   return global as Global;
 }
