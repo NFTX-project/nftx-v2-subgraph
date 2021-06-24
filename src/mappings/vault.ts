@@ -33,7 +33,6 @@ import {
   getVaultDayData,
   getVaultHourData,
   getEligibilityModule,
-  getAsset,
 } from './helpers';
 import { BigInt, ethereum, dataSource } from '@graphprotocol/graph-ts';
 import { ADDRESS_ZERO } from './constants';
@@ -68,11 +67,13 @@ export function handleMint(event: MintEvent): void {
   let txHash = event.transaction.hash;
   let mint = getMint(txHash);
   let user = getUser(event.params.to);
+  let amounts = event.params.amounts;
+  let nftIds = event.params.nftIds;
   mint.user = user.id;
   mint.vault = vaultAddress.toHexString();
   mint.date = event.block.timestamp;
-  mint.nftIds = event.params.nftIds;
-  mint.amounts = event.params.amounts;
+  mint.nftIds = nftIds;
+  mint.amounts = amounts;
 
   let feeReceipt = getFeeReceipt(event.transaction.hash);
   feeReceipt.vault = vaultAddress.toHexString();
@@ -84,17 +85,23 @@ export function handleMint(event: MintEvent): void {
   mint.save();
   user.save();
 
-  let added = addToHoldings(
-    vaultAddress,
-    event.params.nftIds,
-    event.params.amounts,
-  );
+  addToHoldings(vaultAddress, nftIds, amounts);
+
+  let added = BigInt.fromI32(nftIds.length);
 
   let token = getToken(vaultAddress);
   token.save();
 
   let vault = getVault(vaultAddress);
   vault.totalMints = vault.totalMints.plus(BigInt.fromI32(1));
+
+  if (vault.is1155) {
+    added = BigInt.fromI32(0);
+    for (let i = 0; i < amounts.length; i = i + 1) {
+      added = added.plus(amounts[i]);
+    }
+  }
+
   vault.totalHoldings = vault.totalHoldings.plus(added);
   vault.save();
 
@@ -134,14 +141,25 @@ export function handleSwap(event: SwapEvent): void {
   swap.save();
   user.save();
 
-  let added = addToHoldings(vaultAddress, nftIds, amounts);
-  let removed = removeFromHoldings(vaultAddress, redeemedIds);
+  addToHoldings(vaultAddress, nftIds, amounts);
+  removeFromHoldings(vaultAddress, redeemedIds);
+
+  let added = BigInt.fromI32(nftIds.length);
+  let removed = BigInt.fromI32(redeemedIds.length);
 
   let token = getToken(vaultAddress);
   token.save();
 
   let vault = getVault(vaultAddress);
   vault.totalSwaps = vault.totalRedeems.plus(BigInt.fromI32(1));
+
+  if (vault.is1155) {
+    added = BigInt.fromI32(0);
+    for (let i = 0; i < amounts.length; i = i + 1) {
+      added = added.plus(amounts[i]);
+    }
+  }
+
   vault.totalHoldings = vault.totalHoldings.plus(added).minus(removed);
   vault.save();
 
@@ -177,7 +195,8 @@ export function handleRedeem(event: RedeemEvent): void {
   redeem.save();
   user.save();
 
-  let removed = removeFromHoldings(vaultAddress, event.params.nftIds);
+  removeFromHoldings(vaultAddress, nftIds);
+  let removed = BigInt.fromI32(nftIds.length);
 
   let token = getToken(vaultAddress);
   token.save();

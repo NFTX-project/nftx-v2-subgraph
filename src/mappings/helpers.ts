@@ -351,16 +351,12 @@ export function addToHoldings(
   vaultAddress: Address,
   nftIds: BigInt[],
   amounts: BigInt[],
-): BigInt {
+): void {
   let vault = getVault(vaultAddress);
   let is1155 = vault.is1155;
-  let added = BigInt.fromI32(0);
   for (let i = 0; i < nftIds.length; i = i + 1) {
     let tokenId = nftIds[i];
     let holding = getHolding(tokenId, vaultAddress);
-    if (holding.amount == BigInt.fromI32(0)) {
-      added = added.plus(BigInt.fromI32(1));
-    }
     if (is1155) {
       let amount = amounts[i];
       holding.amount = holding.amount.plus(amount);
@@ -369,14 +365,12 @@ export function addToHoldings(
     }
     holding.save();
   }
-  return added;
 }
 
 export function removeFromHoldings(
   vaultAddress: Address,
   nftIds: BigInt[],
-): BigInt {
-  let removed = BigInt.fromI32(0);
+): void {
   for (let i = 0; i < nftIds.length; i = i + 1) {
     let tokenId = nftIds[i];
     let holding = getHolding(tokenId, vaultAddress);
@@ -386,11 +380,9 @@ export function removeFromHoldings(
         : holding.amount.minus(BigInt.fromI32(1));
     holding.save();
     if (holding.amount == BigInt.fromI32(0)) {
-      removed = removed.plus(BigInt.fromI32(1));
       store.remove('Holding', holding.id);
     }
   }
-  return removed;
 }
 
 export function getVaultDayData(
