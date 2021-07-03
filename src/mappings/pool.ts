@@ -81,6 +81,21 @@ export function handleTransfer(event: TransferEvent): void {
       user = updatePools(user, poolAddress, false);
       user.save();
     }
+  } else {
+    let fromUser = getStakedLpUser(event.params.from);
+    let poolInstance = RewardDistributionToken.bind(poolAddress);
+    let balanceFromInstance = poolInstance.try_balanceOf(event.params.from);
+    let balance = balanceFromInstance.reverted
+      ? BigInt.fromI32(0)
+      : balanceFromInstance.value;
+    if (balance == BigInt.fromI32(0)) {
+      fromUser = updatePools(fromUser, poolAddress, false);
+      fromUser.save();
+    }
+
+    let toUser = getStakedLpUser(event.params.to);
+    toUser = updatePools(toUser, poolAddress, true);
+    toUser.save();
   }
 
   let rewardToken = getToken(
