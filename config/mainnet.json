@@ -1,5 +1,6 @@
 {
   "network": "mainnet",
   "startBlock": "12675821",
-  "vaultFactory": "0xBE86f647b167567525cCAAfcd6f881F1Ee558216"
+  "vaultFactory": "0xBE86f647b167567525cCAAfcd6f881F1Ee558216",
+  "callFilterEnabled": "true"
 }
