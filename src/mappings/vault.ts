@@ -93,7 +93,6 @@ export function handleMint(event: MintEvent): void {
   token.save();
 
   let vault = getVault(vaultAddress);
-  vault.totalMints = vault.totalMints.plus(BigInt.fromI32(1));
 
   if (vault.is1155) {
     added = BigInt.fromI32(0);
@@ -102,6 +101,7 @@ export function handleMint(event: MintEvent): void {
     }
   }
 
+  vault.totalMints = vault.totalMints.plus(added);
   vault.totalHoldings = vault.totalHoldings.plus(added);
   vault.save();
 
@@ -202,7 +202,7 @@ export function handleRedeem(event: RedeemEvent): void {
   token.save();
 
   let vault = getVault(vaultAddress);
-  vault.totalRedeems = vault.totalRedeems.plus(BigInt.fromI32(1));
+  vault.totalRedeems = vault.totalRedeems.plus(removed);
   vault.totalHoldings = vault.totalHoldings.minus(removed);
   vault.save();
 
