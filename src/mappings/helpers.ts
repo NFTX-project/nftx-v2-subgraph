@@ -26,6 +26,7 @@ import {
   Reward,
   Deposit,
   Holding,
+  Zap,
   VaultDayData,
   VaultHourData,
   VaultCreator,
@@ -257,6 +258,14 @@ export function getSwap(txHash: Bytes): Swap {
     swap = new Swap(txHash.toHexString());
   }
   return swap as Swap;
+}
+
+export function getZap(txHash: Bytes): Zap {
+  let zap = Zap.load(txHash.toHexString());
+  if (zap == null) {
+    zap = new Zap(txHash.toHexString());
+  }
+  return zwap as Zap;
 }
 
 export function getRedeem(txHash: Bytes): Redeem {
