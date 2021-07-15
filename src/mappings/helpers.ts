@@ -265,7 +265,7 @@ export function getZap(txHash: Bytes): Zap {
   if (zap == null) {
     zap = new Zap(txHash.toHexString());
   }
-  return zwap as Zap;
+  return zap as Zap;
 }
 
 export function getRedeem(txHash: Bytes): Redeem {
