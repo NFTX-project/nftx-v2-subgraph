@@ -6,7 +6,7 @@ import {
 import { NFTXVaultFactoryUpgradeable as NFTXVaultFactory } from '../types/templates/NFTXLPStaking/NFTXVaultFactoryUpgradeable';
 
 import {
-  getUser,
+  getStakedLpUser,
   getVault,
   getZap
 } from './helpers';
@@ -14,7 +14,7 @@ import {
 export function handleUserStaked(event: UserStakedEvent): void {
   let lockEndTime = event.params.timelockUntil;
   let vaultId = event.params.vaultId
-  let user = getUser(event.transaction.from);
+  let user = getStakedLpUser(event.transaction.from);
 
   let zapInstance = NFTXStakingZap.bind(event.address);
   let vaultFactoryAddress = zapInstance.nftxFactory();
