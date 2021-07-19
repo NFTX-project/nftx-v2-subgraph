@@ -57,16 +57,12 @@ dataSources:
       apiVersion: 0.0.4
       language: wasm/assemblyscript
       entities:
-        - Vault
-        - StakedLpUser
         - Zap
       abis:
         - name: NFTXStakingZap
           file: ./src/abis/NFTXStakingZap.json
         - name: NFTXVaultFactoryUpgradeable
           file: ./src/abis/NFTXVaultFactoryUpgradeable.json
-        - name: NFTXVaultUpgradeable
-          file: ./src/abis/NFTXVaultUpgradeable.json
       eventHandlers:
         - event: UserStaked(uint256,uint256,uint256,uint256,address)
           handler: handleUserStaked

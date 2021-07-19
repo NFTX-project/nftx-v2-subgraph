@@ -3,5 +3,6 @@
   "startBlock": "12675821",
   "startBlockZaps": "12815701",
   "vaultFactory": "0xBE86f647b167567525cCAAfcd6f881F1Ee558216",
-  "stakingZap": "0x4939F5e390d20b7aC0Bd6913A353dfF753DD2765"
+  "stakingZap": "0x4939F5e390d20b7aC0Bd6913A353dfF753DD2765",
+  "callFilterEnabled": "true"
 }
