@@ -14,7 +14,7 @@ import {
 export function handleUserStaked(event: UserStakedEvent): void {
   let lockEndTime = event.params.timelockUntil;
   let vaultId = event.params.vaultId
-  let user = getStakedLpUser(event.transaction.from);
+  let user = getStakedLpUser(event.params.sender);
 
   let zapInstance = NFTXStakingZap.bind(event.address);
   let vaultFactoryAddress = zapInstance.nftxFactory();

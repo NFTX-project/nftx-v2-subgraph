@@ -68,7 +68,7 @@ dataSources:
         - name: NFTXVaultUpgradeable
           file: ./src/abis/NFTXVaultUpgradeable.json
       eventHandlers:
-        - event: UserStaked(uint256,uint256,uint256,uint256)
+        - event: UserStaked(uint256,uint256,uint256,uint256,address)
           handler: handleUserStaked
 templates:
   - kind: ethereum/contract

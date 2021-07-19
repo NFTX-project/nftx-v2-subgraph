@@ -62,6 +62,12 @@
           "internalType": "uint256",
           "name": "timelockUntil",
           "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
         }
       ],
       "name": "UserStaked",
@@ -81,6 +87,12 @@
           "internalType": "uint256",
           "name": "lpBalance",
           "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "sender",
+          "type": "address"
         }
       ],
       "name": "Withdraw",
