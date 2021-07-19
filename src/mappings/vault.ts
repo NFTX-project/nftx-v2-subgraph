@@ -35,15 +35,13 @@ import {
   getEligibilityModule,
 } from './helpers';
 import { BigInt, ethereum, dataSource } from '@graphprotocol/graph-ts';
-import { ADDRESS_ZERO } from './constants';
 import { SECS_PER_DAY, SECS_PER_HOUR, getDay, getHour } from './datetime';
 
 export function handleTransfer(event: TransferEvent): void {
   let global = getGlobal();
   let vaultAddress = event.address;
   if (
-    event.params.from == ADDRESS_ZERO &&
-    event.params.to == global.feeDistributorAddress
+    event.params.from == global.feeDistributorAddress
   ) {
     let feeReceipt = getFeeReceipt(event.transaction.hash);
     feeReceipt.vault = vaultAddress.toHexString();
