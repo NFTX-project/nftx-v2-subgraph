@@ -281,7 +281,6 @@ export function getStakedLpUser(userAddress: Address): StakedLpUser {
   if (user == null) {
     user = new StakedLpUser(userAddress.toHexString());
     user.activePools = new Array<string>();
-    user.lpZaps = new Array<string>();
   }
   return user as StakedLpUser;
 }
