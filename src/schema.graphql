@@ -169,7 +169,7 @@ type User @entity {
 type StakedLpUser @entity {
   id: ID! # address
   activePools: [Pool!]!
-  lockedZaps: [Zap!]! @derivedFrom(field: "user")
+  lpZaps: [Zap!]! @derivedFrom(field: "user")
   userRewards: [Reward!]! @derivedFrom(field: "user")
   deposits: [Deposit!]! @derivedFrom(field: "user")
 }
