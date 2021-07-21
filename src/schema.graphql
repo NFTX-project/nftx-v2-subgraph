@@ -224,12 +224,12 @@ type Zap @entity {
   user: StakedLpUser!
   lockEndTime: BigInt!
   amount: BigInt!
-  withdrawn: ZapWithdrawal
+  withdrawals: [ZapWithdrawal!]! @derivedFrom(field: "zap")
 }
 
 type ZapWithdrawal @entity {
   id: ID!
-  vaultAddress: Bytes!
   amount: BigInt!
   user: StakedLpUser!
+  zap: Zap!
 }

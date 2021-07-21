@@ -266,6 +266,7 @@ export function getZap(vaultId: BigInt, userAddress: Address): Zap {
   let zap = Zap.load(zapId);
   if (zap == null) {
     zap = new Zap(zapId);
+    zap.amount = BigInt.fromI32(0);
   }
   return zap as Zap;
 }

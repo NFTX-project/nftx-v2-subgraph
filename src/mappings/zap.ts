@@ -30,7 +30,7 @@ export function handleUserStaked(event: UserStakedEvent): void {
 
   zap.vault = vault.id;
   zap.user = user.id;
-  zap.amount = event.params.lpBalance;
+  zap.amount = zap.amount.plus(event.params.lpBalance);
   zap.lockEndTime = lockEndTime
 
   zap.save();
@@ -41,5 +41,6 @@ export function handleWithdraw(event: WithdrawEvent): void {
   let zap = getZap(vaultId, event.params.sender);
   let zapWithdrawal = getZapWithdrawal(event.transaction.hash);
   zapWithdrawal.save();
-  zap.withdrawn = zapWithdrawal.id;
+  zap.amount = zap.amount.minus(event.params.lpBalance);
+  zap.save();
 }
