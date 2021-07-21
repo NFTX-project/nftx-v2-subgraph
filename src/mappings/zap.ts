@@ -1,6 +1,7 @@
 import {
   NFTXStakingZap,
-  UserStaked as UserStakedEvent
+  UserStaked as UserStakedEvent,
+  Withdraw as WithdrawEvent
 } from '../types/NFTXStakingZap/NFTXStakingZap';
 
 import { NFTXVaultFactoryUpgradeable as NFTXVaultFactory } from '../types/templates/NFTXLPStaking/NFTXVaultFactoryUpgradeable';
@@ -8,7 +9,8 @@ import { NFTXVaultFactoryUpgradeable as NFTXVaultFactory } from '../types/templa
 import {
   getStakedLpUser,
   getVault,
-  getZap
+  getZap,
+  getZapWithdrawal
 } from './helpers';
 
 export function handleUserStaked(event: UserStakedEvent): void {
@@ -24,12 +26,20 @@ export function handleUserStaked(event: UserStakedEvent): void {
   let vault = getVault(vaultAddress);
   vault.save();
 
-  let txHash = event.transaction.hash;
-  let zap = getZap(txHash);
+  let zap = getZap(vaultId, event.params.sender);
 
   zap.vault = vault.id;
   zap.user = user.id;
+  zap.amount = event.params.lpBalance;
   zap.lockEndTime = lockEndTime
 
   zap.save();
+}
+
+export function handleWithdraw(event: WithdrawEvent): void {
+  let vaultId = event.params.vaultId
+  let zap = getZap(vaultId, event.params.sender);
+  let zapWithdrawal = getZapWithdrawal(event.transaction.hash);
+  zapWithdrawal.save();
+  zap.withdrawn = zapWithdrawal.id;
 }

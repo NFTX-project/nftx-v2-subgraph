@@ -72,6 +72,8 @@ dataSources:
       eventHandlers:
         - event: UserStaked(uint256,uint256,uint256,uint256,address)
           handler: handleUserStaked
+        - event: Withdraw(uint256,uint256,address)
+          handler: handleWithdraw
 templates:
   - kind: ethereum/contract
     name: NFTXLPStaking

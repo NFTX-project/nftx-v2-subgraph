@@ -223,4 +223,13 @@ type Zap @entity {
   vault: Vault!
   user: StakedLpUser!
   lockEndTime: BigInt!
+  amount: BigInt!
+  withdrawn: ZapWithdrawal
+}
+
+type ZapWithdrawal @entity {
+  id: ID!
+  vaultAddress: Bytes!
+  amount: BigInt!
+  user: StakedLpUser!
 }
