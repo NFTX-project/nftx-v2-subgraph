@@ -40,7 +40,13 @@ export function handleWithdraw(event: WithdrawEvent): void {
   let vaultId = event.params.vaultId
   let zap = getZap(vaultId, event.params.sender);
   let zapWithdrawal = getZapWithdrawal(event.transaction.hash);
+  let user = getStakedLpUser(event.params.sender);
+
+  zapWithdrawal.amount = event.params.lpBalance;
+  zapWithdrawal.user = user.id;
+  zapWithdrawal.zap = zap.id;
   zapWithdrawal.save();
+
   zap.amount = zap.amount.minus(event.params.lpBalance);
   zap.save();
 }
