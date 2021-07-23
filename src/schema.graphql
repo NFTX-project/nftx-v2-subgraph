@@ -169,7 +169,7 @@ type User @entity {
 type StakedLpUser @entity {
   id: ID! # address
   activePools: [Pool!]!
-  lockedZaps: [Zap!]! @derivedFrom(field: "user")
+  lpZaps: [Zap!]! @derivedFrom(field: "user")
   userRewards: [Reward!]! @derivedFrom(field: "user")
   deposits: [Deposit!]! @derivedFrom(field: "user")
 }
@@ -223,4 +223,13 @@ type Zap @entity {
   vault: Vault!
   user: StakedLpUser!
   lockEndTime: BigInt!
+  amount: BigInt!
+  withdrawals: [ZapWithdrawal!]! @derivedFrom(field: "zap")
+}
+
+type ZapWithdrawal @entity {
+  id: ID!
+  amount: BigInt!
+  user: StakedLpUser!
+  zap: Zap!
 }

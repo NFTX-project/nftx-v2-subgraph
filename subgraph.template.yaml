@@ -63,9 +63,17 @@ dataSources:
           file: ./src/abis/NFTXStakingZap.json
         - name: NFTXVaultFactoryUpgradeable
           file: ./src/abis/NFTXVaultFactoryUpgradeable.json
+        - name: NFTXVaultUpgradeable
+          file: ./src/abis/NFTXVaultUpgradeable.json
+        - name: ERC20Metadata
+          file: ./src/abis/ERC20Metadata.json
+        - name: ERC677Metadata
+          file: ./src/abis/ERC677Metadata.json
       eventHandlers:
         - event: UserStaked(uint256,uint256,uint256,uint256,address)
           handler: handleUserStaked
+        - event: Withdraw(uint256,uint256,address)
+          handler: handleWithdraw
 templates:
   - kind: ethereum/contract
     name: NFTXLPStaking

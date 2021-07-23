@@ -31,6 +31,7 @@ import {
   VaultHourData,
   VaultCreator,
   EligibilityModule,
+  ZapWithdrawal,
 } from '../types/schema';
 import { ERC20Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC20Metadata';
 import { ERC677Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC677Metadata';
@@ -260,12 +261,22 @@ export function getSwap(txHash: Bytes): Swap {
   return swap as Swap;
 }
 
-export function getZap(txHash: Bytes): Zap {
-  let zap = Zap.load(txHash.toHexString());
+export function getZap(vaultId: BigInt, userAddress: Address): Zap {
+  let zapId = vaultId.toHexString() + '-' + userAddress.toHexString();
+  let zap = Zap.load(zapId);
   if (zap == null) {
-    zap = new Zap(txHash.toHexString());
+    zap = new Zap(zapId);
+    zap.amount = BigInt.fromI32(0);
   }
   return zap as Zap;
+}
+
+export function getZapWithdrawal(txHash: Bytes): ZapWithdrawal {
+  let zapWithdrawal = ZapWithdrawal.load(txHash.toHexString());
+  if (zapWithdrawal == null) {
+    zapWithdrawal = new ZapWithdrawal(txHash.toHexString());
+  }
+  return zapWithdrawal as ZapWithdrawal;
 }
 
 export function getRedeem(txHash: Bytes): Redeem {
