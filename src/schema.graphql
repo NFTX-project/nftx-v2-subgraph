@@ -23,7 +23,7 @@ type Vault @entity {
   mints: [Mint!]! @derivedFrom(field: "vault")
   swaps: [Swap!]! @derivedFrom(field: "vault")
   redeems: [Redeem!]! @derivedFrom(field: "vault")
-  stakingPools: [Pool!]! @derivedFrom(field: "vault")
+  lpStakingPool: Pool! @derivedFrom(field: "vault")
   fees: Fee!
   features: Feature!
   feeReceivers: [FeeReceiver!]! @derivedFrom(field: "vault")
