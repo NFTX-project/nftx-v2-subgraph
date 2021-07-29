@@ -5,7 +5,7 @@ import {
 } from '../types/templates/NFTXLPStaking/NFTXLPStaking';
 import { NFTXVaultFactoryUpgradeable as NFTXVaultFactory } from '../types/templates/NFTXLPStaking/NFTXVaultFactoryUpgradeable';
 import { StakingTokenProvider } from '../types/templates/NFTXLPStaking/StakingTokenProvider';
-import { getPool, getToken } from './helpers';
+import { getPool, getToken, getVault } from './helpers';
 import { RewardDistributionTokenUpgradeable as RewardDistributionTokenTemplate } from '../types/templates';
 import { Address, BigInt } from '@graphprotocol/graph-ts';
 
@@ -27,6 +27,9 @@ function newPool(
     stakingTokenProviderInstance.stakingTokenForVaultToken(vaultAddress);
 
   let pool = getPool(poolAddress);
+  let vault = getVault(vaultAddress);
+  vault.lpStakingPool = pool.id;
+  vault.save();
 
   let rewardToken = getToken(vaultAddress);
   rewardToken.save();
