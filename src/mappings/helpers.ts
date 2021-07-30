@@ -387,6 +387,28 @@ export function addToHoldings(
   }
 }
 
+/**
+ * Ensures that 
+ */
+export function transformMintAmounts(
+  vaultAddress: Address,
+  nftIds: BigInt[],
+  amounts: BigInt[],
+): BigInt[] {
+  let vault = getVault(vaultAddress);
+  let is1155 = vault.is1155;
+  if (is1155) {
+    // No transformation needed, amounts are enforced in the call
+    return amounts;
+  }
+  // Amounts not enforced, map all ERC721s to ensure thay have an `amount` of 1 in the response
+  let transformedAmounts = new Array<BigInt>();
+  for (let i = 0; i < nftIds.length; i = i + 1) {
+    transformedAmounts[i] = BigInt.fromI32(1);
+  }
+  return transformedAmounts;
+}
+
 export function removeFromHoldings(
   vaultAddress: Address,
   nftIds: BigInt[],

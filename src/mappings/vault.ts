@@ -33,6 +33,7 @@ import {
   getVaultDayData,
   getVaultHourData,
   getEligibilityModule,
+  transformMintAmounts,
 } from './helpers';
 import { BigInt, ethereum, dataSource } from '@graphprotocol/graph-ts';
 import { SECS_PER_DAY, SECS_PER_HOUR, getDay, getHour } from './datetime';
@@ -71,7 +72,7 @@ export function handleMint(event: MintEvent): void {
   mint.vault = vaultAddress.toHexString();
   mint.date = event.block.timestamp;
   mint.nftIds = nftIds;
-  mint.amounts = amounts;
+  mint.amounts = transformMintAmounts(vaultAddress, nftIds, amounts);
 
   let feeReceipt = getFeeReceipt(event.transaction.hash);
   feeReceipt.vault = vaultAddress.toHexString();
