@@ -50,7 +50,7 @@ dataSources:
       address: '{{stakingZapDeprecated}}'
       abi: NFTXStakingZap
       # prettier-ignore
-      startBlock: {{startBlockZaps}}
+      startBlock: {{startBlockZapsDeprecated}}
     mapping:
       file: ./src/mappings/zap.ts
       kind: ethereum/events

@@ -262,7 +262,7 @@ export function getSwap(txHash: Bytes): Swap {
 }
 
 export function getZap(vaultId: BigInt, userAddress: Address, contractAddress: Address): Zap {
-  let zapId = vaultId.toHexString() + '-' + userAddress.toHexString() + '-' + contractAddress.toHexString().substr(6);
+  let zapId = vaultId.toHexString() + '-' + userAddress.toHexString() + '-' + contractAddress.toHexString().substr(2, 6);
   let zap = Zap.load(zapId);
   if (zap == null) {
     zap = new Zap(zapId);
