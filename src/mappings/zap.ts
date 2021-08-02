@@ -26,7 +26,7 @@ export function handleUserStaked(event: UserStakedEvent): void {
   let vault = getVault(vaultAddress);
   vault.save();
 
-  let zap = getZap(vaultId, event.params.sender);
+  let zap = getZap(vaultId, event.params.sender, event.address);
 
   zap.vault = vault.id;
   zap.user = user.id;
@@ -38,7 +38,7 @@ export function handleUserStaked(event: UserStakedEvent): void {
 
 export function handleWithdraw(event: WithdrawEvent): void {
   let vaultId = event.params.vaultId
-  let zap = getZap(vaultId, event.params.sender);
+  let zap = getZap(vaultId, event.params.sender, event.address);
   let zapWithdrawal = getZapWithdrawal(event.transaction.hash);
   let user = getStakedLpUser(event.params.sender);
 
