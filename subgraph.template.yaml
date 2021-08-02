@@ -43,6 +43,38 @@ dataSources:
         - event: NewVault(indexed uint256,address,address)
           handler: handleNewVault
   - kind: ethereum/contract
+    name: NFTXStakingZapDeprecated
+    # prettier-ignore
+    network: {{network}}
+    source:
+      address: '{{stakingZapDeprecated}}'
+      abi: NFTXStakingZap
+      # prettier-ignore
+      startBlock: {{startBlockZaps}}
+    mapping:
+      file: ./src/mappings/zap.ts
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Zap
+      abis:
+        - name: NFTXStakingZap
+          file: ./src/abis/NFTXStakingZap.json
+        - name: NFTXVaultFactoryUpgradeable
+          file: ./src/abis/NFTXVaultFactoryUpgradeable.json
+        - name: NFTXVaultUpgradeable
+          file: ./src/abis/NFTXVaultUpgradeable.json
+        - name: ERC20Metadata
+          file: ./src/abis/ERC20Metadata.json
+        - name: ERC677Metadata
+          file: ./src/abis/ERC677Metadata.json
+      eventHandlers:
+        - event: UserStaked(uint256,uint256,uint256,uint256,address)
+          handler: handleUserStaked
+        - event: Withdraw(uint256,uint256,address)
+          handler: handleWithdraw
+  - kind: ethereum/contract
     name: NFTXStakingZap
     # prettier-ignore
     network: {{network}}

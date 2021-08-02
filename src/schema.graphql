@@ -225,6 +225,7 @@ type Zap @entity {
   lockEndTime: BigInt!
   amount: BigInt!
   withdrawals: [ZapWithdrawal!]! @derivedFrom(field: "zap")
+  contractAddress:  Bytes!
 }
 
 type ZapWithdrawal @entity {
