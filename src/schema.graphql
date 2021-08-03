@@ -115,6 +115,7 @@ type Pool @entity {
   stakingToken: Token!
   dividendToken: Token!
   totalRewards: BigInt!
+  deployBlock: BigInt!
 }
 
 type Token @entity {
