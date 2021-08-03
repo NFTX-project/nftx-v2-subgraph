@@ -16,7 +16,7 @@ import { Address, BigInt } from '@graphprotocol/graph-ts';
 
 export function handleRewardWithdrawn(event: RewardWithdrawnEvent): void {
   let poolAddress = event.address;
-  let pool = getPool(poolAddress);
+  let pool = getPool(poolAddress, event.block.number);
 
   let txHash = event.transaction.hash;
   let userAddress = event.params.to;
@@ -52,7 +52,7 @@ export function handleRewardWithdrawn(event: RewardWithdrawnEvent): void {
 
 export function handleTransfer(event: TransferEvent): void {
   let poolAddress = event.address;
-  let pool = getPool(poolAddress);
+  let pool = getPool(poolAddress, event.block.number);
 
   let txHash = event.transaction.hash;
   let amount = event.params.value;

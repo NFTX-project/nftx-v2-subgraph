@@ -226,11 +226,12 @@ export function getFeeReceipt(txHash: Bytes): FeeReceipt {
   return feeReceipt as FeeReceipt;
 }
 
-export function getPool(poolAddress: Address): Pool {
+export function getPool(poolAddress: Address, blockNumber: BigInt): Pool {
   let poolId = poolAddress.toHexString();
   let pool = Pool.load(poolId);
   if (pool == null) {
     pool = new Pool(poolId);
+    pool.deployBlock = blockNumber;
     pool.totalRewards = BigInt.fromI32(0);
     // vault and tokens not set
   }

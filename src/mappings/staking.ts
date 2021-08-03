@@ -13,6 +13,7 @@ function newPool(
   stakingAddress: Address,
   poolAddress: Address,
   vaultId: BigInt,
+  blockNumber: BigInt
 ): void {
   let stakingInstance = NFTXLPStaking.bind(stakingAddress);
   let vaultFactoryAddress = stakingInstance.nftxVaultFactory();
@@ -26,7 +27,7 @@ function newPool(
   let stakingTokenAddress =
     stakingTokenProviderInstance.stakingTokenForVaultToken(vaultAddress);
 
-  let pool = getPool(poolAddress);
+  let pool = getPool(poolAddress, blockNumber);
   let vault = getVault(vaultAddress);
   vault.lpStakingPool = pool.id;
   vault.save();
@@ -48,9 +49,9 @@ function newPool(
 }
 
 export function handlePoolCreated(event: PoolCreatedEvent): void {
-  newPool(event.address, event.params.pool, event.params.vaultId);
+  newPool(event.address, event.params.pool, event.params.vaultId, event.block.number);
 }
 
 export function handlePoolUpdated(event: PoolUpdatedEvent): void {
-  newPool(event.address, event.params.pool, event.params.vaultId);
+  newPool(event.address, event.params.pool, event.params.vaultId, event.block.number);
 }
