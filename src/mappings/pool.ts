@@ -68,6 +68,7 @@ export function handleTransfer(event: TransferEvent): void {
     user.save();
 
     deposit.deposit = amount;
+    deposit.date = event.block.timestamp;
     deposit.save();
   } else if (event.params.to == ADDRESS_ZERO) {
     let userAddress = event.params.from;
