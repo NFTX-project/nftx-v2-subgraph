@@ -173,6 +173,7 @@ type StakedLpUser @entity {
   lpZaps: [Zap!]! @derivedFrom(field: "user")
   userRewards: [Reward!]! @derivedFrom(field: "user")
   deposits: [Deposit!]! @derivedFrom(field: "user")
+  withdrawals: [Withdrawal!]! @derivedFrom(field: "user")
 }
 
 type Reward @entity {
@@ -189,6 +190,14 @@ type Deposit @entity {
   pool: Pool!
   user: StakedLpUser!
   deposit: BigInt!
+}
+
+type Withdrawal @entity {
+  id: ID! # tx
+  date: BigInt!
+  pool: Pool!
+  user: StakedLpUser!
+  withdrawal: BigInt!
 }
 
 type VaultDayData @entity {

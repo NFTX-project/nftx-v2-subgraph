@@ -10,6 +10,7 @@ import {
   updatePools,
   getDeposit,
   getToken,
+  getWithdrawal,
 } from './helpers';
 import { ADDRESS_ZERO } from './constants';
 import { Address, BigInt } from '@graphprotocol/graph-ts';
@@ -77,10 +78,18 @@ export function handleTransfer(event: TransferEvent): void {
     let balance = balanceFromInstance.reverted
       ? BigInt.fromI32(0)
       : balanceFromInstance.value;
+
+    let withdrawal = getWithdrawal(txHash);
+    withdrawal.pool = pool.id;
+    withdrawal.user = user.id;
+
     if (balance == BigInt.fromI32(0)) {
       user = updatePools(user, poolAddress, false);
       user.save();
     }
+
+    withdrawal.withdrawal = amount;
+    withdrawal.save();
   } else {
     let fromUser = getStakedLpUser(event.params.from);
     let poolInstance = RewardDistributionToken.bind(poolAddress);
@@ -88,6 +97,11 @@ export function handleTransfer(event: TransferEvent): void {
     let balance = balanceFromInstance.reverted
       ? BigInt.fromI32(0)
       : balanceFromInstance.value;
+
+    let withdrawal = getWithdrawal(txHash);
+    withdrawal.pool = pool.id;
+    withdrawal.user = fromUser.id;
+
     if (balance == BigInt.fromI32(0)) {
       fromUser = updatePools(fromUser, poolAddress, false);
       fromUser.save();
@@ -96,6 +110,9 @@ export function handleTransfer(event: TransferEvent): void {
     let toUser = getStakedLpUser(event.params.to);
     toUser = updatePools(toUser, poolAddress, true);
     toUser.save();
+
+    withdrawal.withdrawal = amount;
+    withdrawal.save();
   }
 
   let rewardToken = getToken(

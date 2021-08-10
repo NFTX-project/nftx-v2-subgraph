@@ -32,6 +32,7 @@ import {
   VaultCreator,
   EligibilityModule,
   ZapWithdrawal,
+  Withdrawal,
 } from '../types/schema';
 import { ERC20Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC20Metadata';
 import { ERC677Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC677Metadata';
@@ -355,6 +356,17 @@ export function getDeposit(txHash: Bytes): Deposit {
     deposit.date = BigInt.fromI32(0);
   }
   return deposit as Deposit;
+}
+
+export function getWithdrawal(txHash: Bytes): Withdrawal {
+  let withdrawalId = txHash.toHexString();
+  let withdrawal = Withdrawal.load(withdrawalId);
+  if (withdrawal == null) {
+    withdrawal = new Withdrawal(withdrawalId);
+    withdrawal.withdrawal = BigInt.fromI32(0);
+    withdrawal.date = BigInt.fromI32(0);
+  }
+  return withdrawal as Withdrawal;
 }
 
 export function getHolding(tokenId: BigInt, vaultAddress: Address): Holding {

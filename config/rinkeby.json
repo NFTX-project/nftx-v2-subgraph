@@ -1,5 +1,8 @@
 {
   "network": "rinkeby",
-  "startBlock": "8696469",
-  "vaultFactory": "0xDA98f747Bb335f6c7C16e228655B137B9A49AF58"
+  "startBlock": "9086085",
+  "startBlockZaps": "9086090",
+  "vaultFactory": "0x8c9ECD518C7805e82cd6DC148e1c8902cb5d3655",
+  "stakingZap": "0x98eF0c3310c337490cd5f15Fe7459c898B1D29ff",
+  "callFilterEnabled": "true"
 }
