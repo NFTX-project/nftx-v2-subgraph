@@ -90,6 +90,7 @@ export function handleTransfer(event: TransferEvent): void {
     }
 
     withdrawal.withdrawal = amount;
+    withdrawal.date = event.block.timestamp;
     withdrawal.save();
   } else {
     let fromUser = getStakedLpUser(event.params.from);
@@ -113,6 +114,7 @@ export function handleTransfer(event: TransferEvent): void {
     toUser.save();
 
     withdrawal.withdrawal = amount;
+    withdrawal.date = event.block.timestamp;
     withdrawal.save();
   }
 
