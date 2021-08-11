@@ -2,9 +2,7 @@
   "network": "mainnet",
   "startBlock": "12675821",
   "startBlockZaps": "12948635",
-  "startBlockZapsDeprecated": "12852188",
   "vaultFactory": "0xBE86f647b167567525cCAAfcd6f881F1Ee558216",
   "stakingZap": "0x64029E2da85B1d53815d111FEd15609034E5D557",
-  "stakingZapDeprecated": "0x0B8Ee2Ee7d6f3bFB73C9aE2127558D1172B65fb1",
   "callFilterEnabled": "true"
 }
