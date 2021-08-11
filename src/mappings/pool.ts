@@ -100,10 +100,6 @@ export function handleTransfer(event: TransferEvent): void {
       ? BigInt.fromI32(0)
       : balanceFromInstance.value;
 
-    let withdrawal = getWithdrawal(txHash);
-    withdrawal.pool = pool.id;
-    withdrawal.user = fromUser.id;
-
     if (balance == BigInt.fromI32(0)) {
       fromUser = updatePools(fromUser, poolAddress, false);
       fromUser.save();
@@ -112,10 +108,6 @@ export function handleTransfer(event: TransferEvent): void {
     let toUser = getStakedLpUser(event.params.to);
     toUser = updatePools(toUser, poolAddress, true);
     toUser.save();
-
-    withdrawal.withdrawal = amount;
-    withdrawal.date = event.block.timestamp;
-    withdrawal.save();
   }
 
   let rewardToken = getToken(
