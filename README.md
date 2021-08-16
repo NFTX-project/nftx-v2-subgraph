@@ -2,9 +2,9 @@
 
 Subgraph for NFTX Protocol V2
 
-Rinkeby Subgraph: https://thegraph.com/explorer/subgraph/dan13ram/nftx-v2-rinkeby
+Rinkeby Subgraph: https://thegraph.com/legacy-explorer/subgraph/nftx-project/nftx-v2-rinkeby
 
-Mainnet Subgraph: <i>yet to be deployed</i>
+Mainnet Subgraph: https://thegraph.com/legacy-explorer/subgraph/nftx-project/nftx-v2
 
 ## Config
 
