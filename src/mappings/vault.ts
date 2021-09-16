@@ -84,7 +84,7 @@ export function handleMint(event: MintEvent): void {
   mint.save();
   user.save();
 
-  addToHoldings(vaultAddress, nftIds, amounts);
+  addToHoldings(vaultAddress, nftIds, amounts, event.block.timestamp);
 
   let added = BigInt.fromI32(nftIds.length);
 
@@ -140,7 +140,7 @@ export function handleSwap(event: SwapEvent): void {
   swap.save();
   user.save();
 
-  addToHoldings(vaultAddress, nftIds, amounts);
+  addToHoldings(vaultAddress, nftIds, amounts, event.block.timestamp);
   removeFromHoldings(vaultAddress, redeemedIds);
 
   let added = BigInt.fromI32(nftIds.length);

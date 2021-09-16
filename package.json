@@ -8,7 +8,7 @@
     "build": "graph build",
     "prepare-palm": "mustache config/palm.json subgraph.template.yaml > subgraph.yaml",
     "prepare-rinkeby": "mustache config/rinkeby.json subgraph.template.yaml > subgraph.yaml",
-    "deploy-rinkeby": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ dan13ram/nftx-v2-rinkeby",
+    "deploy-rinkeby": "graph deploy --access-token 6585ffa018594af6929fc97a6b5609c6 --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ nftx-project/nftx-v2-rinkeby",
     "prepare-mainnet": "mustache config/mainnet.json subgraph.template.yaml > subgraph.yaml",
     "deploy-mainnet": "graph deploy --studio nftx",
     "format": "prettier --ignore-path .gitignore --write \"{*,**/*}.{ts,json,md}\""
