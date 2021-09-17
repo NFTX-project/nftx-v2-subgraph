@@ -385,12 +385,14 @@ export function addToHoldings(
   vaultAddress: Address,
   nftIds: BigInt[],
   amounts: BigInt[],
+  date: BigInt,
 ): void {
   let vault = getVault(vaultAddress);
   let is1155 = vault.is1155;
   for (let i = 0; i < nftIds.length; i = i + 1) {
     let tokenId = nftIds[i];
     let holding = getHolding(tokenId, vaultAddress);
+    holding.dateAdded = date;
     if (is1155) {
       let amount = amounts[i];
       holding.amount = holding.amount.plus(amount);

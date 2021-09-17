@@ -62,6 +62,7 @@ type Holding @entity {
   tokenId: BigInt!
   vault: Vault!
   amount: BigInt!
+  dateAdded: BigInt!
 }
 
 type Fee @entity {
