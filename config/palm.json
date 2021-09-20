@@ -1,5 +1,5 @@
 {
-  "network": "palm",
+  "network": "palm-mainnet",
   "startBlock": "1088804",
   "startBlockZaps": "1088812",
   "vaultFactory": "0xe01Cf5099e700c282A56E815ABd0C4948298Afae",
