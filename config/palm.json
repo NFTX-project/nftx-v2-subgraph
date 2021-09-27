@@ -1,8 +1,8 @@
 {
   "network": "palm",
-  "startBlock": "1088804",
-  "startBlockZaps": "1088812",
-  "vaultFactory": "0xe01Cf5099e700c282A56E815ABd0C4948298Afae",
-  "stakingZap": "0x4D67BaB6B9DD25afe4f101CbD94f265e484175a1",
+  "startBlock": "1827367",
+  "startBlockZaps": "1827374",
+  "vaultFactory": "0xbCa69124712C2F0bD607d59370D2EcC6fFd92937",
+  "stakingZap": "0x5eE78a5A46c4c90caa5898F5fBb14360bb2a9543",
   "callFilterEnabled": "true"
 }
