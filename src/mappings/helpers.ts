@@ -52,6 +52,9 @@ export function getGlobal(): Global {
     global.nftxVaultFactory = ADDRESS_ZERO;
     global.feeDistributorAddress = ADDRESS_ZERO;
     global.eligibilityManagerAddress = ADDRESS_ZERO;
+    global.mintFee = BigInt.fromI32(0);
+    global.randomRedeemFee = BigInt.fromI32(0);
+    global.targetRedeemFee = BigInt.fromI32(0);
   }
   return global as Global;
 }
@@ -263,13 +266,22 @@ export function getSwap(txHash: Bytes): Swap {
   return swap as Swap;
 }
 
-export function getZap(vaultId: BigInt, userAddress: Address, contractAddress: Address): Zap {
-  let zapId = vaultId.toHexString() + '-' + userAddress.toHexString() + '-' + contractAddress.toHexString().substr(2, 6);
+export function getZap(
+  vaultId: BigInt,
+  userAddress: Address,
+  contractAddress: Address,
+): Zap {
+  let zapId =
+    vaultId.toHexString() +
+    '-' +
+    userAddress.toHexString() +
+    '-' +
+    contractAddress.toHexString().substr(2, 6);
   let zap = Zap.load(zapId);
   if (zap == null) {
     zap = new Zap(zapId);
     zap.amount = BigInt.fromI32(0);
-    zap.contractAddress = contractAddress
+    zap.contractAddress = contractAddress;
   }
   return zap as Zap;
 }
@@ -404,7 +416,7 @@ export function addToHoldings(
 }
 
 /**
- * Ensures that 
+ * Ensures that
  */
 export function transformMintAmounts(
   vaultAddress: Address,

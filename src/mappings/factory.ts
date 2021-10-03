@@ -2,17 +2,20 @@ import {
   NewVault as NewVaultEvent,
   NewFeeDistributor as NewFeeDistributorEvent,
   NewEligibilityManager as NewEligibilityManagerEvent,
+  UpdateFactoryFees as UpdateFactoryFeesEvent,
+  UpdateVaultFees as UpdateVaultFeesEvent,
+  DisableVaultFees as DisableVaultFeesEvent,
   NFTXVaultFactoryUpgradeable as NFTXVaultFactory,
 } from '../types/NFTXVaultFactoryUpgradeable/NFTXVaultFactoryUpgradeable';
 import { NFTXFeeDistributor } from '../types/NFTXVaultFactoryUpgradeable/NFTXFeeDistributor';
-import { getGlobal, getVault, getVaultCreator } from './helpers';
+import { getFee, getGlobal, getVault, getVaultCreator } from './helpers';
 import {
   NFTXVaultUpgradeable as NFTXVaultTemplate,
   NFTXFeeDistributor as NFTXFeeDistributorTemplate,
   NFTXLPStaking as NFTXLPStakingTemplate,
 } from '../types/templates';
 import { Address, BigInt } from '@graphprotocol/graph-ts';
-import { ADDRESS_ZERO } from './constants';
+import { ADDRESS_ZERO, FEE_UPDATE_BLOCK_NUMBER } from './constants';
 
 function newFeeDistributor(
   nftxVaultFactoryAddress: Address,
@@ -95,4 +98,48 @@ export function handleNewVault(event: NewVaultEvent): void {
     : feeDistributorAddressFromInstance.value;
 
   newFeeDistributor(nftxVaultFactoryAddress, feeDistributorAddress);
+}
+
+function getVaultAddress(
+  vaultId: BigInt,
+  vaultFactoryAddress: Address,
+): Address {
+  let vaultFactoryInstance = NFTXVaultFactory.bind(vaultFactoryAddress);
+  let vaultAddressFromInstance = vaultFactoryInstance.try_vault(vaultId);
+  let vaultAddress = vaultAddressFromInstance.reverted
+    ? ADDRESS_ZERO
+    : vaultAddressFromInstance.value;
+
+  return vaultAddress;
+}
+
+export function handleUpdateFactoryFees(event: UpdateFactoryFeesEvent): void {
+  if (event.block.number.lt(FEE_UPDATE_BLOCK_NUMBER)) return;
+  let global = getGlobal();
+  global.mintFee = event.params.mintFee;
+  global.randomRedeemFee = event.params.randomRedeemFee;
+  global.targetRedeemFee = event.params.targetRedeemFee;
+  global.save();
+}
+
+export function handleUpdateVaultFees(event: UpdateVaultFeesEvent): void {
+  if (event.block.number.lt(FEE_UPDATE_BLOCK_NUMBER)) return;
+  let vaultId = event.params.vaultId;
+  let vaultAddress = getVaultAddress(vaultId, event.address);
+  let fee = getFee(vaultAddress);
+  fee.mintFee = event.params.mintFee;
+  fee.randomRedeemFee = event.params.randomRedeemFee;
+  fee.targetRedeemFee = event.params.targetRedeemFee;
+  fee.save();
+}
+
+export function handleDisableVaultFees(event: DisableVaultFeesEvent): void {
+  if (event.block.number.lt(FEE_UPDATE_BLOCK_NUMBER)) return;
+  let vaultId = event.params.vaultId;
+  let vaultAddress = getVaultAddress(vaultId, event.address);
+  let fee = getFee(vaultAddress);
+  fee.mintFee = BigInt.fromI32(0);
+  fee.randomRedeemFee = BigInt.fromI32(0);
+  fee.targetRedeemFee = BigInt.fromI32(0);
+  fee.save();
 }

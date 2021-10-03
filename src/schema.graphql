@@ -8,6 +8,9 @@ type Global @entity {
   nftxVaultFactory: Bytes!
   feeDistributorAddress: Bytes!
   eligibilityManagerAddress: Bytes!
+  mintFee: BigInt!
+  randomRedeemFee: BigInt!
+  targetRedeemFee: BigInt!
 }
 
 type Vault @entity {

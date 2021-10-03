@@ -37,13 +37,12 @@ import {
 } from './helpers';
 import { BigInt, ethereum, dataSource } from '@graphprotocol/graph-ts';
 import { SECS_PER_DAY, SECS_PER_HOUR, getDay, getHour } from './datetime';
+import { FEE_UPDATE_BLOCK_NUMBER } from './constants';
 
 export function handleTransfer(event: TransferEvent): void {
   let global = getGlobal();
   let vaultAddress = event.address;
-  if (
-    event.params.from == global.feeDistributorAddress
-  ) {
+  if (event.params.from == global.feeDistributorAddress) {
     let feeReceipt = getFeeReceipt(event.transaction.hash);
     feeReceipt.vault = vaultAddress.toHexString();
     feeReceipt.token = vaultAddress.toHexString();
@@ -249,6 +248,7 @@ export function handleEnableTargetRedeemUpdated(
 }
 
 export function handleMintFeeUpdated(event: MintFeeUpdatedEvent): void {
+  if (event.block.number.ge(FEE_UPDATE_BLOCK_NUMBER)) return;
   let fees = getFee(event.address);
   fees.mintFee = event.params.mintFee;
   fees.save();
@@ -257,6 +257,7 @@ export function handleMintFeeUpdated(event: MintFeeUpdatedEvent): void {
 export function handleRandomRedeemFeeUpdated(
   event: RandomRedeemFeeUpdatedEvent,
 ): void {
+  if (event.block.number.ge(FEE_UPDATE_BLOCK_NUMBER)) return;
   let fees = getFee(event.address);
   fees.randomRedeemFee = event.params.randomRedeemFee;
   fees.save();
@@ -265,6 +266,7 @@ export function handleRandomRedeemFeeUpdated(
 export function handleTargetRedeemFeeUpdated(
   event: TargetRedeemFeeUpdatedEvent,
 ): void {
+  if (event.block.number.ge(FEE_UPDATE_BLOCK_NUMBER)) return;
   let fees = getFee(event.address);
   fees.targetRedeemFee = event.params.targetRedeemFee;
   fees.save();
