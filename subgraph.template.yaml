@@ -197,8 +197,6 @@ templates:
           handler: handleMint
         - event: Redeemed(uint256[],uint256[],address)
           handler: handleRedeem
-        - event: Swapped(uint256[],uint256[],uint256[],uint256[],address)
-          handler: handleSwapped
         - event: ManagerSet(address)
           handler: handleManagerSet
         - event: EnableMintUpdated(bool)
