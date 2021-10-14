@@ -8,9 +8,7 @@ type Global @entity {
   nftxVaultFactory: Bytes!
   feeDistributorAddress: Bytes!
   eligibilityManagerAddress: Bytes!
-  mintFee: BigInt!
-  randomRedeemFee: BigInt!
-  targetRedeemFee: BigInt!
+  fees: Fee!
 }
 
 type Vault @entity {
@@ -75,6 +73,8 @@ type Fee @entity {
   randomRedeemFee: BigInt!
   targetRedeemFee: BigInt!
   swapFee: BigInt!
+  randomSwapFee: BigInt!
+  targetSwapFee: BigInt!
 }
 
 type Feature @entity {

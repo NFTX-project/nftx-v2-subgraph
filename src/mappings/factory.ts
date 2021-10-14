@@ -8,7 +8,13 @@ import {
   NFTXVaultFactoryUpgradeable as NFTXVaultFactory,
 } from '../types/NFTXVaultFactoryUpgradeable/NFTXVaultFactoryUpgradeable';
 import { NFTXFeeDistributor } from '../types/NFTXVaultFactoryUpgradeable/NFTXFeeDistributor';
-import { getFee, getGlobal, getVault, getVaultCreator } from './helpers';
+import {
+  getFee,
+  getGlobal,
+  getGlobalFee,
+  getVault,
+  getVaultCreator,
+} from './helpers';
 import {
   NFTXVaultUpgradeable as NFTXVaultTemplate,
   NFTXFeeDistributor as NFTXFeeDistributorTemplate,
@@ -116,9 +122,16 @@ function getVaultAddress(
 export function handleUpdateFactoryFees(event: UpdateFactoryFeesEvent): void {
   if (event.block.number.lt(FEE_UPDATE_BLOCK_NUMBER)) return;
   let global = getGlobal();
-  global.mintFee = event.params.mintFee;
-  global.randomRedeemFee = event.params.randomRedeemFee;
-  global.targetRedeemFee = event.params.targetRedeemFee;
+  global.fees = 'global';
+
+  let fees = getGlobalFee();
+  fees.mintFee = event.params.mintFee;
+  fees.randomRedeemFee = event.params.randomRedeemFee;
+  fees.targetRedeemFee = event.params.targetRedeemFee;
+  fees.randomSwapFee = event.params.randomSwapFee;
+  fees.targetSwapFee = event.params.targetSwapFee;
+  fees.save();
+
   global.save();
 }
 
@@ -128,6 +141,8 @@ export function handleUpdateVaultFees(event: UpdateVaultFeesEvent): void {
   let vaultAddress = getVaultAddress(vaultId, event.address);
   let fee = getFee(vaultAddress);
   fee.mintFee = event.params.mintFee;
+  fee.randomRedeemFee = event.params.randomRedeemFee;
+  fee.targetRedeemFee = event.params.targetRedeemFee;
   fee.randomRedeemFee = event.params.randomRedeemFee;
   fee.targetRedeemFee = event.params.targetRedeemFee;
   fee.save();

@@ -52,9 +52,11 @@ export function getGlobal(): Global {
     global.nftxVaultFactory = ADDRESS_ZERO;
     global.feeDistributorAddress = ADDRESS_ZERO;
     global.eligibilityManagerAddress = ADDRESS_ZERO;
-    global.mintFee = BigInt.fromI32(0);
-    global.randomRedeemFee = BigInt.fromI32(0);
-    global.targetRedeemFee = BigInt.fromI32(0);
+
+    let fees = getGlobalFee();
+    fees.save();
+
+    global.fees = 'global';
   }
   return global as Global;
 }
@@ -100,6 +102,21 @@ export function getManager(managerAddress: Address): Manager {
   return manager as Manager;
 }
 
+export function getGlobalFee(): Fee {
+  let feeId = 'global';
+  let fees = Fee.load(feeId);
+  if (fees == null) {
+    fees = new Fee(feeId);
+    fees.mintFee = BigInt.fromI32(0);
+    fees.randomRedeemFee = BigInt.fromI32(0);
+    fees.targetRedeemFee = BigInt.fromI32(0);
+    fees.swapFee = BigInt.fromI32(0);
+    fees.randomSwapFee = BigInt.fromI32(0);
+    fees.targetSwapFee = BigInt.fromI32(0);
+  }
+  return fees as Fee;
+}
+
 export function getFee(feesAddress: Address): Fee {
   let fees = Fee.load(feesAddress.toHexString());
   if (fees == null) {
@@ -108,6 +125,8 @@ export function getFee(feesAddress: Address): Fee {
     fees.randomRedeemFee = BigInt.fromI32(0);
     fees.targetRedeemFee = BigInt.fromI32(0);
     fees.swapFee = BigInt.fromI32(0);
+    fees.randomSwapFee = BigInt.fromI32(0);
+    fees.targetSwapFee = BigInt.fromI32(0);
   }
   return fees as Fee;
 }
