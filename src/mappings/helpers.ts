@@ -16,6 +16,7 @@ import {
   Feature,
   Vault,
   FeeReceiver,
+  SimpleFeeReceiver,
   FeeReceipt,
   Pool,
   User,
@@ -219,6 +220,19 @@ export function getVaultCreator(address: Address): VaultCreator {
     vaultCreator = new VaultCreator(address.toHexString());
   }
   return vaultCreator as VaultCreator;
+}
+
+export function getSimpleFeeReceiver(
+  feeReceiverAddress: Address,
+): SimpleFeeReceiver {
+  let feeReceiverId = feeReceiverAddress.toHexString();
+  let feeReceiver = SimpleFeeReceiver.load(feeReceiverId);
+  if (feeReceiver == null) {
+    feeReceiver = new SimpleFeeReceiver(feeReceiverId);
+    feeReceiver.receiver = feeReceiverAddress;
+    feeReceiver.allocPoint = BigInt.fromI32(0);
+  }
+  return feeReceiver as SimpleFeeReceiver;
 }
 
 export function getFeeReceiver(

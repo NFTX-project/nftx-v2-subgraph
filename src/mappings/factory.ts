@@ -21,7 +21,7 @@ import {
   NFTXLPStaking as NFTXLPStakingTemplate,
 } from '../types/templates';
 import { Address, BigInt } from '@graphprotocol/graph-ts';
-import { ADDRESS_ZERO, FEE_UPDATE_BLOCK_NUMBER } from './constants';
+import { ADDRESS_ZERO } from './constants';
 
 function newFeeDistributor(
   nftxVaultFactoryAddress: Address,
@@ -120,7 +120,6 @@ function getVaultAddress(
 }
 
 export function handleUpdateFactoryFees(event: UpdateFactoryFeesEvent): void {
-  if (event.block.number.lt(FEE_UPDATE_BLOCK_NUMBER)) return;
   let global = getGlobal();
   global.fees = 'global';
 
@@ -136,7 +135,6 @@ export function handleUpdateFactoryFees(event: UpdateFactoryFeesEvent): void {
 }
 
 export function handleUpdateVaultFees(event: UpdateVaultFeesEvent): void {
-  if (event.block.number.lt(FEE_UPDATE_BLOCK_NUMBER)) return;
   let vaultId = event.params.vaultId;
   let vaultAddress = getVaultAddress(vaultId, event.address);
   let fee = getFee(vaultAddress);
@@ -149,7 +147,6 @@ export function handleUpdateVaultFees(event: UpdateVaultFeesEvent): void {
 }
 
 export function handleDisableVaultFees(event: DisableVaultFeesEvent): void {
-  if (event.block.number.lt(FEE_UPDATE_BLOCK_NUMBER)) return;
   let vaultId = event.params.vaultId;
   let vaultAddress = getVaultAddress(vaultId, event.address);
   let fee = getFee(vaultAddress);

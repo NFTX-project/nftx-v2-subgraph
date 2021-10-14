@@ -100,7 +100,13 @@ type Manager @entity {
 
 type FeeReceiver @entity {
   id: ID!
-  vault: Vault!
+  vault: Vault
+  allocPoint: BigInt!
+}
+
+type SimpleFeeReceiver @entity {
+  id: ID!
+  receiver: Bytes!
   allocPoint: BigInt!
 }
 
@@ -239,7 +245,7 @@ type Zap @entity {
   lockEndTime: BigInt!
   amount: BigInt!
   withdrawals: [ZapWithdrawal!]! @derivedFrom(field: "zap")
-  contractAddress:  Bytes!
+  contractAddress: Bytes!
 }
 
 type ZapWithdrawal @entity {

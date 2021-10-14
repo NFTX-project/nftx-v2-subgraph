@@ -2,7 +2,9 @@
   "network": "palm-mainnet",
   "startBlock": "1827367",
   "startBlockZaps": "1827374",
+  "startBlockSimpleFees": "0",
   "vaultFactory": "0xbCa69124712C2F0bD607d59370D2EcC6fFd92937",
   "stakingZap": "0x5eE78a5A46c4c90caa5898F5fBb14360bb2a9543",
+  "simpleFeeDistributor": "0x0000000000000000000000000000000000000000",
   "callFilterEnabled": "true"
 }
