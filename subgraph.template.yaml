@@ -42,9 +42,9 @@ dataSources:
           handler: handleNewEligibilityManager
         - event: NewVault(indexed uint256,address,address)
           handler: handleNewVault
-        - event: UpdateFactoryFees(uint256,uint256,uint256)
+        - event: UpdateFactoryFees(uint256,uint256,uint256,uint256,uint256)
           handler: handleFactoryFees
-        - event: UpdateVaultFees(uint256,uint256,uint256,uint256)
+        - event: UpdateVaultFees(uint256,uint256,uint256,uint256,uint256,uint256)
           handler: handleVaultFees
         - event:  DisableVaultFees(uint256)
           handler: handleDisableVaultFees

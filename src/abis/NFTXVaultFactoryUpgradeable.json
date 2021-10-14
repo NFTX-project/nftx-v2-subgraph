@@ -192,6 +192,18 @@
           "internalType": "uint256",
           "name": "targetRedeemFee",
           "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "randomSwapFee",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "targetSwapFee",
+          "type": "uint256"
         }
       ],
       "name": "UpdateFactoryFees",
@@ -222,6 +234,18 @@
           "indexed": false,
           "internalType": "uint256",
           "name": "targetRedeemFee",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "randomSwapFee",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "targetSwapFee",
           "type": "uint256"
         }
       ],
@@ -273,22 +297,23 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
+      "inputs": [],
       "name": "allVaults",
       "outputs": [
         {
-          "internalType": "address",
+          "internalType": "address[]",
           "name": "",
-          "type": "address"
+          "type": "address[]"
         }
       ],
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "assignFees",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -416,7 +441,33 @@
     },
     {
       "inputs": [],
+      "name": "factoryRandomSwapFee",
+      "outputs": [
+        {
+          "internalType": "uint64",
+          "name": "",
+          "type": "uint64"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "factoryTargetRedeemFee",
+      "outputs": [
+        {
+          "internalType": "uint64",
+          "name": "",
+          "type": "uint64"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "factoryTargetSwapFee",
       "outputs": [
         {
           "internalType": "uint64",
@@ -572,19 +623,29 @@
     {
       "inputs": [
         {
-          "internalType": "uint64",
+          "internalType": "uint256",
           "name": "mintFee",
-          "type": "uint64"
+          "type": "uint256"
         },
         {
-          "internalType": "uint64",
+          "internalType": "uint256",
           "name": "randomRedeemFee",
-          "type": "uint64"
+          "type": "uint256"
         },
         {
-          "internalType": "uint64",
+          "internalType": "uint256",
           "name": "targetRedeemFee",
-          "type": "uint64"
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "randomSwapFee",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "targetSwapFee",
+          "type": "uint256"
         }
       ],
       "name": "setFactoryFees",
@@ -649,19 +710,29 @@
           "type": "uint256"
         },
         {
-          "internalType": "uint64",
+          "internalType": "uint256",
           "name": "mintFee",
-          "type": "uint64"
+          "type": "uint256"
         },
         {
-          "internalType": "uint64",
+          "internalType": "uint256",
           "name": "randomRedeemFee",
-          "type": "uint64"
+          "type": "uint256"
         },
         {
-          "internalType": "uint64",
+          "internalType": "uint256",
           "name": "targetRedeemFee",
-          "type": "uint64"
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "randomSwapFee",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "targetSwapFee",
+          "type": "uint256"
         }
       ],
       "name": "setVaultFees",
@@ -725,7 +796,7 @@
       "inputs": [
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "vauldId",
           "type": "uint256"
         }
       ],
@@ -764,6 +835,16 @@
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -773,7 +854,7 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "asset",
+          "name": "assetAddress",
           "type": "address"
         }
       ],

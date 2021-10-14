@@ -102,19 +102,6 @@
       "inputs": [
         {
           "indexed": false,
-          "internalType": "uint256",
-          "name": "mintFee",
-          "type": "uint256"
-        }
-      ],
-      "name": "MintFeeUpdated",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
           "internalType": "uint256[]",
           "name": "nftIds",
           "type": "uint256[]"
@@ -152,19 +139,6 @@
         }
       ],
       "name": "OwnershipTransferred",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "randomRedeemFee",
-          "type": "uint256"
-        }
-      ],
-      "name": "RandomRedeemFeeUpdated",
       "type": "event"
     },
     {
@@ -227,19 +201,6 @@
         }
       ],
       "name": "Swapped",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "targetRedeemFee",
-          "type": "uint256"
-        }
-      ],
-      "name": "TargetRedeemFeeUpdated",
       "type": "event"
     },
     {
@@ -329,6 +290,19 @@
       "name": "__NFTXVault_init",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "allHoldings",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -506,19 +480,6 @@
     },
     {
       "inputs": [],
-      "name": "description",
-      "outputs": [
-        {
-          "internalType": "string",
-          "name": "",
-          "type": "string"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
       "name": "eligibilityStorage",
       "outputs": [
         {
@@ -571,7 +532,7 @@
     },
     {
       "inputs": [],
-      "name": "finalizeFund",
+      "name": "finalizeVault",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -785,8 +746,27 @@
     {
       "inputs": [
         {
-          "internalType": "address",
+          "internalType": "uint256",
+          "name": "holdingsIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "nftIdAt",
+      "outputs": [
+        {
+          "internalType": "uint256",
           "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "operator",
           "type": "address"
         },
         {
@@ -825,7 +805,7 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "",
+          "name": "operator",
           "type": "address"
         },
         {
@@ -864,7 +844,7 @@
       "inputs": [
         {
           "internalType": "address",
-          "name": "",
+          "name": "operator",
           "type": "address"
         },
         {
@@ -910,6 +890,19 @@
     {
       "inputs": [],
       "name": "randomRedeemFee",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "randomSwapFee",
       "outputs": [
         {
           "internalType": "uint256",
@@ -996,6 +989,16 @@
           "internalType": "uint256",
           "name": "_targetRedeemFee",
           "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_randomSwapFee",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_targetSwapFee",
+          "type": "uint256"
         }
       ],
       "name": "setFees",
@@ -1035,6 +1038,24 @@
         }
       ],
       "name": "setVaultFeatures",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "name_",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "symbol_",
+          "type": "string"
+        }
+      ],
+      "name": "setVaultMetadata",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -1149,6 +1170,32 @@
     },
     {
       "inputs": [],
+      "name": "targetSwapFee",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "totalHoldings",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "totalSupply",
       "outputs": [
         {
@@ -1241,6 +1288,39 @@
     },
     {
       "inputs": [],
+      "name": "vaultFees",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "vaultId",
       "outputs": [
         {
@@ -1251,6 +1331,58 @@
       ],
       "stateMutability": "view",
       "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "version",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "mintFee",
+          "type": "uint256"
+        }
+      ],
+      "name": "MintFeeUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "randomRedeemFee",
+          "type": "uint256"
+        }
+      ],
+      "name": "RandomRedeemFeeUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "targetRedeemFee",
+          "type": "uint256"
+        }
+      ],
+      "name": "TargetRedeemFeeUpdated",
+      "type": "event"
     }
   ]
 }
