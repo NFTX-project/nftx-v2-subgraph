@@ -8,6 +8,7 @@ import {
 } from '../types/NFTXSimpleFeeDistributor/NFTXSimpleFeeDistributor';
 import { getGlobal, getSimpleFeeReceiver } from './helpers';
 import { store } from '@graphprotocol/graph-ts';
+import { UpdateNFTXVaultFactory } from '../types/NFTXVaultFactoryUpgradeable/NFTXFeeDistributor';
 
 export function handleAddFeeReceiver(event: AddFeeReceiverEvent): void {
   let feeReceiverAddress = event.params.receiver;
@@ -63,5 +64,13 @@ export function handleUpdateLPStakingAddress(
 ): void {
   let global = getGlobal();
   global.lpStakingAddress = event.params.newLPStaking;
+  global.save();
+}
+
+export function handleUpdateNFTXVaultFactory(
+  event: UpdateNFTXVaultFactory,
+): void {
+  let global = getGlobal();
+  global.nftxVaultFactory = event.params.factory;
   global.save();
 }

@@ -3,8 +3,8 @@
   "startBlock": "9489161",
   "startBlockZaps": "9489167",
   "startBlockSimpleFees": "9489160",
-  "vaultFactory": "0x8c9ECD518C7805e82cd6DC148e1c8902cb5d3655",
-  "stakingZap": "0x98eF0c3310c337490cd5f15Fe7459c898B1D29ff",
+  "vaultFactory": "0xbbc53022af15bb973ad906577c84784c47c14371",
+  "stakingZap": "0x8E2C4c27E089709e1fb67089b28095Efe8936Fe1",
   "simpleFeeDistributor": "0x27Eb56BCe836f1068E12157D57C5083781eC3C22",
   "callFilterEnabled": "true"
 }
