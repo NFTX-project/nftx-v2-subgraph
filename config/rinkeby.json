@@ -1,10 +1,10 @@
 {
   "network": "rinkeby",
-  "startBlock": "9086085",
-  "startBlockZaps": "9086090",
-  "startBlockSimpleFees": "0",
+  "startBlock": "9489161",
+  "startBlockZaps": "9489167",
+  "startBlockSimpleFees": "9489160",
   "vaultFactory": "0x8c9ECD518C7805e82cd6DC148e1c8902cb5d3655",
   "stakingZap": "0x98eF0c3310c337490cd5f15Fe7459c898B1D29ff",
-  "simpleFeeDistributor": "0x0000000000000000000000000000000000000000",
+  "simpleFeeDistributor": "0x27Eb56BCe836f1068E12157D57C5083781eC3C22",
   "callFilterEnabled": "true"
 }
