@@ -103,6 +103,13 @@ export function handleNewVault(event: NewVaultEvent): void {
     ? ADDRESS_ZERO
     : feeDistributorAddressFromInstance.value;
 
+  let fee = getFee(vaultAddress);
+  fee.mintFee = vaultFactory.factoryMintFee();
+  fee.randomRedeemFee = vaultFactory.factoryRandomRedeemFee();
+  fee.targetRedeemFee = vaultFactory.factoryTargetRedeemFee();
+  fee.randomSwapFee = vaultFactory.factoryRandomRedeemFee();
+  fee.targetSwapFee = vaultFactory.factoryTargetSwapFee();
+
   newFeeDistributor(nftxVaultFactoryAddress, feeDistributorAddress);
 }
 
