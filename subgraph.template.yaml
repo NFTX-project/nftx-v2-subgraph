@@ -45,7 +45,7 @@ dataSources:
         - event: UpdateFactoryFees(uint256,uint256,uint256,uint256,uint256)
           handler: handleUpdateFactoryFees
         - event: UpdateVaultFees(uint256,uint256,uint256,uint256,uint256,uint256)
-          handler: handleVaultFees
+          handler: handleUpdateVaultFees
         - event:  DisableVaultFees(uint256)
           handler: handleDisableVaultFees
   - kind: ethereum/contract
@@ -240,6 +240,8 @@ templates:
           handler: handleMint
         - event: Redeemed(uint256[],uint256[],address)
           handler: handleRedeem
+        - event: Swapped(uint256[],uint256[],uint256[],uint256[],address)
+          handler: handleSwap
         - event: ManagerSet(address)
           handler: handleManagerSet
         - event: EnableMintUpdated(bool)

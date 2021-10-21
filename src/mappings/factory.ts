@@ -141,8 +141,8 @@ export function handleUpdateVaultFees(event: UpdateVaultFeesEvent): void {
   fee.mintFee = event.params.mintFee;
   fee.randomRedeemFee = event.params.randomRedeemFee;
   fee.targetRedeemFee = event.params.targetRedeemFee;
-  fee.randomRedeemFee = event.params.randomRedeemFee;
-  fee.targetRedeemFee = event.params.targetRedeemFee;
+  fee.randomSwapFee = event.params.randomSwapFee;
+  fee.targetSwapFee = event.params.targetSwapFee;
   fee.save();
 }
 
