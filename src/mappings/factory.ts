@@ -109,6 +109,7 @@ export function handleNewVault(event: NewVaultEvent): void {
   fee.targetRedeemFee = vaultFactory.factoryTargetRedeemFee();
   fee.randomSwapFee = vaultFactory.factoryRandomRedeemFee();
   fee.targetSwapFee = vaultFactory.factoryTargetSwapFee();
+  fee.save();
 
   newFeeDistributor(nftxVaultFactoryAddress, feeDistributorAddress);
 }
