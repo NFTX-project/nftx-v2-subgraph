@@ -250,12 +250,10 @@ templates:
           handler: handleEnableRandomRedeemUpdated
         - event: EnableTargetRedeemUpdated(bool)
           handler: handleEnableTargetRedeemUpdated
-        - event: MintFeeUpdated(uint256)
-          handler: handleMintFeeUpdated
-        - event: RandomRedeemFeeUpdated(uint256)
-          handler: handleRandomRedeemFeeUpdated
-        - event: TargetRedeemFeeUpdated(uint256)
-          handler: handleTargetRedeemFeeUpdated
+        - event: EnableRandomSwapUpdated(bool)
+          handler: handleEnableRandomSwapUpdated
+        - event: EnableTargetSwapUpdated(bool)
+          handler: handleEnableTargetSwapUpdated
         - event: EligibilityDeployed(uint256,address)
           handler: handleEligibilityDeployed
       blockHandlers:

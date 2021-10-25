@@ -83,7 +83,8 @@ type Feature @entity {
   enableMint: Boolean!
   enableRandomRedeem: Boolean!
   enableTargetRedeem: Boolean!
-  enableSwap: Boolean!
+  enableRandomSwap: Boolean!
+  enableTargetSwap: Boolean!
 }
 
 type Asset @entity {

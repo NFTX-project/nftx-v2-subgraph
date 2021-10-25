@@ -139,7 +139,8 @@ export function getFeature(featuresAddress: Address): Feature {
     features.enableMint = false;
     features.enableRandomRedeem = false;
     features.enableTargetRedeem = false;
-    features.enableSwap = false;
+    features.enableRandomSwap = false;
+    features.enableTargetSwap = false;
   }
   return features as Feature;
 }

@@ -81,7 +81,33 @@
           "type": "bool"
         }
       ],
+      "name": "EnableRandomSwapUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "enabled",
+          "type": "bool"
+        }
+      ],
       "name": "EnableTargetRedeemUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "enabled",
+          "type": "bool"
+        }
+      ],
+      "name": "EnableTargetSwapUpdated",
       "type": "event"
     },
     {
@@ -519,7 +545,33 @@
     },
     {
       "inputs": [],
+      "name": "enableRandomSwap",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "enableTargetRedeem",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "enableTargetSwap",
       "outputs": [
         {
           "internalType": "bool",
@@ -1035,6 +1087,16 @@
           "internalType": "bool",
           "name": "_enableTargetRedeem",
           "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "_enableRandomSwap",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "_enableTargetSwap",
+          "type": "bool"
         }
       ],
       "name": "setVaultFeatures",
@@ -1344,45 +1406,6 @@
       ],
       "stateMutability": "pure",
       "type": "function"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "mintFee",
-          "type": "uint256"
-        }
-      ],
-      "name": "MintFeeUpdated",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "randomRedeemFee",
-          "type": "uint256"
-        }
-      ],
-      "name": "RandomRedeemFeeUpdated",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "targetRedeemFee",
-          "type": "uint256"
-        }
-      ],
-      "name": "TargetRedeemFeeUpdated",
-      "type": "event"
     }
   ]
 }
