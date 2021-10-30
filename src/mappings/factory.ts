@@ -103,14 +103,17 @@ export function handleNewVault(event: NewVaultEvent): void {
     ? ADDRESS_ZERO
     : feeDistributorAddressFromInstance.value;
 
-  let fee = getFee(vaultAddress);
-  fee.mintFee = vaultFactory.factoryMintFee();
-  fee.randomRedeemFee = vaultFactory.factoryRandomRedeemFee();
-  fee.targetRedeemFee = vaultFactory.factoryTargetRedeemFee();
-  fee.randomSwapFee = vaultFactory.factoryRandomRedeemFee();
-  fee.targetSwapFee = vaultFactory.factoryTargetSwapFee();
-  fee.save();
-
+  // check if factory mint fees exist
+  let factoryMintFeesFromInstance = vaultFactory.try_factoryMintFee();
+  if (!factoryMintFeesFromInstance.reverted) {
+    let fee = getFee(vaultAddress);
+    fee.mintFee = vaultFactory.factoryMintFee();
+    fee.randomRedeemFee = vaultFactory.factoryRandomRedeemFee();
+    fee.targetRedeemFee = vaultFactory.factoryTargetRedeemFee();
+    fee.randomSwapFee = vaultFactory.factoryRandomRedeemFee();
+    fee.targetSwapFee = vaultFactory.factoryTargetSwapFee();
+    fee.save();
+  }
   newFeeDistributor(nftxVaultFactoryAddress, feeDistributorAddress);
 }
 
