@@ -149,6 +149,7 @@ export function handleUpdateVaultFees(event: UpdateVaultFeesEvent): void {
   let vaultId = event.params.vaultId;
   let vaultAddress = getVaultAddress(vaultId, event.address);
   let fee = getFee(vaultAddress);
+  fee.usesFactoryFees = false;
   fee.mintFee = event.params.mintFee;
   fee.randomRedeemFee = event.params.randomRedeemFee;
   fee.targetRedeemFee = event.params.targetRedeemFee;
@@ -161,8 +162,6 @@ export function handleDisableVaultFees(event: DisableVaultFeesEvent): void {
   let vaultId = event.params.vaultId;
   let vaultAddress = getVaultAddress(vaultId, event.address);
   let fee = getFee(vaultAddress);
-  fee.mintFee = BigInt.fromI32(0);
-  fee.randomRedeemFee = BigInt.fromI32(0);
-  fee.targetRedeemFee = BigInt.fromI32(0);
+  fee.usesFactoryFees = true;
   fee.save();
 }

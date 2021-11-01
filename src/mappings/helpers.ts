@@ -122,6 +122,7 @@ export function getFee(feesAddress: Address): Fee {
   let fees = Fee.load(feesAddress.toHexString());
   if (fees == null) {
     fees = new Fee(feesAddress.toHexString());
+    fees.usesFactoryFees = true;
     fees.mintFee = BigInt.fromI32(0);
     fees.randomRedeemFee = BigInt.fromI32(0);
     fees.targetRedeemFee = BigInt.fromI32(0);

@@ -69,6 +69,7 @@ type Holding @entity {
 type Fee @entity {
   id: ID! # address
   vault: Vault! @derivedFrom(field: "fees")
+  usesFactoryFees: Boolean!
   mintFee: BigInt!
   randomRedeemFee: BigInt!
   targetRedeemFee: BigInt!
