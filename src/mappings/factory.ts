@@ -148,8 +148,12 @@ export function handleUpdateFactoryFees(event: UpdateFactoryFeesEvent): void {
 export function handleUpdateVaultFees(event: UpdateVaultFeesEvent): void {
   let vaultId = event.params.vaultId;
   let vaultAddress = getVaultAddress(vaultId, event.address);
+  let vault = getVault(vaultAddress);
   let fee = getFee(vaultAddress);
-  fee.usesFactoryFees = false;
+
+  vault.usesFactoryFees = false;
+  vault.save();
+
   fee.mintFee = event.params.mintFee;
   fee.randomRedeemFee = event.params.randomRedeemFee;
   fee.targetRedeemFee = event.params.targetRedeemFee;
@@ -161,7 +165,7 @@ export function handleUpdateVaultFees(event: UpdateVaultFeesEvent): void {
 export function handleDisableVaultFees(event: DisableVaultFeesEvent): void {
   let vaultId = event.params.vaultId;
   let vaultAddress = getVaultAddress(vaultId, event.address);
-  let fee = getFee(vaultAddress);
-  fee.usesFactoryFees = true;
-  fee.save();
+  let vault = getVault(vaultAddress);
+  vault.usesFactoryFees = true;
+  vault.save();
 }

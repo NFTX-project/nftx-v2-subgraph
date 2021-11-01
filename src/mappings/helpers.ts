@@ -122,7 +122,6 @@ export function getFee(feesAddress: Address): Fee {
   let fees = Fee.load(feesAddress.toHexString());
   if (fees == null) {
     fees = new Fee(feesAddress.toHexString());
-    fees.usesFactoryFees = true;
     fees.mintFee = BigInt.fromI32(0);
     fees.randomRedeemFee = BigInt.fromI32(0);
     fees.targetRedeemFee = BigInt.fromI32(0);
@@ -211,6 +210,7 @@ export function getVault(vaultAddress: Address): Vault {
     vault.totalSwaps = BigInt.fromI32(0);
     vault.totalRedeems = BigInt.fromI32(0);
     vault.totalHoldings = BigInt.fromI32(0);
+    vault.usesFactoryFees = true;
   }
 
   return vault as Vault;

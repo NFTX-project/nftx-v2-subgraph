@@ -26,6 +26,7 @@ type Vault @entity {
   redeems: [Redeem!]! @derivedFrom(field: "vault")
   lpStakingPool: Pool
   fees: Fee!
+  usesFactoryFees: Boolean!
   features: Feature!
   feeReceivers: [FeeReceiver!]! @derivedFrom(field: "vault")
   feeReceipts: [FeeReceipt!]! @derivedFrom(field: "vault")
@@ -69,7 +70,6 @@ type Holding @entity {
 type Fee @entity {
   id: ID! # address
   vault: Vault! @derivedFrom(field: "fees")
-  usesFactoryFees: Boolean!
   mintFee: BigInt!
   randomRedeemFee: BigInt!
   targetRedeemFee: BigInt!
