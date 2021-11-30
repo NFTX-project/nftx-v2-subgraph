@@ -188,6 +188,37 @@ type StakedLpUser @entity {
   withdrawals: [Withdrawal!]! @derivedFrom(field: "user")
 }
 
+type StakedIpUser @entity {
+  id: ID! # user address
+  activePools: [IpPool!]!
+}
+
+type IpPool @entity {
+  id: ID!
+  lockEndTime: BigInt
+  balanceVToken: BigInt!
+  deposits: [IpDeposit!]! @derivedFrom(field: "user")
+  withdrawals: [IpWithdrawal!]! @derivedFrom(field: "user")
+}
+
+type IpDeposit @entity {
+  id: ID!
+  user: StakedIpUser!
+  vault: Vault!
+  date: BigInt!
+  amount: BigInt!
+  amountVToken: BigInt!
+}
+
+type IpWithdrawal @entity {
+  id: ID!
+  user: StakedIpUser!
+  vault: Vault!
+  date: BigInt!
+  amount: BigInt!
+  amountVToken: BigInt!
+}
+
 type Reward @entity {
   id: ID! # tx
   date: BigInt!
