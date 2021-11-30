@@ -75,17 +75,18 @@ export function getToken(tokenAddress: Address): Token {
   let token = Token.load(tokenAddress.toHexString());
   if (token == null) {
     token = new Token(tokenAddress.toHexString());
+    let erc20 = ERC20Metadata.bind(tokenAddress);
+    let symbol = erc20.try_symbol();
+    let name = erc20.try_name();
+    let totalSupply = erc20.try_totalSupply();
+  
+    token.symbol = symbol.reverted ? '' : symbol.value;
+    token.name = name.reverted ? '' : name.value;
+    token.totalSupply = totalSupply.reverted
+      ? BigInt.fromI32(0)
+      : totalSupply.value;
+    token.save()
   }
-  let erc20 = ERC20Metadata.bind(tokenAddress);
-  let symbol = erc20.try_symbol();
-  let name = erc20.try_name();
-  let totalSupply = erc20.try_totalSupply();
-
-  token.symbol = symbol.reverted ? '' : symbol.value;
-  token.name = name.reverted ? '' : name.value;
-  token.totalSupply = totalSupply.reverted
-    ? BigInt.fromI32(0)
-    : totalSupply.value;
   return token as Token;
 }
 
@@ -105,6 +106,7 @@ export function getFee(feesAddress: Address): Fee {
     fees.randomRedeemFee = BigInt.fromI32(0);
     fees.targetRedeemFee = BigInt.fromI32(0);
     fees.swapFee = BigInt.fromI32(0);
+    fees.save();
   }
   return fees as Fee;
 }
@@ -170,7 +172,6 @@ export function getVault(vaultAddress: Address): Vault {
 
     let fees = getFee(vaultAddress);
     vault.fees = fees.id;
-    fees.save();
 
     let features = getFeature(vaultAddress);
     vault.features = features.id;
@@ -235,6 +236,7 @@ export function getPool(poolAddress: Address, blockNumber: BigInt): Pool {
     pool.deployBlock = blockNumber;
     pool.totalRewards = BigInt.fromI32(0);
     // vault and tokens not set
+    pool.save();
   }
   return pool as Pool;
 }

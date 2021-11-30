@@ -35,18 +35,15 @@ export function handleRewardWithdrawn(event: RewardWithdrawnEvent): void {
 
   pool.totalRewards = pool.totalRewards.plus(amount);
 
-  let rewardToken = getToken(
+  getToken(
     Address.fromHexString(pool.rewardToken) as Address,
   );
-  rewardToken.save();
 
-  let stakingToken = getToken(
+  getToken(
     Address.fromHexString(pool.stakingToken) as Address,
   );
-  stakingToken.save();
 
-  let dividendToken = getToken(poolAddress);
-  dividendToken.save();
+  getToken(poolAddress);
 
   pool.save();
 }
@@ -75,6 +72,7 @@ export function handleTransfer(event: TransferEvent): void {
     let userAddress = event.params.from;
     let user = getStakedLpUser(userAddress);
     let poolInstance = RewardDistributionToken.bind(poolAddress);
+    // TODO: This eth-call could be avoided by keeping track of the balance in the database
     let balanceFromInstance = poolInstance.try_balanceOf(userAddress);
     let balance = balanceFromInstance.reverted
       ? BigInt.fromI32(0)
@@ -122,6 +120,4 @@ export function handleTransfer(event: TransferEvent): void {
 
   let dividendToken = getToken(poolAddress);
   dividendToken.save();
-
-  pool.save();
 }
