@@ -2,10 +2,19 @@ import {
   NewVault as NewVaultEvent,
   NewFeeDistributor as NewFeeDistributorEvent,
   NewEligibilityManager as NewEligibilityManagerEvent,
+  UpdateFactoryFees as UpdateFactoryFeesEvent,
+  UpdateVaultFees as UpdateVaultFeesEvent,
+  DisableVaultFees as DisableVaultFeesEvent,
   NFTXVaultFactoryUpgradeable as NFTXVaultFactory,
 } from '../types/NFTXVaultFactoryUpgradeable/NFTXVaultFactoryUpgradeable';
 import { NFTXFeeDistributor } from '../types/NFTXVaultFactoryUpgradeable/NFTXFeeDistributor';
-import { getGlobal, getVault, getVaultCreator } from './helpers';
+import {
+  getFee,
+  getGlobal,
+  getGlobalFee,
+  getVault,
+  getVaultCreator,
+} from './helpers';
 import {
   NFTXVaultUpgradeable as NFTXVaultTemplate,
   NFTXFeeDistributor as NFTXFeeDistributorTemplate,
@@ -94,5 +103,69 @@ export function handleNewVault(event: NewVaultEvent): void {
     ? ADDRESS_ZERO
     : feeDistributorAddressFromInstance.value;
 
+  // check if factory mint fees exist
+  let factoryMintFeesFromInstance = vaultFactory.try_factoryMintFee();
+  if (!factoryMintFeesFromInstance.reverted) {
+    let fee = getFee(vaultAddress);
+    fee.mintFee = vaultFactory.factoryMintFee();
+    fee.randomRedeemFee = vaultFactory.factoryRandomRedeemFee();
+    fee.targetRedeemFee = vaultFactory.factoryTargetRedeemFee();
+    fee.randomSwapFee = vaultFactory.factoryRandomRedeemFee();
+    fee.targetSwapFee = vaultFactory.factoryTargetSwapFee();
+    fee.save();
+  }
   newFeeDistributor(nftxVaultFactoryAddress, feeDistributorAddress);
+}
+
+function getVaultAddress(
+  vaultId: BigInt,
+  vaultFactoryAddress: Address,
+): Address {
+  let vaultFactoryInstance = NFTXVaultFactory.bind(vaultFactoryAddress);
+  let vaultAddressFromInstance = vaultFactoryInstance.try_vault(vaultId);
+  let vaultAddress = vaultAddressFromInstance.reverted
+    ? ADDRESS_ZERO
+    : vaultAddressFromInstance.value;
+
+  return vaultAddress;
+}
+
+export function handleUpdateFactoryFees(event: UpdateFactoryFeesEvent): void {
+  let global = getGlobal();
+  global.fees = 'global';
+
+  let fees = getGlobalFee();
+  fees.mintFee = event.params.mintFee;
+  fees.randomRedeemFee = event.params.randomRedeemFee;
+  fees.targetRedeemFee = event.params.targetRedeemFee;
+  fees.randomSwapFee = event.params.randomSwapFee;
+  fees.targetSwapFee = event.params.targetSwapFee;
+  fees.save();
+
+  global.save();
+}
+
+export function handleUpdateVaultFees(event: UpdateVaultFeesEvent): void {
+  let vaultId = event.params.vaultId;
+  let vaultAddress = getVaultAddress(vaultId, event.address);
+  let vault = getVault(vaultAddress);
+  let fee = getFee(vaultAddress);
+
+  vault.usesFactoryFees = false;
+  vault.save();
+
+  fee.mintFee = event.params.mintFee;
+  fee.randomRedeemFee = event.params.randomRedeemFee;
+  fee.targetRedeemFee = event.params.targetRedeemFee;
+  fee.randomSwapFee = event.params.randomSwapFee;
+  fee.targetSwapFee = event.params.targetSwapFee;
+  fee.save();
+}
+
+export function handleDisableVaultFees(event: DisableVaultFeesEvent): void {
+  let vaultId = event.params.vaultId;
+  let vaultAddress = getVaultAddress(vaultId, event.address);
+  let vault = getVault(vaultAddress);
+  vault.usesFactoryFees = true;
+  vault.save();
 }

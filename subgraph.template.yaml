@@ -42,6 +42,55 @@ dataSources:
           handler: handleNewEligibilityManager
         - event: NewVault(indexed uint256,address,address)
           handler: handleNewVault
+        - event: UpdateFactoryFees(uint256,uint256,uint256,uint256,uint256)
+          handler: handleUpdateFactoryFees
+        - event: UpdateVaultFees(uint256,uint256,uint256,uint256,uint256,uint256)
+          handler: handleUpdateVaultFees
+        - event:  DisableVaultFees(uint256)
+          handler: handleDisableVaultFees
+  - kind: ethereum/contract
+    name: NFTXSimpleFeeDistributor
+    # prettier-ignore
+    network: {{network}}
+    source:
+      address: '{{simpleFeeDistributor}}'
+      abi: NFTXSimpleFeeDistributor
+      # prettier-ignore
+      startBlock: {{startBlockSimpleFees}}
+    mapping:
+      file: ./src/mappings/simpleFeeDistributor.ts
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Vault
+        - FeeReceiver
+      abis:
+        - name: NFTXVaultFactoryUpgradeable
+          file: ./src/abis/NFTXVaultFactoryUpgradeable.json
+        - name: NFTXSimpleFeeDistributor
+          file: ./src/abis/NFTXSimpleFeeDistributor.json
+        - name: NFTXVaultUpgradeable
+          file: ./src/abis/NFTXVaultUpgradeable.json
+        - name: ERC20Metadata
+          file: ./src/abis/ERC20Metadata.json
+        - name: ERC677Metadata
+          file: ./src/abis/ERC677Metadata.json
+      eventHandlers:
+        - event: AddFeeReceiver(address,uint256)
+          handler: handleAddFeeReceiver
+        - event: UpdateFeeReceiverAlloc(address,uint256)
+          handler: handleUpdateFeeReceiverAlloc
+        - event: UpdateFeeReceiverAddress(address,address)
+          handler: handleUpdateFeeReceiverAddress
+        - event: RemoveFeeReceiver(address)
+          handler: handleRemoveFeeReceiver
+        - event: UpdateTreasuryAddress(address)
+          handler: handleUpdateTreasuryAddress
+        - event: UpdateLPStakingAddress(address)
+          handler: handleUpdateLPStakingAddress
+        - event: UpdateNFTXVaultFactory(address)
+          handler: handleUpdateNFTXVaultFactory
   - kind: ethereum/contract
     name: NFTXStakingZap
     # prettier-ignore
@@ -191,6 +240,8 @@ templates:
           handler: handleMint
         - event: Redeemed(uint256[],uint256[],address)
           handler: handleRedeem
+        - event: Swapped(uint256[],uint256[],uint256[],uint256[],address)
+          handler: handleSwap
         - event: ManagerSet(address)
           handler: handleManagerSet
         - event: EnableMintUpdated(bool)
@@ -199,12 +250,10 @@ templates:
           handler: handleEnableRandomRedeemUpdated
         - event: EnableTargetRedeemUpdated(bool)
           handler: handleEnableTargetRedeemUpdated
-        - event: MintFeeUpdated(uint256)
-          handler: handleMintFeeUpdated
-        - event: RandomRedeemFeeUpdated(uint256)
-          handler: handleRandomRedeemFeeUpdated
-        - event: TargetRedeemFeeUpdated(uint256)
-          handler: handleTargetRedeemFeeUpdated
+        - event: EnableRandomSwapUpdated(bool)
+          handler: handleEnableRandomSwapUpdated
+        - event: EnableTargetSwapUpdated(bool)
+          handler: handleEnableTargetSwapUpdated
         - event: EligibilityDeployed(uint256,address)
           handler: handleEligibilityDeployed
       blockHandlers:

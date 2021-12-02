@@ -8,6 +8,7 @@ type Global @entity {
   nftxVaultFactory: Bytes!
   feeDistributorAddress: Bytes!
   eligibilityManagerAddress: Bytes!
+  fees: Fee!
 }
 
 type Vault @entity {
@@ -25,6 +26,7 @@ type Vault @entity {
   redeems: [Redeem!]! @derivedFrom(field: "vault")
   lpStakingPool: Pool
   fees: Fee!
+  usesFactoryFees: Boolean!
   features: Feature!
   feeReceivers: [FeeReceiver!]! @derivedFrom(field: "vault")
   feeReceipts: [FeeReceipt!]! @derivedFrom(field: "vault")
@@ -72,6 +74,8 @@ type Fee @entity {
   randomRedeemFee: BigInt!
   targetRedeemFee: BigInt!
   swapFee: BigInt!
+  randomSwapFee: BigInt!
+  targetSwapFee: BigInt!
 }
 
 type Feature @entity {
@@ -80,7 +84,8 @@ type Feature @entity {
   enableMint: Boolean!
   enableRandomRedeem: Boolean!
   enableTargetRedeem: Boolean!
-  enableSwap: Boolean!
+  enableRandomSwap: Boolean!
+  enableTargetSwap: Boolean!
 }
 
 type Asset @entity {
@@ -97,7 +102,13 @@ type Manager @entity {
 
 type FeeReceiver @entity {
   id: ID!
-  vault: Vault!
+  vault: Vault
+  allocPoint: BigInt!
+}
+
+type SimpleFeeReceiver @entity {
+  id: ID!
+  receiver: Bytes!
   allocPoint: BigInt!
 }
 
@@ -236,7 +247,7 @@ type Zap @entity {
   lockEndTime: BigInt!
   amount: BigInt!
   withdrawals: [ZapWithdrawal!]! @derivedFrom(field: "zap")
-  contractAddress:  Bytes!
+  contractAddress: Bytes!
 }
 
 type ZapWithdrawal @entity {

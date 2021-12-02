@@ -8,9 +8,8 @@ import {
   EnableMintUpdated as EnableMintUpdatedEvent,
   EnableRandomRedeemUpdated as EnableRandomRedeemUpdatedEvent,
   EnableTargetRedeemUpdated as EnableTargetRedeemUpdatedEvent,
-  MintFeeUpdated as MintFeeUpdatedEvent,
-  RandomRedeemFeeUpdated as RandomRedeemFeeUpdatedEvent,
-  TargetRedeemFeeUpdated as TargetRedeemFeeUpdatedEvent,
+  EnableRandomSwapUpdated as EnableRandomSwapUpdatedEvent,
+  EnableTargetSwapUpdated as EnableTargetSwapUpdatedEvent,
   EligibilityDeployed as EligibilityDeployedEvent,
 } from '../types/templates/NFTXVaultUpgradeable/NFTXVaultUpgradeable';
 import { EligibilityModule as EligibilityModuleTemplate } from '../types/templates';
@@ -41,9 +40,7 @@ import { SECS_PER_DAY, SECS_PER_HOUR, getDay, getHour } from './datetime';
 export function handleTransfer(event: TransferEvent): void {
   let global = getGlobal();
   let vaultAddress = event.address;
-  if (
-    event.params.from == global.feeDistributorAddress
-  ) {
+  if (event.params.from == global.feeDistributorAddress) {
     let feeReceipt = getFeeReceipt(event.transaction.hash);
     feeReceipt.vault = vaultAddress.toHexString();
     feeReceipt.token = vaultAddress.toHexString();
@@ -220,9 +217,6 @@ export function handleManagerSet(event: ManagerSetEvent): void {
 export function handleEnableMintUpdated(event: EnableMintUpdatedEvent): void {
   let features = getFeature(event.address);
   features.enableMint = event.params.enabled;
-  features.enableSwap =
-    features.enableMint &&
-    (features.enableRandomRedeem || features.enableTargetRedeem);
   features.save();
 }
 
@@ -231,9 +225,6 @@ export function handleEnableRandomRedeemUpdated(
 ): void {
   let features = getFeature(event.address);
   features.enableRandomRedeem = event.params.enabled;
-  features.enableSwap =
-    features.enableMint &&
-    (features.enableRandomRedeem || features.enableTargetRedeem);
   features.save();
 }
 
@@ -242,32 +233,19 @@ export function handleEnableTargetRedeemUpdated(
 ): void {
   let features = getFeature(event.address);
   features.enableTargetRedeem = event.params.enabled;
-  features.enableSwap =
-    features.enableMint &&
-    (features.enableRandomRedeem || features.enableTargetRedeem);
   features.save();
 }
 
-export function handleMintFeeUpdated(event: MintFeeUpdatedEvent): void {
-  let fees = getFee(event.address);
-  fees.mintFee = event.params.mintFee;
-  fees.save();
+export function handleEnableRandomSwapUpdated(event: EnableRandomSwapUpdatedEvent): void {
+  let features = getFeature(event.address);
+  features.enableRandomSwap = event.params.enabled;
+  features.save();
 }
 
-export function handleRandomRedeemFeeUpdated(
-  event: RandomRedeemFeeUpdatedEvent,
-): void {
-  let fees = getFee(event.address);
-  fees.randomRedeemFee = event.params.randomRedeemFee;
-  fees.save();
-}
-
-export function handleTargetRedeemFeeUpdated(
-  event: TargetRedeemFeeUpdatedEvent,
-): void {
-  let fees = getFee(event.address);
-  fees.targetRedeemFee = event.params.targetRedeemFee;
-  fees.save();
+export function handleEnableTargetSwapUpdated(event: EnableTargetSwapUpdatedEvent): void {
+  let features = getFeature(event.address);
+  features.enableTargetSwap = event.params.enabled;
+  features.save();
 }
 
 var ONE_DAY = BigInt.fromI32(SECS_PER_DAY);

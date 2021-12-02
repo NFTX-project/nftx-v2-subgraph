@@ -16,6 +16,7 @@ import {
   Feature,
   Vault,
   FeeReceiver,
+  SimpleFeeReceiver,
   FeeReceipt,
   Pool,
   User,
@@ -52,6 +53,11 @@ export function getGlobal(): Global {
     global.nftxVaultFactory = ADDRESS_ZERO;
     global.feeDistributorAddress = ADDRESS_ZERO;
     global.eligibilityManagerAddress = ADDRESS_ZERO;
+
+    let fees = getGlobalFee();
+    fees.save();
+
+    global.fees = 'global';
   }
   return global as Global;
 }
@@ -97,6 +103,21 @@ export function getManager(managerAddress: Address): Manager {
   return manager as Manager;
 }
 
+export function getGlobalFee(): Fee {
+  let feeId = 'global';
+  let fees = Fee.load(feeId);
+  if (fees == null) {
+    fees = new Fee(feeId);
+    fees.mintFee = BigInt.fromI32(0);
+    fees.randomRedeemFee = BigInt.fromI32(0);
+    fees.targetRedeemFee = BigInt.fromI32(0);
+    fees.swapFee = BigInt.fromI32(0);
+    fees.randomSwapFee = BigInt.fromI32(0);
+    fees.targetSwapFee = BigInt.fromI32(0);
+  }
+  return fees as Fee;
+}
+
 export function getFee(feesAddress: Address): Fee {
   let fees = Fee.load(feesAddress.toHexString());
   if (fees == null) {
@@ -105,6 +126,8 @@ export function getFee(feesAddress: Address): Fee {
     fees.randomRedeemFee = BigInt.fromI32(0);
     fees.targetRedeemFee = BigInt.fromI32(0);
     fees.swapFee = BigInt.fromI32(0);
+    fees.randomSwapFee = BigInt.fromI32(0);
+    fees.targetSwapFee = BigInt.fromI32(0);
   }
   return fees as Fee;
 }
@@ -116,7 +139,8 @@ export function getFeature(featuresAddress: Address): Feature {
     features.enableMint = false;
     features.enableRandomRedeem = false;
     features.enableTargetRedeem = false;
-    features.enableSwap = false;
+    features.enableRandomSwap = false;
+    features.enableTargetSwap = false;
   }
   return features as Feature;
 }
@@ -186,6 +210,7 @@ export function getVault(vaultAddress: Address): Vault {
     vault.totalSwaps = BigInt.fromI32(0);
     vault.totalRedeems = BigInt.fromI32(0);
     vault.totalHoldings = BigInt.fromI32(0);
+    vault.usesFactoryFees = true;
   }
 
   return vault as Vault;
@@ -197,6 +222,19 @@ export function getVaultCreator(address: Address): VaultCreator {
     vaultCreator = new VaultCreator(address.toHexString());
   }
   return vaultCreator as VaultCreator;
+}
+
+export function getSimpleFeeReceiver(
+  feeReceiverAddress: Address,
+): SimpleFeeReceiver {
+  let feeReceiverId = feeReceiverAddress.toHexString();
+  let feeReceiver = SimpleFeeReceiver.load(feeReceiverId);
+  if (feeReceiver == null) {
+    feeReceiver = new SimpleFeeReceiver(feeReceiverId);
+    feeReceiver.receiver = feeReceiverAddress;
+    feeReceiver.allocPoint = BigInt.fromI32(0);
+  }
+  return feeReceiver as SimpleFeeReceiver;
 }
 
 export function getFeeReceiver(
@@ -263,13 +301,22 @@ export function getSwap(txHash: Bytes): Swap {
   return swap as Swap;
 }
 
-export function getZap(vaultId: BigInt, userAddress: Address, contractAddress: Address): Zap {
-  let zapId = vaultId.toHexString() + '-' + userAddress.toHexString() + '-' + contractAddress.toHexString().substr(2, 6);
+export function getZap(
+  vaultId: BigInt,
+  userAddress: Address,
+  contractAddress: Address,
+): Zap {
+  let zapId =
+    vaultId.toHexString() +
+    '-' +
+    userAddress.toHexString() +
+    '-' +
+    contractAddress.toHexString().substr(2, 6);
   let zap = Zap.load(zapId);
   if (zap == null) {
     zap = new Zap(zapId);
     zap.amount = BigInt.fromI32(0);
-    zap.contractAddress = contractAddress
+    zap.contractAddress = contractAddress;
   }
   return zap as Zap;
 }
@@ -404,7 +451,7 @@ export function addToHoldings(
 }
 
 /**
- * Ensures that 
+ * Ensures that
  */
 export function transformMintAmounts(
   vaultAddress: Address,

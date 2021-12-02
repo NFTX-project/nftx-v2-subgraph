@@ -131,12 +131,112 @@
     {
       "inputs": [
         {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "stakingToken",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "rewardToken",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct NFTXLPStaking.StakingPool",
+          "name": "pool",
+          "type": "tuple"
+        }
+      ],
+      "name": "_oldRewardDistributionTokenAddr",
+      "outputs": [
+        {
+          "internalType": "contract IRewardDistributionToken",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "stakingToken",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "rewardToken",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct NFTXLPStaking.StakingPool",
+          "name": "pool",
+          "type": "tuple"
+        }
+      ],
+      "name": "_rewardDistributionTokenAddr",
+      "outputs": [
+        {
+          "internalType": "contract TimelockRewardDistributionTokenImpl",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "stakingToken",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "rewardToken",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct NFTXLPStaking.StakingPool",
+          "name": "pool",
+          "type": "tuple"
+        }
+      ],
+      "name": "_unusedRewardDistributionTokenAddr",
+      "outputs": [
+        {
+          "internalType": "contract IRewardDistributionToken",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "uint256",
           "name": "vaultId",
           "type": "uint256"
         }
       ],
       "name": "addPoolForVault",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "assignNewImpl",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -163,6 +263,19 @@
         }
       ],
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "vaultIds",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "claimMultipleRewards",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -240,19 +353,38 @@
           "type": "uint256"
         }
       ],
+      "name": "emergencyMigrate",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "vaultId",
+          "type": "uint256"
+        }
+      ],
       "name": "exit",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "inputs": [],
-      "name": "feeDistributor",
-      "outputs": [
+      "inputs": [
         {
-          "internalType": "contract INFTXFeeDistributor",
+          "internalType": "address",
           "name": "",
           "type": "address"
+        }
+      ],
+      "name": "isGuardian",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
         }
       ],
       "stateMutability": "view",
@@ -278,11 +410,86 @@
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "vaultId",
+          "type": "uint256"
+        }
+      ],
+      "name": "newRewardDistributionToken",
+      "outputs": [
+        {
+          "internalType": "contract TimelockRewardDistributionTokenImpl",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "newTimelockRewardDistTokenImpl",
+      "outputs": [
+        {
+          "internalType": "contract TimelockRewardDistributionTokenImpl",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "nftxVaultFactory",
       "outputs": [
         {
           "internalType": "contract INFTXVaultFactory",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "vaultId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "addr",
+          "type": "address"
+        }
+      ],
+      "name": "oldBalanceOf",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "vaultId",
+          "type": "uint256"
+        }
+      ],
+      "name": "oldRewardDistributionToken",
+      "outputs": [
+        {
+          "internalType": "address",
           "name": "",
           "type": "address"
         }
@@ -365,7 +572,7 @@
       "name": "rewardDistTokenImpl",
       "outputs": [
         {
-          "internalType": "contract RewardDistributionTokenUpgradeable",
+          "internalType": "contract IRewardDistributionToken",
           "name": "",
           "type": "address"
         }
@@ -384,7 +591,7 @@
       "name": "rewardDistributionToken",
       "outputs": [
         {
-          "internalType": "contract RewardDistributionTokenUpgradeable",
+          "internalType": "contract IRewardDistributionToken",
           "name": "",
           "type": "address"
         }
@@ -395,12 +602,17 @@
     {
       "inputs": [
         {
-          "internalType": "uint256",
-          "name": "vaultId",
-          "type": "uint256"
+          "internalType": "address",
+          "name": "stakingToken",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "rewardToken",
+          "type": "address"
         }
       ],
-      "name": "safeRewardDistributionToken",
+      "name": "rewardDistributionTokenAddr",
       "outputs": [
         {
           "internalType": "address",
@@ -409,19 +621,6 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "newDistributor",
-          "type": "address"
-        }
-      ],
-      "name": "setFeeDistributor",
-      "outputs": [],
-      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -484,6 +683,34 @@
     {
       "inputs": [
         {
+          "internalType": "uint256",
+          "name": "vaultId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "account",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "timelockLength",
+          "type": "uint256"
+        }
+      ],
+      "name": "timelockDepositFor",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "address",
           "name": "newOwner",
           "type": "address"
@@ -505,6 +732,49 @@
       "name": "unpause",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "vaultId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "addr",
+          "type": "address"
+        }
+      ],
+      "name": "unusedBalanceOf",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "vaultId",
+          "type": "uint256"
+        }
+      ],
+      "name": "unusedRewardDistributionToken",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
