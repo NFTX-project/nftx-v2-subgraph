@@ -1,10 +1,10 @@
 {
   "network": "palm-mainnet",
-  "startBlock": "1827367",
-  "startBlockZaps": "1827374",
-  "startBlockSimpleFees": "0",
-  "vaultFactory": "0xbCa69124712C2F0bD607d59370D2EcC6fFd92937",
-  "stakingZap": "0x5eE78a5A46c4c90caa5898F5fBb14360bb2a9543",
+  "startBlock": "1930177",
+  "startBlockZaps": "1930182",
+  "startBlockSimpleFees": "1930177",
+  "vaultFactory": "0x3fA12AE3936fD25De464A3E7a16DcA95d0Ec0aBe",
+  "stakingZap": "0x732E5F7FE7c40333DfeFF57755666F85d1e164c1",
   "simpleFeeDistributor": "0x0000000000000000000000000000000000000000",
   "callFilterEnabled": "true"
 }
