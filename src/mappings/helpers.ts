@@ -34,6 +34,7 @@ import {
   EligibilityModule,
   ZapWithdrawal,
   Withdrawal,
+  InventoryPool,
 } from '../types/schema';
 import { ERC20Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC20Metadata';
 import { ERC677Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC677Metadata';
@@ -275,6 +276,14 @@ export function getPool(poolAddress: Address, blockNumber: BigInt): Pool {
     // vault and tokens not set
   }
   return pool as Pool;
+}
+
+export function getInventoryPool(poolAddress: Address): InventoryPool {
+  let pool = InventoryPool.load(poolAddress.toHexString());
+  if (pool == null) {
+    pool = new InventoryPool(poolAddress.toHexString());
+  }
+  return pool as InventoryPool;
 }
 
 export function getUser(userAddress: Address): User {

@@ -72,6 +72,8 @@ dataSources:
           file: ./src/abis/NFTXSimpleFeeDistributor.json
         - name: NFTXVaultUpgradeable
           file: ./src/abis/NFTXVaultUpgradeable.json
+        - name: NFTXInventoryStaking
+          file: ./src/abis/NFTXInventoryStaking.json
         - name: ERC20Metadata
           file: ./src/abis/ERC20Metadata.json
         - name: ERC677Metadata
@@ -89,6 +91,8 @@ dataSources:
           handler: handleUpdateTreasuryAddress
         - event: UpdateLPStakingAddress(address)
           handler: handleUpdateLPStakingAddress
+        - event: UpdateInventoryStakingAddress(address)
+          handler: handleUpdateInventoryStakingAddress
         - event: UpdateNFTXVaultFactory(address)
           handler: handleUpdateNFTXVaultFactory
   - kind: ethereum/contract
@@ -124,6 +128,26 @@ dataSources:
         - event: Withdraw(uint256,uint256,address)
           handler: handleWithdraw
 templates:
+  - kind: ethereum/contract
+    name: NFTXInventoryStaking
+    # prettier-ignore
+    network: {{network}}
+    source:
+      abi: NFTXInventoryStaking
+    mapping:
+      file: ./src/mappings/staking.ts
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Vault
+        - InventoryPool
+      abis:
+        - name: NFTXInventoryStaking
+          file: ./src/abis/NFTXInventoryStaking.json
+      eventHandlers:
+        - event: XTokenCreated(uint256,address,address)
+          handler: handleXTokenCreated
   - kind: ethereum/contract
     name: NFTXLPStaking
     # prettier-ignore

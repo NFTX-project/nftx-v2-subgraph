@@ -5,6 +5,7 @@ type Global @entity {
   defaultLpAlloc: BigInt!
   treasuryAddress: Bytes!
   lpStakingAddress: Bytes!
+  inventoryStakingAddress: Bytes!
   nftxVaultFactory: Bytes!
   feeDistributorAddress: Bytes!
   eligibilityManagerAddress: Bytes!
@@ -24,6 +25,7 @@ type Vault @entity {
   mints: [Mint!]! @derivedFrom(field: "vault")
   swaps: [Swap!]! @derivedFrom(field: "vault")
   redeems: [Redeem!]! @derivedFrom(field: "vault")
+  inventoryStakingPool: InventoryPool
   lpStakingPool: Pool
   fees: Fee!
   usesFactoryFees: Boolean!
@@ -128,6 +130,14 @@ type Pool @entity {
   dividendToken: Token!
   totalRewards: BigInt!
   deployBlock: BigInt!
+}
+
+type InventoryPool @entity {
+  id: ID! # address
+  vault: Vault!
+  rewardToken: Token!
+  stakingToken: Token!
+  dividendToken: Token!
 }
 
 type Token @entity {
