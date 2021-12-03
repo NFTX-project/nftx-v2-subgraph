@@ -73,7 +73,6 @@ export function handleUpdateInventoryStakingAddress(
   event: UpdateInventoryStakingAddressEvent,
 ): void {
   let global = getGlobal();
-  NFTXInventoryStaking.create(event.params.newInventoryStaking);
   global.inventoryStakingAddress = event.params.newInventoryStaking;
   global.save();
 }

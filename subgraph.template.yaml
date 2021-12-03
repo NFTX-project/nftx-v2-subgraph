@@ -127,13 +127,15 @@ dataSources:
           handler: handleUserStaked
         - event: Withdraw(uint256,uint256,address)
           handler: handleWithdraw
-templates:
   - kind: ethereum/contract
     name: NFTXInventoryStaking
     # prettier-ignore
     network: {{network}}
     source:
       abi: NFTXInventoryStaking
+      address: '{{inventoryStaking}}'
+      # prettier-ignore
+      startBlock: {{startBlockInventoryStaking}}
     mapping:
       file: ./src/mappings/staking.ts
       kind: ethereum/events
@@ -145,9 +147,12 @@ templates:
       abis:
         - name: NFTXInventoryStaking
           file: ./src/abis/NFTXInventoryStaking.json
+        - name: NFTXVaultFactoryUpgradeable
+          file: ./src/abis/NFTXVaultFactoryUpgradeable.json
       eventHandlers:
         - event: XTokenCreated(uint256,address,address)
           handler: handleXTokenCreated
+templates:
   - kind: ethereum/contract
     name: NFTXLPStaking
     # prettier-ignore
