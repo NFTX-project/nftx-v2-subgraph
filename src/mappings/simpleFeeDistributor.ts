@@ -10,6 +10,7 @@ import {
 import { getGlobal, getSimpleFeeReceiver } from './helpers';
 import { store } from '@graphprotocol/graph-ts';
 import { UpdateNFTXVaultFactory } from '../types/NFTXVaultFactoryUpgradeable/NFTXFeeDistributor';
+import { NFTXInventoryStaking } from '../types/templates';
 
 export function handleAddFeeReceiver(event: AddFeeReceiverEvent): void {
   let feeReceiverAddress = event.params.receiver;
@@ -72,6 +73,7 @@ export function handleUpdateInventoryStakingAddress(
   event: UpdateInventoryStakingAddressEvent,
 ): void {
   let global = getGlobal();
+  NFTXInventoryStaking.create(event.params.newInventoryStaking);
   global.inventoryStakingAddress = event.params.newInventoryStaking;
   global.save();
 }
