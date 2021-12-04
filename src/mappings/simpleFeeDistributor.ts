@@ -4,6 +4,7 @@ import {
   UpdateFeeReceiverAddress as UpdateFeeReceiverAddressEvent,
   RemoveFeeReceiver as RemoveFeeReceiverEvent,
   UpdateTreasuryAddress as UpdateTreasuryAddressEvent,
+  UpdateInventoryStakingAddress as UpdateInventoryStakingAddressEvent,
   UpdateLPStakingAddress as UpdateLPStakingAddressEvent,
 } from '../types/NFTXSimpleFeeDistributor/NFTXSimpleFeeDistributor';
 import { getGlobal, getSimpleFeeReceiver } from './helpers';
@@ -64,6 +65,14 @@ export function handleUpdateLPStakingAddress(
 ): void {
   let global = getGlobal();
   global.lpStakingAddress = event.params.newLPStaking;
+  global.save();
+}
+
+export function handleUpdateInventoryStakingAddress(
+  event: UpdateInventoryStakingAddressEvent,
+): void {
+  let global = getGlobal();
+  global.inventoryStakingAddress = event.params.newInventoryStaking;
   global.save();
 }
 

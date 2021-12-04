@@ -56,6 +56,7 @@ function newFeeDistributor(
   global.feeDistributorAddress = feeDistributorAddress;
   global.treasuryAddress = treasuryAddress;
   global.lpStakingAddress = lpStakingAddress;
+  global.inventoryStakingAddress = ADDRESS_ZERO;
   global.defaultLpAlloc = defaultLPAlloc;
   global.defaultTreasuryAlloc = defaultTreasuryAlloc;
   global.save();

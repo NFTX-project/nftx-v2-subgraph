@@ -147,6 +147,19 @@
         {
           "indexed": false,
           "internalType": "address",
+          "name": "newInventoryStaking",
+          "type": "address"
+        }
+      ],
+      "name": "UpdateInventoryStakingAddress",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
           "name": "newLPStaking",
           "type": "address"
         }
@@ -344,6 +357,19 @@
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "inventoryStaking",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "inputs": [
         {
           "internalType": "address",
@@ -488,6 +514,19 @@
         }
       ],
       "name": "rescueTokens",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_inventoryStaking",
+          "type": "address"
+        }
+      ],
+      "name": "setInventoryStakingAddress",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
