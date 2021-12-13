@@ -7,6 +7,5 @@
   "vaultFactory": "0xBE86f647b167567525cCAAfcd6f881F1Ee558216",
   "stakingZap": "0x28E9162fC10Bb3A7f98f44e90fA7273698fce360",
   "simpleFeeDistributor": "0xFD8a76dC204e461dB5da4f38687AdC9CC5ae4a86",
-  "inventoryStaking": "",
   "callFilterEnabled": "true"
 }

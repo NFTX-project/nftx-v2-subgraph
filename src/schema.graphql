@@ -155,7 +155,7 @@ type Mint @entity {
   nftIds: [BigInt!]
   amounts: [BigInt!]
   feeReceipt: FeeReceipt!
-  usesStakeZap: Boolean!
+  usesStakeZap: Boolean
 }
 
 type Swap @entity {

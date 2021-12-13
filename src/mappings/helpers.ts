@@ -298,7 +298,6 @@ export function getMint(txHash: Bytes): Mint {
   let mint = Mint.load(txHash.toHexString());
   if (mint == null) {
     mint = new Mint(txHash.toHexString());
-    mint.usesStakeZap = false;
   }
   return mint as Mint;
 }
