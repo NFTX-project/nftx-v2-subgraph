@@ -7,6 +7,7 @@ import {
 import { NFTXVaultFactoryUpgradeable as NFTXVaultFactory } from '../types/templates/NFTXLPStaking/NFTXVaultFactoryUpgradeable';
 
 import {
+  getMint,
   getStakedLpUser,
   getVault,
   getZap,
@@ -32,6 +33,11 @@ export function handleUserStaked(event: UserStakedEvent): void {
   zap.user = user.id;
   zap.amount = zap.amount.plus(event.params.lpBalance);
   zap.lockEndTime = lockEndTime
+
+  // handles LP staking. Inventory staking handled in vault mapping
+  let txHash = event.transaction.hash;
+  let mint = getMint(txHash);
+  mint.usesStakeZap = true;
 
   zap.save();
 }
