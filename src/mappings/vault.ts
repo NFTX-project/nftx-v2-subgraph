@@ -79,7 +79,11 @@ export function handleMint(event: MintEvent): void {
   mint.feeReceipt = feeReceipt.id;
 
   // handles inventory staking. LP staking handled in UserStaked event
+<<<<<<< HEAD
   if (event.params.to.toHexString() === vault.inventoryStakingPool) {
+=======
+  if (event.params.to === Address.fromHexString(vault.inventoryStakingPool)) {
+>>>>>>> 2dc9a2affe99813a71512aec3f8f10eb089a5ab2
     // xtoken
     mint.usesStakeZap = true;
   }
