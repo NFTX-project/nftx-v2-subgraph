@@ -59,7 +59,7 @@ export function handleTransfer(event: TransferEvent): void {
 
 export function handleMint(event: MintEvent): void {
   let vaultAddress = event.address;
-
+  let vault = getVault(vaultAddress);
   let txHash = event.transaction.hash;
   let mint = getMint(txHash);
   let user = getUser(event.params.to);
@@ -78,6 +78,12 @@ export function handleMint(event: MintEvent): void {
   feeReceipt.save();
   mint.feeReceipt = feeReceipt.id;
 
+  // handles inventory staking. LP staking handled in UserStaked event
+  if (event.params.to.toHexString() === vault.inventoryStakingPool) {
+    // xtoken
+    mint.usesStakeZap = true;
+  }
+
   mint.save();
   user.save();
 
@@ -88,7 +94,6 @@ export function handleMint(event: MintEvent): void {
   let token = getToken(vaultAddress);
   token.save();
 
-  let vault = getVault(vaultAddress);
 
   if (vault.is1155) {
     added = BigInt.fromI32(0);
