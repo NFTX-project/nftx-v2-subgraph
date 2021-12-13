@@ -38,10 +38,7 @@ export function handleUserStaked(event: UserStakedEvent): void {
   let txHash = event.transaction.hash;
   let mint = getMint(txHash);
   mint.usesStakeZap = true;
-<<<<<<< HEAD
   mint.save();
-=======
->>>>>>> 2dc9a2affe99813a71512aec3f8f10eb089a5ab2
 
   zap.save();
 }
