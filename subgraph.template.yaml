@@ -128,7 +128,7 @@ dataSources:
         - event: Withdraw(uint256,uint256,address)
           handler: handleWithdraw
   - kind: ethereum/contract
-    name: NFTXStakingZap
+    name: NFTXStakingZapV2
     # prettier-ignore
     network: {{network}}
     source:
