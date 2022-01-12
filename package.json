@@ -11,12 +11,13 @@
     "deploy-rinkeby": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ nftx-project/nftx-v2-rinkeby",
     "prepare-mainnet": "mustache config/mainnet.json subgraph.template.yaml > subgraph.yaml",
     "deploy-mainnet": "graph deploy --studio nftx",
+    "deploy-mainnet-fallback": "graph deploy --product hosted-service schmidsi/nftx-v2",
     "format": "prettier --ignore-path .gitignore --write \"{*,**/*}.{ts,json,md}\""
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.24.1",
+    "@graphprotocol/graph-cli": "0.25.2",
     "@graphprotocol/graph-ts": "0.24.1",
-    "matchstick-as": "^0.2.2",
+    "matchstick-as": "0.2.3",
     "mustache": "4.2.0"
   },
   "devDependencies": {
