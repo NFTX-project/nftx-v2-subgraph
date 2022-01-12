@@ -12,7 +12,8 @@
     "prepare-mainnet": "mustache config/mainnet.json subgraph.template.yaml > subgraph.yaml",
     "deploy-mainnet": "graph deploy --studio nftx",
     "deploy-mainnet-fallback": "graph deploy --product hosted-service schmidsi/nftx-v2",
-    "format": "prettier --ignore-path .gitignore --write \"{*,**/*}.{ts,json,md}\""
+    "format": "prettier --ignore-path .gitignore --write \"{*,**/*}.{ts,json,md}\"",
+    "test": "graph test general"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.25.2",
