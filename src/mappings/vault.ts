@@ -236,13 +236,17 @@ export function handleEnableTargetRedeemUpdated(
   features.save();
 }
 
-export function handleEnableRandomSwapUpdated(event: EnableRandomSwapUpdatedEvent): void {
+export function handleEnableRandomSwapUpdated(
+  event: EnableRandomSwapUpdatedEvent,
+): void {
   let features = getFeature(event.address);
   features.enableRandomSwap = event.params.enabled;
   features.save();
 }
 
-export function handleEnableTargetSwapUpdated(event: EnableTargetSwapUpdatedEvent): void {
+export function handleEnableTargetSwapUpdated(
+  event: EnableTargetSwapUpdatedEvent,
+): void {
   let features = getFeature(event.address);
   features.enableTargetSwap = event.params.enabled;
   features.save();
@@ -305,7 +309,7 @@ export function handleEligibilityDeployed(
   let eligibilityManagerAddress = global.eligibilityManagerAddress;
 
   let eligibilityManager = NFTXEligibilityManagerContract.bind(
-    eligibilityManagerAddress as Address,
+    changetype<Address>(eligibilityManagerAddress),
   );
   let moduleDataFromInstance = eligibilityManager.try_modules(
     event.params.moduleIndex,
@@ -324,7 +328,7 @@ export function handleEligibilityDeployed(
     module.targetAsset = vault.asset;
     module.name = moduleData.value2;
   }
-  module.eligibilityManager = eligibilityManagerAddress as Address;
+  module.eligibilityManager = eligibilityManagerAddress;
   module.finalizedOnDeploy = module.finalizedOnDeploy
     ? module.finalizedOnDeploy
     : module.finalized;
