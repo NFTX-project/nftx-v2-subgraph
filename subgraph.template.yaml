@@ -125,8 +125,6 @@ dataSources:
       eventHandlers:
         - event: UserStaked(uint256,uint256,uint256,uint256,address)
           handler: handleUserStaked
-        - event: Withdraw(uint256,uint256,address)
-          handler: handleWithdraw
   - kind: ethereum/contract
     name: NFTXStakingZapV2
     # prettier-ignore
@@ -157,8 +155,6 @@ dataSources:
       eventHandlers:
         - event: UserStaked(uint256,uint256,uint256,uint256,address)
           handler: handleUserStaked
-        - event: Withdraw(uint256,uint256,address)
-          handler: handleWithdraw
   - kind: ethereum/contract
     name: NFTXInventoryStaking
     # prettier-ignore

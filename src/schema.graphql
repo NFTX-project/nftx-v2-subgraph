@@ -256,13 +256,5 @@ type Zap @entity {
   user: StakedLpUser!
   lockEndTime: BigInt!
   amount: BigInt!
-  withdrawals: [ZapWithdrawal!]! @derivedFrom(field: "zap")
   contractAddress: Bytes!
-}
-
-type ZapWithdrawal @entity {
-  id: ID!
-  amount: BigInt!
-  user: StakedLpUser!
-  zap: Zap!
 }

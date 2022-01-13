@@ -163,32 +163,6 @@
     "type": "event"
   },
   {
-    "inputs": [],
-    "name": "BASE",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "DEFAULT_LOCKTIME",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -424,19 +398,6 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "newFactory",
-        "type": "address"
-      }
-    ],
-    "name": "setNFTXVaultFactory",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "uint256",
         "name": "vaultId",
         "type": "uint256"
@@ -535,7 +496,7 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "vaultId",
         "type": "uint256"
       }
     ],

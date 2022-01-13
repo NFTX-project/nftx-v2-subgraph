@@ -36,7 +36,7 @@ export function handleUserStaked(event: UserStakedEvent): void {
   zap.save();
 }
 
-export function handleWithdraw(event: WithdrawEvent): void {
+/* export function handleWithdraw(event: WithdrawEvent): void {
   let vaultId = event.params.vaultId
   let zap = getZap(vaultId, event.params.sender, event.address);
   let zapWithdrawal = getZapWithdrawal(event.transaction.hash);
@@ -49,4 +49,4 @@ export function handleWithdraw(event: WithdrawEvent): void {
 
   zap.amount = zap.amount.minus(event.params.lpBalance);
   zap.save();
-}
+} */
