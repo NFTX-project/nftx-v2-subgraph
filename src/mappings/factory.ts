@@ -20,19 +20,27 @@ import {
   NFTXFeeDistributor as NFTXFeeDistributorTemplate,
   NFTXLPStaking as NFTXLPStakingTemplate,
 } from '../types/templates';
-import { Address, BigInt } from '@graphprotocol/graph-ts';
+import { Address, BigInt, log } from '@graphprotocol/graph-ts';
 import { ADDRESS_ZERO } from './constants';
 
 function newFeeDistributor(
   nftxVaultFactoryAddress: Address,
   feeDistributorAddress: Address,
 ): void {
+  log.info('newFeeDistributor {} {}', [
+    nftxVaultFactoryAddress.toHexString(),
+    feeDistributorAddress.toHexString(),
+  ]);
+
   let global = getGlobal();
   if (global.feeDistributorAddress == feeDistributorAddress) {
     return;
   }
 
   let feeDistributor = NFTXFeeDistributor.bind(feeDistributorAddress);
+
+  log.info('feeDistributor', []);
+
   let treasuryAddressFromInstance = feeDistributor.try_treasury();
   let lpStakingAddressFromInstance = feeDistributor.try_lpStaking();
   let defaultLPAllocFromInstance = feeDistributor.try_defaultLPAlloc();
@@ -66,6 +74,11 @@ function newFeeDistributor(
 }
 
 export function handleNewFeeDistributor(event: NewFeeDistributorEvent): void {
+
+  log.info('handleNewFeeDistributor {}', [
+    event.params.newDistributor.toHexString(),
+  ]);
+
   let nftxVaultFactoryAddress = event.address;
   let feeDistributorAddress = event.params.newDistributor;
 

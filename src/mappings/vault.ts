@@ -304,7 +304,7 @@ export function handleEligibilityDeployed(
   let eligibilityManagerAddress = global.eligibilityManagerAddress;
 
   let eligibilityManager = NFTXEligibilityManagerContract.bind(
-    eligibilityManagerAddress as Address,
+    eligibilityManagerAddress,
   );
   let moduleDataFromInstance = eligibilityManager.try_modules(
     event.params.moduleIndex,
@@ -323,7 +323,7 @@ export function handleEligibilityDeployed(
     module.targetAsset = vault.asset;
     module.name = moduleData.value2;
   }
-  module.eligibilityManager = eligibilityManagerAddress as Address;
+  module.eligibilityManager = eligibilityManagerAddress;
   module.finalizedOnDeploy = module.finalizedOnDeploy
     ? module.finalizedOnDeploy
     : module.finalized;
