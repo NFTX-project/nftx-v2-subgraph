@@ -6,7 +6,7 @@ import {
 import {
   XTokenCreated as XTokenCreatedEvent,
   NFTXInventoryStaking
-} from '../types/templates/NFTXInventoryStaking/NFTXInventoryStaking';
+} from '../types/NFTXInventoryStaking/NFTXInventoryStaking';
 import { NFTXVaultFactoryUpgradeable as NFTXVaultFactory } from '../types/templates/NFTXLPStaking/NFTXVaultFactoryUpgradeable';
 import { StakingTokenProvider } from '../types/templates/NFTXLPStaking/StakingTokenProvider';
 import { getInventoryPool, getPool, getToken, getVault } from './helpers';

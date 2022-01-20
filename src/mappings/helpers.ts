@@ -32,7 +32,6 @@ import {
   VaultHourData,
   VaultCreator,
   EligibilityModule,
-  ZapWithdrawal,
   Withdrawal,
   InventoryPool,
 } from '../types/schema';
@@ -328,14 +327,6 @@ export function getZap(
     zap.contractAddress = contractAddress;
   }
   return zap as Zap;
-}
-
-export function getZapWithdrawal(txHash: Bytes): ZapWithdrawal {
-  let zapWithdrawal = ZapWithdrawal.load(txHash.toHexString());
-  if (zapWithdrawal == null) {
-    zapWithdrawal = new ZapWithdrawal(txHash.toHexString());
-  }
-  return zapWithdrawal as ZapWithdrawal;
 }
 
 export function getRedeem(txHash: Bytes): Redeem {
