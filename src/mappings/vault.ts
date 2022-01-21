@@ -304,7 +304,7 @@ export function handleEligibilityDeployed(
   let eligibilityManagerAddress = global.eligibilityManagerAddress;
 
   let eligibilityManager = NFTXEligibilityManagerContract.bind(
-    eligibilityManagerAddress,
+    changetype<Address>(eligibilityManagerAddress),
   );
   let moduleDataFromInstance = eligibilityManager.try_modules(
     event.params.moduleIndex,
