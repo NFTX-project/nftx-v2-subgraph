@@ -50,6 +50,7 @@ export function getGlobal(): Global {
     global.defaultLpAlloc = BigInt.fromI32(0);
     global.treasuryAddress = ADDRESS_ZERO;
     global.lpStakingAddress = ADDRESS_ZERO;
+    global.inventoryStakingAddress = ADDRESS_ZERO;
     global.nftxVaultFactory = ADDRESS_ZERO;
     global.feeDistributorAddress = ADDRESS_ZERO;
     global.eligibilityManagerAddress = ADDRESS_ZERO;
