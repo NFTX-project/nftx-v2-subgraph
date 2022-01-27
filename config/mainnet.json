@@ -2,11 +2,13 @@
   "network": "mainnet",
   "startBlock": "12675821",
   "startBlockZaps": "13004561",
+  "startBlockZapsV2": "14034114",
   "startBlockSimpleFees": "13510484",
-  "startBlockInventoryStaking": "",
+  "startBlockInventoryStaking": "14026322",
   "vaultFactory": "0xBE86f647b167567525cCAAfcd6f881F1Ee558216",
   "stakingZap": "0x28E9162fC10Bb3A7f98f44e90fA7273698fce360",
+  "stakingZapV2": "0x7a5e0B4069709cF4D02423b8cafDc608f4436791",
   "simpleFeeDistributor": "0xFD8a76dC204e461dB5da4f38687AdC9CC5ae4a86",
-  "inventoryStaking": "",
+  "inventoryStaking": "0x3E135c3E981fAe3383A5aE0d323860a34CfAB893",
   "callFilterEnabled": "true"
 }

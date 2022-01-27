@@ -25,7 +25,6 @@ import {
   getRedeem,
   updateManager,
   getFeature,
-  getFee,
   getToken,
   addToHoldings,
   removeFromHoldings,
