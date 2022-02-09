@@ -5,6 +5,7 @@ import {
   BigInt,
   Address,
   TypedMap,
+  log,
 } from '@graphprotocol/graph-ts';
 import { NFTXVaultUpgradeable as NFTXVault } from '../types/NFTXVaultFactoryUpgradeable/NFTXVaultUpgradeable';
 import {
@@ -42,8 +43,11 @@ import { getDateString, getTimeString } from './datetime';
 
 export function getGlobal(): Global {
   let global_id = dataSource.network();
+  
+  log.info('dataSource.network() {}', [global_id]);
+
   let global = Global.load(global_id);
-  if (global == null) {
+  if (!global) {
     global = new Global(global_id);
     global.totalHoldings = BigInt.fromI32(0);
     global.defaultTreasuryAlloc = BigInt.fromI32(0);
@@ -106,7 +110,7 @@ export function getManager(managerAddress: Address): Manager {
 export function getGlobalFee(): Fee {
   let feeId = 'global';
   let fees = Fee.load(feeId);
-  if (fees == null) {
+  if (!fees) {
     fees = new Fee(feeId);
     fees.mintFee = BigInt.fromI32(0);
     fees.randomRedeemFee = BigInt.fromI32(0);
@@ -120,7 +124,7 @@ export function getGlobalFee(): Fee {
 
 export function getFee(feesAddress: Address): Fee {
   let fees = Fee.load(feesAddress.toHexString());
-  if (fees == null) {
+  if (!fees) {
     fees = new Fee(feesAddress.toHexString());
     fees.mintFee = BigInt.fromI32(0);
     fees.randomRedeemFee = BigInt.fromI32(0);
@@ -134,7 +138,7 @@ export function getFee(feesAddress: Address): Fee {
 
 export function getFeature(featuresAddress: Address): Feature {
   let features = Feature.load(featuresAddress.toHexString());
-  if (features == null) {
+  if (!features) {
     features = new Feature(featuresAddress.toHexString());
     features.enableMint = false;
     features.enableRandomRedeem = false;
