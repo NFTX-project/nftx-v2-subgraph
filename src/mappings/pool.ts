@@ -36,13 +36,11 @@ export function handleRewardWithdrawn(event: RewardWithdrawnEvent): void {
   pool.totalRewards = pool.totalRewards.plus(amount);
 
   let rewardToken = getToken(
-    Address.fromHexString(pool.rewardToken) as Address,
-  );
+    Address.fromString(pool.rewardToken));
   rewardToken.save();
 
   let stakingToken = getToken(
-    Address.fromHexString(pool.stakingToken) as Address,
-  );
+    Address.fromString(pool.stakingToken));
   stakingToken.save();
 
   let dividendToken = getToken(poolAddress);
@@ -111,13 +109,11 @@ export function handleTransfer(event: TransferEvent): void {
   }
 
   let rewardToken = getToken(
-    Address.fromHexString(pool.rewardToken) as Address,
-  );
+    Address.fromString(pool.rewardToken));
   rewardToken.save();
 
   let stakingToken = getToken(
-    Address.fromHexString(pool.stakingToken) as Address,
-  );
+    Address.fromString(pool.stakingToken));
   stakingToken.save();
 
   let dividendToken = getToken(poolAddress);
