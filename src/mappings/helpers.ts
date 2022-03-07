@@ -43,7 +43,7 @@ import { getDateString, getTimeString } from './datetime';
 export function getGlobal(): Global {
   let global_id = dataSource.network();
   let global = Global.load(global_id);
-  if (global == null) {
+  if (!global) {
     global = new Global(global_id);
     global.totalHoldings = BigInt.fromI32(0);
     global.defaultTreasuryAlloc = BigInt.fromI32(0);
@@ -65,7 +65,7 @@ export function getGlobal(): Global {
 
 export function getAsset(assetAddress: Address): Asset {
   let asset = Asset.load(assetAddress.toHexString());
-  if (asset == null) {
+  if (!asset) {
     asset = new Asset(assetAddress.toHexString());
 
     let erc677 = ERC677Metadata.bind(assetAddress);
@@ -80,7 +80,7 @@ export function getAsset(assetAddress: Address): Asset {
 
 export function getToken(tokenAddress: Address): Token {
   let token = Token.load(tokenAddress.toHexString());
-  if (token == null) {
+  if (!token) {
     token = new Token(tokenAddress.toHexString());
   }
   let erc20 = ERC20Metadata.bind(tokenAddress);
@@ -98,7 +98,7 @@ export function getToken(tokenAddress: Address): Token {
 
 export function getManager(managerAddress: Address): Manager {
   let manager = Manager.load(managerAddress.toHexString());
-  if (manager == null) {
+  if (!manager) {
     manager = new Manager(managerAddress.toHexString());
   }
   return manager as Manager;
@@ -107,7 +107,7 @@ export function getManager(managerAddress: Address): Manager {
 export function getGlobalFee(): Fee {
   let feeId = 'global';
   let fees = Fee.load(feeId);
-  if (fees == null) {
+  if (!fees) {
     fees = new Fee(feeId);
     fees.mintFee = BigInt.fromI32(0);
     fees.randomRedeemFee = BigInt.fromI32(0);
@@ -121,7 +121,7 @@ export function getGlobalFee(): Fee {
 
 export function getFee(feesAddress: Address): Fee {
   let fees = Fee.load(feesAddress.toHexString());
-  if (fees == null) {
+  if (!fees) {
     fees = new Fee(feesAddress.toHexString());
     fees.mintFee = BigInt.fromI32(0);
     fees.randomRedeemFee = BigInt.fromI32(0);
@@ -135,7 +135,7 @@ export function getFee(feesAddress: Address): Fee {
 
 export function getFeature(featuresAddress: Address): Feature {
   let features = Feature.load(featuresAddress.toHexString());
-  if (features == null) {
+  if (!features) {
     features = new Feature(featuresAddress.toHexString());
     features.enableMint = false;
     features.enableRandomRedeem = false;
@@ -159,7 +159,7 @@ export function updateManager(vault: Vault, managerAddress: Address): Vault {
 
 export function getVault(vaultAddress: Address): Vault {
   let vault = Vault.load(vaultAddress.toHexString());
-  if (vault == null) {
+  if (!vault) {
     vault = new Vault(vaultAddress.toHexString());
 
     let vaultInstance = NFTXVault.bind(vaultAddress);
@@ -219,7 +219,7 @@ export function getVault(vaultAddress: Address): Vault {
 
 export function getVaultCreator(address: Address): VaultCreator {
   let vaultCreator = VaultCreator.load(address.toHexString());
-  if (vaultCreator == null) {
+  if (!vaultCreator) {
     vaultCreator = new VaultCreator(address.toHexString());
   }
   return vaultCreator as VaultCreator;
@@ -230,7 +230,7 @@ export function getSimpleFeeReceiver(
 ): SimpleFeeReceiver {
   let feeReceiverId = feeReceiverAddress.toHexString();
   let feeReceiver = SimpleFeeReceiver.load(feeReceiverId);
-  if (feeReceiver == null) {
+  if (!feeReceiver) {
     feeReceiver = new SimpleFeeReceiver(feeReceiverId);
     feeReceiver.receiver = feeReceiverAddress;
     feeReceiver.allocPoint = BigInt.fromI32(0);
@@ -245,7 +245,7 @@ export function getFeeReceiver(
   let feeReceiverId =
     vaultId.toHexString() + '-' + feeReceiverAddress.toHexString();
   let feeReceiver = FeeReceiver.load(feeReceiverId);
-  if (feeReceiver == null) {
+  if (!feeReceiver) {
     feeReceiver = new FeeReceiver(feeReceiverId);
     feeReceiver.allocPoint = BigInt.fromI32(0);
     // vault not set
@@ -256,7 +256,7 @@ export function getFeeReceiver(
 export function getFeeReceipt(txHash: Bytes): FeeReceipt {
   let feeReceiptId = txHash.toHexString();
   let feeReceipt = FeeReceipt.load(feeReceiptId);
-  if (feeReceipt == null) {
+  if (!feeReceipt) {
     feeReceipt = new FeeReceipt(feeReceiptId);
     feeReceipt.amount = BigInt.fromI32(0);
     feeReceipt.date = BigInt.fromI32(0);
@@ -269,7 +269,7 @@ export function getFeeReceipt(txHash: Bytes): FeeReceipt {
 export function getPool(poolAddress: Address, blockNumber: BigInt): Pool {
   let poolId = poolAddress.toHexString();
   let pool = Pool.load(poolId);
-  if (pool == null) {
+  if (!pool) {
     pool = new Pool(poolId);
     pool.deployBlock = blockNumber;
     pool.totalRewards = BigInt.fromI32(0);
@@ -280,7 +280,7 @@ export function getPool(poolAddress: Address, blockNumber: BigInt): Pool {
 
 export function getInventoryPool(poolAddress: Address): InventoryPool {
   let pool = InventoryPool.load(poolAddress.toHexString());
-  if (pool == null) {
+  if (!pool) {
     pool = new InventoryPool(poolAddress.toHexString());
   }
   return pool as InventoryPool;
@@ -288,7 +288,7 @@ export function getInventoryPool(poolAddress: Address): InventoryPool {
 
 export function getUser(userAddress: Address): User {
   let user = User.load(userAddress.toHexString());
-  if (user == null) {
+  if (!user) {
     user = new User(userAddress.toHexString());
   }
   return user as User;
@@ -296,7 +296,7 @@ export function getUser(userAddress: Address): User {
 
 export function getMint(txHash: Bytes): Mint {
   let mint = Mint.load(txHash.toHexString());
-  if (mint == null) {
+  if (!mint) {
     mint = new Mint(txHash.toHexString());
   }
   return mint as Mint;
@@ -304,7 +304,7 @@ export function getMint(txHash: Bytes): Mint {
 
 export function getSwap(txHash: Bytes): Swap {
   let swap = Swap.load(txHash.toHexString());
-  if (swap == null) {
+  if (!swap) {
     swap = new Swap(txHash.toHexString());
   }
   return swap as Swap;
@@ -322,7 +322,7 @@ export function getZap(
     '-' +
     contractAddress.toHexString().substr(2, 6);
   let zap = Zap.load(zapId);
-  if (zap == null) {
+  if (!zap) {
     zap = new Zap(zapId);
     zap.amount = BigInt.fromI32(0);
     zap.contractAddress = contractAddress;
@@ -332,7 +332,7 @@ export function getZap(
 
 export function getRedeem(txHash: Bytes): Redeem {
   let redeem = Redeem.load(txHash.toHexString());
-  if (redeem == null) {
+  if (!redeem) {
     redeem = new Redeem(txHash.toHexString());
   }
   return redeem as Redeem;
@@ -340,7 +340,7 @@ export function getRedeem(txHash: Bytes): Redeem {
 
 export function getStakedLpUser(userAddress: Address): StakedLpUser {
   let user = StakedLpUser.load(userAddress.toHexString());
-  if (user == null) {
+  if (!user) {
     user = new StakedLpUser(userAddress.toHexString());
     user.activePools = new Array<string>();
   }
@@ -350,7 +350,7 @@ export function getStakedLpUser(userAddress: Address): StakedLpUser {
 export function getReward(txHash: Bytes): Reward {
   let rewardId = txHash.toHexString();
   let rewards = Reward.load(rewardId);
-  if (rewards == null) {
+  if (!rewards) {
     rewards = new Reward(rewardId);
   }
   return rewards as Reward;
@@ -398,7 +398,7 @@ export function updatePools(
 export function getDeposit(txHash: Bytes): Deposit {
   let depositId = txHash.toHexString();
   let deposit = Deposit.load(depositId);
-  if (deposit == null) {
+  if (!deposit) {
     deposit = new Deposit(depositId);
     deposit.deposit = BigInt.fromI32(0);
     deposit.date = BigInt.fromI32(0);
@@ -409,7 +409,7 @@ export function getDeposit(txHash: Bytes): Deposit {
 export function getWithdrawal(txHash: Bytes): Withdrawal {
   let withdrawalId = txHash.toHexString();
   let withdrawal = Withdrawal.load(withdrawalId);
-  if (withdrawal == null) {
+  if (!withdrawal) {
     withdrawal = new Withdrawal(withdrawalId);
     withdrawal.withdrawal = BigInt.fromI32(0);
     withdrawal.date = BigInt.fromI32(0);
@@ -420,7 +420,7 @@ export function getWithdrawal(txHash: Bytes): Withdrawal {
 export function getHolding(tokenId: BigInt, vaultAddress: Address): Holding {
   let holdingId = tokenId.toHexString() + '-' + vaultAddress.toHexString();
   let holding = Holding.load(holdingId);
-  if (holding == null) {
+  if (!holding) {
     holding = new Holding(holdingId);
     holding.tokenId = tokenId;
     holding.amount = BigInt.fromI32(0);
@@ -498,7 +498,7 @@ export function getVaultDayData(
   let dateString = getDateString(date);
   let vaultDayDataId = dateString + '-' + vaultAddress.toHexString();
   let vaultDayData = VaultDayData.load(vaultDayDataId);
-  if (vaultDayData == null) {
+  if (!vaultDayData) {
     vaultDayData = new VaultDayData(vaultDayDataId);
     vaultDayData.date = date;
     vaultDayData.mintsCount = BigInt.fromI32(0);
@@ -521,7 +521,7 @@ export function getVaultHourData(
   let timeString = getTimeString(date);
   let vaultHourDataId = timeString + '-' + vaultAddress.toHexString();
   let vaultHourData = VaultHourData.load(vaultHourDataId);
-  if (vaultHourData == null) {
+  if (!vaultHourData) {
     vaultHourData = new VaultHourData(vaultHourDataId);
     vaultHourData.date = date;
     vaultHourData.mintsCount = BigInt.fromI32(0);
@@ -541,7 +541,7 @@ export function getEligibilityModule(
   moduleAddress: Address,
 ): EligibilityModule {
   let module = EligibilityModule.load(moduleAddress.toHexString());
-  if (module == null) {
+  if (!module) {
     module = new EligibilityModule(moduleAddress.toHexString());
     module.eligibilityManager = ADDRESS_ZERO;
     module.targetAsset = ADDRESS_ZERO.toHexString();
