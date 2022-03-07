@@ -15,8 +15,8 @@
     "format": "prettier --ignore-path .gitignore --write \"{*,**/*}.{ts,json,md}\""
   },
   "dependencies": {
-    "@graphprotocol/graph-ts": "0.20.1",
-    "@graphprotocol/graph-cli": "0.20.1",
+    "@graphprotocol/graph-ts": "0.24.1",
+    "@graphprotocol/graph-cli": "0.25.2",
     "mustache": "4.2.0"
   },
   "devDependencies": {
@@ -25,5 +25,5 @@
   "version": "1.0.0",
   "main": "index.js",
   "repository": "git@github.com:NFTX-project/nftx-v2-subgraph.git",
-  "author": "Nick <nick@nftx.org>"
+  "author": "Caps <caps@nftx.org>"
 }
