@@ -155,6 +155,7 @@ type Mint @entity {
   nftIds: [BigInt!]
   amounts: [BigInt!]
   feeReceipt: FeeReceipt!
+  vaultInteraction: Boolean!
 }
 
 type Swap @entity {
@@ -169,6 +170,7 @@ type Swap @entity {
   targetCount: BigInt!
   randomCount: BigInt!
   feeReceipt: FeeReceipt!
+  vaultInteraction: Boolean!
 }
 
 type Redeem @entity {
@@ -181,6 +183,7 @@ type Redeem @entity {
   targetCount: BigInt!
   randomCount: BigInt!
   feeReceipt: FeeReceipt!
+  vaultInteraction: Boolean!
 }
 
 type User @entity {
