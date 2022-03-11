@@ -35,6 +35,9 @@ import {
   EligibilityModule,
   Withdrawal,
   InventoryPool,
+  ZapBuy,
+  ZapSell,
+  ZapSwap,
 } from '../types/schema';
 import { ERC20Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC20Metadata';
 import { ERC677Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC677Metadata';
@@ -585,4 +588,28 @@ export function updateEligibleTokenIds(
     module.eligibleIds = ids;
   }
   return module;
+}
+
+export function getZapBuy(txHash: Bytes): ZapBuy {
+  let zapBuy = ZapBuy.load(txHash.toHexString());
+  if (zapBuy == null) {
+    zapBuy = new ZapBuy(txHash.toHexString());
+  }
+  return zapBuy as ZapBuy;
+}
+
+export function getZapSell(txHash: Bytes): ZapSell {
+  let zapSell = ZapSell.load(txHash.toHexString());
+  if (zapSell == null) {
+    zapSell = new ZapSell(txHash.toHexString());
+  }
+  return zapSell as ZapSell;
+}
+
+export function getZapSwap(txHash: Bytes): ZapSwap {
+  let zapSwap = ZapSwap.load(txHash.toHexString());
+  if (zapSwap == null) {
+    zapSwap = new ZapSwap(txHash.toHexString());
+  }
+  return zapSwap as ZapSwap;
 }
