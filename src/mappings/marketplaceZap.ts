@@ -13,7 +13,7 @@ import {
   getZapSwap
 } from './helpers';
 
-export function handleBuy(event: BuyZapEvent): void {
+export function handleBuyZap(event: BuyZapEvent): void {
   let txHash = event.transaction.hash;
   let redeem = getRedeem(txHash);
   let zapBuy = getZapBuy(txHash);
@@ -26,7 +26,7 @@ export function handleBuy(event: BuyZapEvent): void {
   redeem.save();
 }
 
-export function handleSell(event: SellZapEvent): void {
+export function handleSellZap(event: SellZapEvent): void {
   let txHash = event.transaction.hash;
   let mint = getMint(txHash);
   let zapSell = getZapSell(txHash);
@@ -39,7 +39,7 @@ export function handleSell(event: SellZapEvent): void {
   mint.save();
 }
 
-export function handleSwap(event: SwapZapEvent): void {
+export function handleSwapZap(event: SwapZapEvent): void {
   let txHash = event.transaction.hash;
   let swap = getSwap(txHash);
   let zapSwap = getZapSwap(txHash);
