@@ -1,0 +1,16 @@
+{
+  "network": "arbitrum-one",
+  "startBlock": "5108625",
+  "startBlockZaps": "5109224",
+  "startBlockZapsV2": "5109224",
+  "startBlockSimpleFees": "5108611",
+  "startBlockInventoryStaking": "5108984",
+  "startBlockMarketplaceZap": "5108984",
+  "vaultFactory": "0xe01Cf5099e700c282A56E815ABd0C4948298Afae",
+  "stakingZap": "0xa12d30440D75aC533f781a2dd5fcF7EABB4C695E",
+  "stakingZapV2": "0x0000000000000000000000000000000000000000",
+  "simpleFeeDistributor": "0x4939F5e390d20b7aC0Bd6913A353dfF753DD2765",
+  "inventoryStaking": "0x64029E2da85B1d53815d111FEd15609034E5D557",
+  "marketplaceZap": "0x95Eaddd888c0063B392B771d11Db9704843df8bE",
+  "callFilterEnabled": "true"
+  }
