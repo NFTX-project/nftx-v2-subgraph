@@ -69,7 +69,7 @@ export function handleMint(event: MintEvent): void {
   mint.date = event.block.timestamp;
   mint.nftIds = nftIds;
   mint.amounts = transformMintAmounts(vaultAddress, nftIds, amounts);
-  mint.vaultInteraction = true;
+  mint.source = event.transaction.from;
 
   let feeReceipt = getFeeReceipt(event.transaction.hash);
   feeReceipt.vault = vaultAddress.toHexString();
@@ -126,7 +126,7 @@ export function handleSwap(event: SwapEvent): void {
   swap.specificIds = specificIds;
   swap.targetCount = BigInt.fromI32(specificIds.length);
   swap.randomCount = BigInt.fromI32(nftIds.length - specificIds.length);
-  swap.vaultInteraction = true;
+  swap.source = event.transaction.from;
 
   let feeReceipt = getFeeReceipt(event.transaction.hash);
   feeReceipt.vault = vaultAddress.toHexString();
@@ -181,7 +181,7 @@ export function handleRedeem(event: RedeemEvent): void {
   redeem.specificIds = specificIds;
   redeem.targetCount = BigInt.fromI32(specificIds.length);
   redeem.randomCount = BigInt.fromI32(nftIds.length - specificIds.length);
-  redeem.vaultInteraction = true;
+  redeem.source = event.transaction.from;
 
   let feeReceipt = getFeeReceipt(event.transaction.hash);
   feeReceipt.vault = vaultAddress.toHexString();
