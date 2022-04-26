@@ -115,11 +115,14 @@ type SimpleFeeReceiver @entity {
 }
 
 type FeeReceipt @entity {
-  id: ID! # tx hash
+  id: ID!
   vault: Vault!
   token: Token!
   amount: BigInt!
   date: BigInt!
+  mint: Mint
+  redeem: Redeem
+  swap: Swap
 }
 
 type Pool @entity {
@@ -154,7 +157,7 @@ type Mint @entity {
   vault: Vault!
   nftIds: [BigInt!]
   amounts: [BigInt!]
-  feeReceipt: FeeReceipt!
+  feeReceipts: [FeeReceipt!]! @derivedFrom(field: "mint")
   vaultInteraction: Boolean!
   zapAction: ZapSell @derivedFrom(field: "vaultAction")
 }
@@ -170,7 +173,7 @@ type Swap @entity {
   specificIds: [BigInt!]!
   targetCount: BigInt!
   randomCount: BigInt!
-  feeReceipt: FeeReceipt!
+  feeReceipts: [FeeReceipt!]! @derivedFrom(field: "swap")
   vaultInteraction: Boolean!
   zapAction: ZapSwap @derivedFrom(field: "vaultAction")
 }
@@ -184,7 +187,7 @@ type Redeem @entity {
   specificIds: [BigInt!]!
   targetCount: BigInt!
   randomCount: BigInt!
-  feeReceipt: FeeReceipt!
+  feeReceipts: [FeeReceipt!]! @derivedFrom(field: "redeem")
   vaultInteraction: Boolean!
   zapAction: ZapBuy @derivedFrom(field: "vaultAction")
 }
