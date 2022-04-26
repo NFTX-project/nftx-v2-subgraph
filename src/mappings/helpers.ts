@@ -259,8 +259,11 @@ export function getFeeReceiver(
   return feeReceiver as FeeReceiver;
 }
 
-export function getFeeReceipt(txHash: Bytes): FeeReceipt {
+export function getFeeReceipt(txHash: Bytes, to: Address | null): FeeReceipt {
   let feeReceiptId = txHash.toHexString();
+  if (to) {
+    feeReceiptId = feeReceiptId + '-' + to.toHexString();
+  }
   let feeReceipt = FeeReceipt.load(feeReceiptId);
   if (!feeReceipt) {
     feeReceipt = new FeeReceipt(feeReceiptId);

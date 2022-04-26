@@ -40,7 +40,7 @@ export function handleTransfer(event: TransferEvent): void {
   let global = getGlobal();
   let vaultAddress = event.address;
   if (event.params.from == global.feeDistributorAddress) {
-    let feeReceipt = getFeeReceipt(event.transaction.hash);
+    let feeReceipt = getFeeReceipt(event.transaction.hash, event.transaction.to);
     feeReceipt.vault = vaultAddress.toHexString();
     feeReceipt.token = vaultAddress.toHexString();
     feeReceipt.amount = event.params.value;
@@ -71,7 +71,7 @@ export function handleMint(event: MintEvent): void {
   mint.amounts = transformMintAmounts(vaultAddress, nftIds, amounts);
   mint.vaultInteraction = true;
 
-  let feeReceipt = getFeeReceipt(event.transaction.hash);
+  let feeReceipt = getFeeReceipt(event.transaction.hash, event.transaction.to);
   feeReceipt.vault = vaultAddress.toHexString();
   feeReceipt.token = vaultAddress.toHexString();
   feeReceipt.date = event.block.timestamp;
@@ -128,7 +128,7 @@ export function handleSwap(event: SwapEvent): void {
   swap.randomCount = BigInt.fromI32(nftIds.length - specificIds.length);
   swap.vaultInteraction = true;
 
-  let feeReceipt = getFeeReceipt(event.transaction.hash);
+  let feeReceipt = getFeeReceipt(event.transaction.hash, event.transaction.to);
   feeReceipt.vault = vaultAddress.toHexString();
   feeReceipt.token = vaultAddress.toHexString();
   feeReceipt.date = event.block.timestamp;
@@ -183,7 +183,7 @@ export function handleRedeem(event: RedeemEvent): void {
   redeem.randomCount = BigInt.fromI32(nftIds.length - specificIds.length);
   redeem.vaultInteraction = true;
 
-  let feeReceipt = getFeeReceipt(event.transaction.hash);
+  let feeReceipt = getFeeReceipt(event.transaction.hash, event.transaction.to);
   feeReceipt.vault = vaultAddress.toHexString();
   feeReceipt.token = vaultAddress.toHexString();
   feeReceipt.date = event.block.timestamp;
