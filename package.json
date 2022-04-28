@@ -13,8 +13,8 @@
     "deploy-arbitrum": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ nftx-project/nftx-v2-arbitrum",
     "deploy-rinkeby": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ nftx-project/nftx-v2-rinkeby",
     "deploy-mainnet": "graph deploy --studio nftx",
-    "deploy-rinkeby-shared": "graph deploy --product hosted-service nftx-project/nftx-v2-rinkeby --access-token 6585ffa018594af6929fc97a6b5609c6",
-    "deploy-mainnet-shared": "graph deploy --product hosted-service nftx-project/nftx-v2 --access-token 6585ffa018594af6929fc97a6b5609c6",
+    "deploy-rinkeby-shared": "graph deploy --product hosted-service nftx-project/nftx-v2-rinkeby",
+    "deploy-mainnet-shared": "graph deploy --product hosted-service nftx-project/nftx-v2",
     "format": "prettier --ignore-path .gitignore --write \"{*,**/*}.{ts,json,md}\""
   },
   "dependencies": {
