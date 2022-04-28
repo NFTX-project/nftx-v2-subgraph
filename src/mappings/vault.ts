@@ -32,6 +32,7 @@ import {
   getVaultHourData,
   getEligibilityModule,
   transformMintAmounts,
+  getFeeTransfer,
 } from './helpers';
 import { BigInt, ethereum, dataSource } from '@graphprotocol/graph-ts';
 import { SECS_PER_DAY, SECS_PER_HOUR, getDay, getHour } from './datetime';
@@ -40,12 +41,17 @@ export function handleTransfer(event: TransferEvent): void {
   let global = getGlobal();
   let vaultAddress = event.address;
   if (event.params.from == global.feeDistributorAddress) {
-    let feeReceipt = getFeeReceipt(event.transaction.hash, event.transaction.to);
+    let feeReceipt = getFeeReceipt(event.transaction.hash);
     feeReceipt.vault = vaultAddress.toHexString();
     feeReceipt.token = vaultAddress.toHexString();
-    feeReceipt.amount = event.params.value;
     feeReceipt.date = event.block.timestamp;
     feeReceipt.save();
+
+    let feeTransfer = getFeeTransfer(event.transaction.hash, event.params.to);
+    feeTransfer.to = event.params.to;
+    feeTransfer.amount = event.params.value;
+    feeTransfer.feeReceipt = feeReceipt.id;
+    feeTransfer.save();
 
     let vault = getVault(vaultAddress);
     vault.totalFees = vault.totalFees.plus(event.params.value);
@@ -71,11 +77,10 @@ export function handleMint(event: MintEvent): void {
   mint.amounts = transformMintAmounts(vaultAddress, nftIds, amounts);
   mint.vaultInteraction = true;
 
-  let feeReceipt = getFeeReceipt(event.transaction.hash, event.transaction.to);
+  let feeReceipt = getFeeReceipt(event.transaction.hash);
   feeReceipt.vault = vaultAddress.toHexString();
   feeReceipt.token = vaultAddress.toHexString();
   feeReceipt.date = event.block.timestamp;
-  feeReceipt.mint = mint.id;
   feeReceipt.save();
 
   mint.save();
@@ -128,11 +133,10 @@ export function handleSwap(event: SwapEvent): void {
   swap.randomCount = BigInt.fromI32(nftIds.length - specificIds.length);
   swap.vaultInteraction = true;
 
-  let feeReceipt = getFeeReceipt(event.transaction.hash, event.transaction.to);
+  let feeReceipt = getFeeReceipt(event.transaction.hash);
   feeReceipt.vault = vaultAddress.toHexString();
   feeReceipt.token = vaultAddress.toHexString();
   feeReceipt.date = event.block.timestamp;
-  feeReceipt.swap = swap.id;
   feeReceipt.save();
 
   swap.save();
@@ -183,11 +187,10 @@ export function handleRedeem(event: RedeemEvent): void {
   redeem.randomCount = BigInt.fromI32(nftIds.length - specificIds.length);
   redeem.vaultInteraction = true;
 
-  let feeReceipt = getFeeReceipt(event.transaction.hash, event.transaction.to);
+  let feeReceipt = getFeeReceipt(event.transaction.hash);
   feeReceipt.vault = vaultAddress.toHexString();
   feeReceipt.token = vaultAddress.toHexString();
   feeReceipt.date = event.block.timestamp;
-  feeReceipt.redeem = redeem.id;
   feeReceipt.save();
 
   redeem.save();
