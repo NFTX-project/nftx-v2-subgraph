@@ -83,6 +83,8 @@ export function handleMint(event: MintEvent): void {
   feeReceipt.date = event.block.timestamp;
   feeReceipt.save();
 
+  mint.feeReceipt = feeReceipt.id;
+
   mint.save();
   user.save();
 
@@ -138,6 +140,8 @@ export function handleSwap(event: SwapEvent): void {
   feeReceipt.token = vaultAddress.toHexString();
   feeReceipt.date = event.block.timestamp;
   feeReceipt.save();
+  
+  swap.feeReceipt = feeReceipt.id;
 
   swap.save();
   user.save();
@@ -192,6 +196,8 @@ export function handleRedeem(event: RedeemEvent): void {
   feeReceipt.token = vaultAddress.toHexString();
   feeReceipt.date = event.block.timestamp;
   feeReceipt.save();
+
+  redeem.feeReceipt = feeReceipt.id;
 
   redeem.save();
   user.save();
