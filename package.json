@@ -15,6 +15,7 @@
     "deploy-mainnet": "graph deploy --studio nftx",
     "deploy-rinkeby-shared": "graph deploy --product hosted-service nftx-project/nftx-v2-rinkeby",
     "deploy-mainnet-shared": "graph deploy --product hosted-service nftx-project/nftx-v2",
+    "deploy-arbitrum-shared": "graph deploy --product hosted-service nftx-project/nftx-v2-arbitrum",
     "format": "prettier --ignore-path .gitignore --write \"{*,**/*}.{ts,json,md}\""
   },
   "dependencies": {
