@@ -6,13 +6,16 @@
     "auth": "graph auth  --studio https://api.thegraph.com/deploy/ $GRAPH_ACCESS_TOKEN",
     "codegen": "graph codegen --output-dir src/types/",
     "build": "graph build",
+    "prepare-mainnet": "mustache config/mainnet.json subgraph.template.yaml > subgraph.yaml",
     "prepare-palm": "mustache config/palm.json subgraph.template.yaml > subgraph.yaml",
     "prepare-rinkeby": "mustache config/rinkeby.json subgraph.template.yaml > subgraph.yaml",
     "prepare-arbitrum": "mustache config/arbitrum.json subgraph.template.yaml > subgraph.yaml",
     "deploy-arbitrum": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ nftx-project/nftx-v2-arbitrum",
     "deploy-rinkeby": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ nftx-project/nftx-v2-rinkeby",
-    "prepare-mainnet": "mustache config/mainnet.json subgraph.template.yaml > subgraph.yaml",
     "deploy-mainnet": "graph deploy --studio nftx",
+    "deploy-rinkeby-shared": "graph deploy --product hosted-service nftx-project/nftx-v2-rinkeby",
+    "deploy-mainnet-shared": "graph deploy --product hosted-service nftx-project/nftx-v2",
+    "deploy-arbitrum-shared": "graph deploy --product hosted-service nftx-project/nftx-v2-arbitrum",
     "format": "prettier --ignore-path .gitignore --write \"{*,**/*}.{ts,json,md}\""
   },
   "dependencies": {

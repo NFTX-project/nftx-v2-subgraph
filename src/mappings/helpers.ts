@@ -38,6 +38,7 @@ import {
   ZapBuy,
   ZapSell,
   ZapSwap,
+  FeeTransfer,
 } from '../types/schema';
 import { ERC20Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC20Metadata';
 import { ERC677Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC677Metadata';
@@ -264,12 +265,20 @@ export function getFeeReceipt(txHash: Bytes): FeeReceipt {
   let feeReceipt = FeeReceipt.load(feeReceiptId);
   if (!feeReceipt) {
     feeReceipt = new FeeReceipt(feeReceiptId);
-    feeReceipt.amount = BigInt.fromI32(0);
     feeReceipt.date = BigInt.fromI32(0);
     // vault not set
     // token not set
   }
   return feeReceipt as FeeReceipt;
+}
+
+export function getFeeTransfer(txHash: Bytes, to: Address): FeeTransfer {
+  let feeTransferId = txHash.toHexString() + '-' + to.toHexString();
+  let feeTransfer = FeeTransfer.load(feeTransferId);
+  if (!feeTransfer) {
+    feeTransfer = new FeeTransfer(feeTransferId);
+  }
+  return feeTransfer as FeeTransfer;
 }
 
 export function getPool(poolAddress: Address, blockNumber: BigInt): Pool {

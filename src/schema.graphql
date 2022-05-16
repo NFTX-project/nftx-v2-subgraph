@@ -115,11 +115,18 @@ type SimpleFeeReceiver @entity {
 }
 
 type FeeReceipt @entity {
-  id: ID! # tx hash
+  id: ID!
   vault: Vault!
   token: Token!
-  amount: BigInt!
+  transfers: [FeeTransfer!]! @derivedFrom(field: "feeReceipt")
   date: BigInt!
+}
+
+type FeeTransfer @entity {
+  id: ID!
+  amount: BigInt!
+  to: Bytes!
+  feeReceipt: FeeReceipt!
 }
 
 type Pool @entity {

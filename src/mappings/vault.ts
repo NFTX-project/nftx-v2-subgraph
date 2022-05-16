@@ -32,6 +32,7 @@ import {
   getVaultHourData,
   getEligibilityModule,
   transformMintAmounts,
+  getFeeTransfer,
 } from './helpers';
 import { BigInt, ethereum, dataSource } from '@graphprotocol/graph-ts';
 import { SECS_PER_DAY, SECS_PER_HOUR, getDay, getHour } from './datetime';
@@ -43,9 +44,14 @@ export function handleTransfer(event: TransferEvent): void {
     let feeReceipt = getFeeReceipt(event.transaction.hash);
     feeReceipt.vault = vaultAddress.toHexString();
     feeReceipt.token = vaultAddress.toHexString();
-    feeReceipt.amount = event.params.value;
     feeReceipt.date = event.block.timestamp;
     feeReceipt.save();
+
+    let feeTransfer = getFeeTransfer(event.transaction.hash, event.params.to);
+    feeTransfer.to = event.params.to;
+    feeTransfer.amount = event.params.value;
+    feeTransfer.feeReceipt = feeReceipt.id;
+    feeTransfer.save();
 
     let vault = getVault(vaultAddress);
     vault.totalFees = vault.totalFees.plus(event.params.value);
@@ -76,6 +82,7 @@ export function handleMint(event: MintEvent): void {
   feeReceipt.token = vaultAddress.toHexString();
   feeReceipt.date = event.block.timestamp;
   feeReceipt.save();
+
   mint.feeReceipt = feeReceipt.id;
 
   mint.save();
@@ -133,6 +140,7 @@ export function handleSwap(event: SwapEvent): void {
   feeReceipt.token = vaultAddress.toHexString();
   feeReceipt.date = event.block.timestamp;
   feeReceipt.save();
+  
   swap.feeReceipt = feeReceipt.id;
 
   swap.save();
@@ -188,6 +196,7 @@ export function handleRedeem(event: RedeemEvent): void {
   feeReceipt.token = vaultAddress.toHexString();
   feeReceipt.date = event.block.timestamp;
   feeReceipt.save();
+
   redeem.feeReceipt = feeReceipt.id;
 
   redeem.save();
