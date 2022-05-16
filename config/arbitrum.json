@@ -7,12 +7,12 @@
   "startBlockSimpleFees": "5108611",
   "startBlockInventoryStaking": "5108984",
   "startBlockMarketplaceZap": "5108984",
-  "vaultFactory": "0xe01Cf5099e700c282A56E815ABd0C4948298Afae",
-  "stakingZap": "0xa12d30440D75aC533f781a2dd5fcF7EABB4C695E",
+  "vaultFactory": "0xE77b89FEc41A7b7dC74eb33602e82F0672FbB33C",
+  "stakingZap": "0xfb8664E4EB4d2F8B0220d358d0d9C4896DC84959",
   "stakingZapV2": "0x0000000000000000000000000000000000000000",
   "stakingZapV3": "0x0000000000000000000000000000000000000000",
-  "simpleFeeDistributor": "0x4939F5e390d20b7aC0Bd6913A353dfF753DD2765",
-  "inventoryStaking": "0x64029E2da85B1d53815d111FEd15609034E5D557",
-  "marketplaceZap": "0x95Eaddd888c0063B392B771d11Db9704843df8bE",
+  "simpleFeeDistributor": "0x68A7F493F6C40556931559afD22D7eD868d3f78E",
+  "inventoryStaking": "0x1A2C03ABD4Af7C87d8b4d5aD39b56fa98E8C4Cc6",
+  "marketplaceZap": "0x66f26E38bD50FD52A50da8E87E435f04f98001B7",
   "callFilterEnabled": "true"
   }
