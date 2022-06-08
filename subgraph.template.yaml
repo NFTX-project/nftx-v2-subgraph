@@ -379,6 +379,8 @@ templates:
           handler: handleEnableTargetSwapUpdated
         - event: EligibilityDeployed(uint256,address)
           handler: handleEligibilityDeployed
+        - event: VaultShutdown(address,uint256,address)
+          handler: handleVaultShutdown
       blockHandlers:
         - handler: handleBlock
           {{#callFilterEnabled}}

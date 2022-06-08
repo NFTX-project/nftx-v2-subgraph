@@ -43,6 +43,7 @@ type Vault @entity {
   totalHoldings: BigInt!
   createdBy: VaultCreator
   eligibilityModule: EligibilityModule
+  shutdownDate: BigInt!
 }
 
 type EligibilityModule @entity {

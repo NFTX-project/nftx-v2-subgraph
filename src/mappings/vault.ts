@@ -11,6 +11,7 @@ import {
   EnableRandomSwapUpdated as EnableRandomSwapUpdatedEvent,
   EnableTargetSwapUpdated as EnableTargetSwapUpdatedEvent,
   EligibilityDeployed as EligibilityDeployedEvent,
+  VaultShutdown as VaultShutdownEvent
 } from '../types/templates/NFTXVaultUpgradeable/NFTXVaultUpgradeable';
 import { EligibilityModule as EligibilityModuleTemplate } from '../types/templates';
 import { EligibilityModule as EligibilityModuleContract } from '../types/templates/EligibilityModule/EligibilityModule';
@@ -343,4 +344,12 @@ export function handleEligibilityDeployed(
   module.save();
 
   EligibilityModuleTemplate.create(moduleAddress);
+}
+
+export function handleVaultShutdown(
+  event: VaultShutdownEvent
+): void {
+  let vault = getVault(event.address);
+  vault.shutdownDate = event.block.timestamp;
+  vault.save();
 }
