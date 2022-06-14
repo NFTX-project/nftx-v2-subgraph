@@ -1,4 +1,4 @@
-specVersion: 0.0.5
+specVersion: 0.0.4
 description: Mint and trade NFT index tokens 
 schema:
   file: ./src/schema.graphql
