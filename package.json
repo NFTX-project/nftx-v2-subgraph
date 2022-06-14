@@ -19,7 +19,7 @@
     "format": "prettier --ignore-path .gitignore --write \"{*,**/*}.{ts,json,md}\""
   },
   "dependencies": {
-    "@graphprotocol/graph-ts": "0.27.0",
+    "@graphprotocol/graph-ts": "0.26.0",
     "@graphprotocol/graph-cli": "0.30.4",
     "mustache": "4.2.0"
   },
