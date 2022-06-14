@@ -22,7 +22,6 @@ export function handleBuyZap(event: BuyZapEvent): void {
   zapBuy.vaultAction = redeem.id;
   zapBuy.save();
 
-  redeem.vaultInteraction = false;
   redeem.save();
 }
 
@@ -35,7 +34,6 @@ export function handleSellZap(event: SellZapEvent): void {
   zapSell.vaultAction = mint.id;
   zapSell.save();
 
-  mint.vaultInteraction = false;
   mint.save();
 }
 
@@ -48,6 +46,5 @@ export function handleSwapZap(event: SwapZapEvent): void {
   zapSwap.vaultAction = swap.id;
   zapSwap.save();
 
-  swap.vaultInteraction = false;
   swap.save();
 }

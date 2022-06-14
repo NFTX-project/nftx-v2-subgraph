@@ -1,4 +1,4 @@
-specVersion: 0.0.2
+specVersion: 0.0.5
 description: Mint and trade NFT index tokens 
 schema:
   file: ./src/schema.graphql
@@ -15,7 +15,7 @@ dataSources:
     mapping:
       file: ./src/mappings/factory.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - Global
@@ -60,7 +60,7 @@ dataSources:
     mapping:
       file: ./src/mappings/simpleFeeDistributor.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - Vault
@@ -107,7 +107,7 @@ dataSources:
     mapping:
       file: ./src/mappings/zap.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - Zap
@@ -137,7 +137,7 @@ dataSources:
     mapping:
       file: ./src/mappings/zap.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - Zap
@@ -167,7 +167,7 @@ dataSources:
     mapping:
       file: ./src/mappings/zap.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - Zap
@@ -197,7 +197,7 @@ dataSources:
     mapping:
       file: ./src/mappings/marketplaceZap.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - Buy
@@ -225,7 +225,7 @@ dataSources:
     mapping:
       file: ./src/mappings/staking.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - Vault
@@ -256,7 +256,7 @@ templates:
     mapping:
       file: ./src/mappings/staking.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - Vault
@@ -290,7 +290,7 @@ templates:
     mapping:
       file: ./src/mappings/feeDistributor.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - Vault
@@ -334,7 +334,7 @@ templates:
     mapping:
       file: ./src/mappings/vault.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - FeeReceipt
@@ -361,10 +361,13 @@ templates:
           handler: handleTransfer
         - event: Minted(uint256[],uint256[],address)
           handler: handleMint
+          receipt: true
         - event: Redeemed(uint256[],uint256[],address)
           handler: handleRedeem
+          receipt: true
         - event: Swapped(uint256[],uint256[],uint256[],uint256[],address)
           handler: handleSwap
+          receipt: true
         - event: ManagerSet(address)
           handler: handleManagerSet
         - event: EnableMintUpdated(bool)
@@ -381,6 +384,8 @@ templates:
           handler: handleEligibilityDeployed
         - event: VaultShutdown(address,uint256,address)
           handler: handleVaultShutdown
+        - event: MetaDataChange(string,string,string,string)
+          handler: handleMetaDataChange
       blockHandlers:
         - handler: handleBlock
           {{#callFilterEnabled}}
@@ -396,7 +401,7 @@ templates:
     mapping:
       file: ./src/mappings/pool.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - StakedLpUser
@@ -431,7 +436,7 @@ templates:
     mapping:
       file: ./src/mappings/eligibility.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - EligibilityModule
