@@ -211,6 +211,18 @@ type StakedLpUser @entity {
   withdrawals: [Withdrawal!]! @derivedFrom(field: "user")
 }
 
+type StakedIpUser @entity {
+  id: ID!
+  pools: [InventoryPoolUserActivity!]! @derivedFrom(field: "user")
+}
+
+type InventoryPoolUserActivity @entity {
+  id: ID!
+  user: StakedIpUser!
+  deposited: BigInt!
+  withdrawn: BigInt!
+}
+
 type Reward @entity {
   id: ID! # tx
   date: BigInt!

@@ -246,6 +246,10 @@ dataSources:
       eventHandlers:
         - event: XTokenCreated(uint256,address,address)
           handler: handleXTokenCreated
+        - event: Withdraw(uint256,uint256,uint256,address)
+          handler: handleWithdraw
+        - event: Deposit(uint256,uint256,uint256,uint256,address)
+          handler: handleDeposit
 templates:
   - kind: ethereum/contract
     name: NFTXLPStaking
