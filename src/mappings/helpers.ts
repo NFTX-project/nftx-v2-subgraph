@@ -39,6 +39,8 @@ import {
   ZapSell,
   ZapSwap,
   FeeTransfer,
+  StakedIpUser,
+  InventoryPoolUserActivity,
 } from '../types/schema';
 import { ERC20Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC20Metadata';
 import { ERC677Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC677Metadata';
@@ -360,6 +362,24 @@ export function getStakedLpUser(userAddress: Address): StakedLpUser {
     user.activePools = new Array<string>();
   }
   return user as StakedLpUser;
+}
+
+export function getStakedIpUser(userAddress: Address): StakedIpUser {
+  let user = StakedIpUser.load(userAddress.toHexString());
+  if (!user) {
+    user = new StakedIpUser(userAddress.toHexString());
+  }
+  return user as StakedIpUser;
+}
+
+export function getInventoryPoolUserActivity(userAddress: Address, vaultId: BigInt): InventoryPoolUserActivity {
+  let inventoryPoolUserActivity = InventoryPoolUserActivity.load(userAddress.toHexString() + '-' + vaultId.toString());
+  if (!inventoryPoolUserActivity) {
+    inventoryPoolUserActivity = new InventoryPoolUserActivity(userAddress.toHexString() + '-' + vaultId.toString());
+    inventoryPoolUserActivity.deposited = BigInt.fromI32(0);
+    inventoryPoolUserActivity.withdrawn = BigInt.fromI32(0);
+  }
+  return inventoryPoolUserActivity as InventoryPoolUserActivity;
 }
 
 export function getReward(txHash: Bytes): Reward {

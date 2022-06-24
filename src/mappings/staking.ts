@@ -5,11 +5,13 @@ import {
 } from '../types/templates/NFTXLPStaking/NFTXLPStaking';
 import {
   XTokenCreated as XTokenCreatedEvent,
+  Withdraw as WithdrawEvent,
+  Deposit as DepositEvent,
   NFTXInventoryStaking
 } from '../types/NFTXInventoryStaking/NFTXInventoryStaking';
 import { NFTXVaultFactoryUpgradeable as NFTXVaultFactory } from '../types/templates/NFTXLPStaking/NFTXVaultFactoryUpgradeable';
 import { StakingTokenProvider } from '../types/templates/NFTXLPStaking/StakingTokenProvider';
-import { getInventoryPool, getPool, getToken, getVault } from './helpers';
+import { getInventoryPool, getInventoryPoolUserActivity, getPool, getStakedIpUser, getToken, getVault } from './helpers';
 import { RewardDistributionTokenUpgradeable as RewardDistributionTokenTemplate } from '../types/templates';
 import { Address, BigInt } from '@graphprotocol/graph-ts';
 
@@ -79,6 +81,24 @@ function newPool(
   pool.save();
 
   RewardDistributionTokenTemplate.create(poolAddress);
+}
+
+export function handleWithdraw(event: WithdrawEvent): void {
+  let user = getStakedIpUser(event.params.sender);
+  let activity = getInventoryPoolUserActivity(event.params.sender, event.params.vaultId);
+  activity.withdrawn = activity.withdrawn.plus(event.params.baseTokenAmount);
+
+  user.save();
+  activity.save();
+}
+
+export function handleDeposit(event: DepositEvent): void {
+  let user = getStakedIpUser(event.params.sender);
+  let activity = getInventoryPoolUserActivity(event.params.sender, event.params.vaultId);
+  activity.deposited = activity.deposited.plus(event.params.baseTokenAmount);
+
+  user.save();
+  activity.save();
 }
 
 export function handleXTokenCreated(event: XTokenCreatedEvent): void {
