@@ -1,0 +1,14 @@
+{
+  "network": "goerli",
+  "startBlock": "7059116",
+  "startBlockZaps": "7059116",
+  "startBlockSimpleFees": "7059068",
+  "startBlockInventoryStaking": "7059168",
+  "startBlockMarketplaceZap": "7059116",
+  "vaultFactory": "0xe01Cf5099e700c282A56E815ABd0C4948298Afae",
+  "stakingZap": "0xd9A60945DD4b3a5Ea91480e82dA20D3AceC5D857",
+  "simpleFeeDistributor": "0x4939F5e390d20b7aC0Bd6913A353dfF753DD2765",
+  "inventoryStaking": "0xDde5A3175F5C9755480E4CB3cCA5F1865C1976D6",
+  "marketplaceZap": "0x27124948dcc9ebf3113681898ff217d3e4f56900",
+  "callFilterEnabled": "true"
+}
