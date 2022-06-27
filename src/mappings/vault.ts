@@ -78,18 +78,6 @@ export function handleMint(event: MintEvent): void {
   mint.nftIds = nftIds;
   mint.amounts = transformMintAmounts(vaultAddress, nftIds, amounts);
   mint.vaultInteraction = true;
-  // if (event.receipt) {
-  //   let receipt = changetype<ethereum.TransactionReceipt>(event.receipt);
-  //   if (receipt.contractAddress) {
-  //     let contractAddress = changetype<Address>(receipt.contractAddress);
-  //     mint.source = Address.fromString((contractAddress as Address).toHexString());
-  //   } else {
-  //     mint.source = null;
-  //   }
-  // } else {
-  //   mint.source = null;
-  // }
-
 
   let feeReceipt = getFeeReceipt(event.transaction.hash);
   feeReceipt.vault = vaultAddress.toHexString();
@@ -148,17 +136,6 @@ export function handleSwap(event: SwapEvent): void {
   swap.targetCount = BigInt.fromI32(specificIds.length);
   swap.randomCount = BigInt.fromI32(nftIds.length - specificIds.length);
   swap.vaultInteraction = true;
-  // if (event.receipt) {
-  //   let receipt = changetype<ethereum.TransactionReceipt>(event.receipt);
-  //   if (receipt.contractAddress) {
-  //     let contractAddress = changetype<Address>(receipt.contractAddress);
-  //     swap.source = Address.fromString((contractAddress as Address).toHexString());
-  //   } else {
-  //     swap.source = null;
-  //   }
-  // } else {
-  //   swap.source = null;
-  // }
 
   let feeReceipt = getFeeReceipt(event.transaction.hash);
   feeReceipt.vault = vaultAddress.toHexString();
@@ -215,17 +192,6 @@ export function handleRedeem(event: RedeemEvent): void {
   redeem.targetCount = BigInt.fromI32(specificIds.length);
   redeem.randomCount = BigInt.fromI32(nftIds.length - specificIds.length);
   redeem.vaultInteraction = true;
-  // if (event.receipt) {
-  //   let receipt = changetype<ethereum.TransactionReceipt>(event.receipt);
-  //   if (receipt.contractAddress) {
-  //     let contractAddress = changetype<Address>(receipt.contractAddress);
-  //     redeem.source = Address.fromString((contractAddress as Address).toHexString());
-  //   } else {
-  //     redeem.source = null;
-  //   }
-  // } else {
-  //   redeem.source = null;
-  // }
 
 
   let feeReceipt = getFeeReceipt(event.transaction.hash);
