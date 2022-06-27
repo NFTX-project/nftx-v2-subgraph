@@ -354,7 +354,6 @@ export function handleVaultShutdown(
   let vault = getVault(event.address);
   vault.shutdownDate = event.block.timestamp;
   vault.totalHoldings = BigInt.fromI32(0);
-  vault.holdings = new Array<string>();
   vault.save();
 }
 
