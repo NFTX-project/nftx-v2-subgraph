@@ -16,6 +16,7 @@
     "deploy-goerli": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ nftx-project/nftx-v2-goerli",
     "deploy-mainnet": "graph deploy --studio nftx",
     "deploy-rinkeby-shared": "graph deploy --product hosted-service nftx-project/nftx-v2-rinkeby",
+    "deploy-goerli-shared": "graph deploy --product hosted-service nftx-project/nftx-v2-goerli",
     "deploy-mainnet-shared": "graph deploy --product hosted-service nftx-project/nftx-v2",
     "deploy-arbitrum-shared": "graph deploy --product hosted-service nftx-project/nftx-v2-arbitrum",
     "deploy-goerli-shared": "graph deploy --product hosted-service nftx-project/nftx-v2-goerli",
@@ -29,7 +30,7 @@
   "devDependencies": {
     "prettier": "2.3.0"
   },
-  "version": "1.0.0",
+  "version": "1.3.3",
   "main": "index.js",
   "repository": "git@github.com:NFTX-project/nftx-v2-subgraph.git",
   "author": "Caps <caps@nftx.org>"
