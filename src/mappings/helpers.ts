@@ -221,6 +221,7 @@ export function getVault(vaultAddress: Address): Vault {
     vault.totalRedeems = BigInt.fromI32(0);
     vault.totalHoldings = BigInt.fromI32(0);
     vault.usesFactoryFees = true;
+    vault.shutdownDate = BigInt.fromI32(0);
   }
 
   return vault as Vault;

@@ -11,6 +11,8 @@ import {
   EnableRandomSwapUpdated as EnableRandomSwapUpdatedEvent,
   EnableTargetSwapUpdated as EnableTargetSwapUpdatedEvent,
   EligibilityDeployed as EligibilityDeployedEvent,
+  VaultShutdown as VaultShutdownEvent,
+  MetaDataChange as MetaDataChangeEvent,
 } from '../types/templates/NFTXVaultUpgradeable/NFTXVaultUpgradeable';
 import { EligibilityModule as EligibilityModuleTemplate } from '../types/templates';
 import { EligibilityModule as EligibilityModuleContract } from '../types/templates/EligibilityModule/EligibilityModule';
@@ -191,6 +193,7 @@ export function handleRedeem(event: RedeemEvent): void {
   redeem.randomCount = BigInt.fromI32(nftIds.length - specificIds.length);
   redeem.vaultInteraction = true;
 
+
   let feeReceipt = getFeeReceipt(event.transaction.hash);
   feeReceipt.vault = vaultAddress.toHexString();
   feeReceipt.token = vaultAddress.toHexString();
@@ -343,4 +346,22 @@ export function handleEligibilityDeployed(
   module.save();
 
   EligibilityModuleTemplate.create(moduleAddress);
+}
+
+export function handleVaultShutdown(
+  event: VaultShutdownEvent
+): void {
+  let vault = getVault(event.address);
+  vault.shutdownDate = event.block.timestamp;
+  vault.totalHoldings = BigInt.fromI32(0);
+  vault.save();
+}
+
+export function handleMetaDataChange(
+  event: MetaDataChangeEvent
+): void {
+  let token = getToken(event.address);
+  token.symbol = event.params.newSymbol;
+  token.name = event.params.newName;
+  token.save();
 }
