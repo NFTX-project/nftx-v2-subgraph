@@ -30,7 +30,7 @@
   "devDependencies": {
     "prettier": "2.3.0"
   },
-  "version": "1.3.3",
+  "version": "1.3.4",
   "main": "index.js",
   "repository": "git@github.com:NFTX-project/nftx-v2-subgraph.git",
   "author": "Caps <caps@nftx.org>"
