@@ -201,6 +201,22 @@ type User @entity {
   id: ID! # address
   mints: [Mint!]! @derivedFrom(field: "user")
   redeems: [Redeem!]! @derivedFrom(field: "user")
+  inventoryDeposits: [InventoryDeposit!]! @derivedFrom(field: "user")
+  inventoryWithdrawals: [InventoryWithdrawal!]! @derivedFrom(field: "user")
+}
+
+type InventoryDeposit @entity {
+  id: ID! # tx hash
+  user: User!
+  xToken: Bytes!
+  amount: BigInt!
+}
+
+type InventoryWithdrawal @entity {
+  id: ID! # tx hash
+  user: User!
+  xToken: Bytes!
+  amount: BigInt!
 }
 
 type StakedLpUser @entity {
@@ -210,18 +226,6 @@ type StakedLpUser @entity {
   userRewards: [Reward!]! @derivedFrom(field: "user")
   deposits: [Deposit!]! @derivedFrom(field: "user")
   withdrawals: [Withdrawal!]! @derivedFrom(field: "user")
-}
-
-type StakedIpUser @entity {
-  id: ID!
-  pools: [InventoryPoolUserActivity!]! @derivedFrom(field: "user")
-}
-
-type InventoryPoolUserActivity @entity {
-  id: ID!
-  user: StakedIpUser!
-  deposited: BigInt!
-  withdrawn: BigInt!
 }
 
 type Reward @entity {

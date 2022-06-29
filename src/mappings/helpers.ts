@@ -39,8 +39,8 @@ import {
   ZapSell,
   ZapSwap,
   FeeTransfer,
-  StakedIpUser,
-  InventoryPoolUserActivity,
+  InventoryDeposit,
+  InventoryWithdrawal,
 } from '../types/schema';
 import { ERC20Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC20Metadata';
 import { ERC677Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC677Metadata';
@@ -365,24 +365,6 @@ export function getStakedLpUser(userAddress: Address): StakedLpUser {
   return user as StakedLpUser;
 }
 
-export function getStakedIpUser(userAddress: Address): StakedIpUser {
-  let user = StakedIpUser.load(userAddress.toHexString());
-  if (!user) {
-    user = new StakedIpUser(userAddress.toHexString());
-  }
-  return user as StakedIpUser;
-}
-
-export function getInventoryPoolUserActivity(userAddress: Address, vaultId: BigInt): InventoryPoolUserActivity {
-  let inventoryPoolUserActivity = InventoryPoolUserActivity.load(userAddress.toHexString() + '-' + vaultId.toString());
-  if (!inventoryPoolUserActivity) {
-    inventoryPoolUserActivity = new InventoryPoolUserActivity(userAddress.toHexString() + '-' + vaultId.toString());
-    inventoryPoolUserActivity.deposited = BigInt.fromI32(0);
-    inventoryPoolUserActivity.withdrawn = BigInt.fromI32(0);
-  }
-  return inventoryPoolUserActivity as InventoryPoolUserActivity;
-}
-
 export function getReward(txHash: Bytes): Reward {
   let rewardId = txHash.toHexString();
   let rewards = Reward.load(rewardId);
@@ -642,4 +624,20 @@ export function getZapSwap(txHash: Bytes): ZapSwap {
     zapSwap = new ZapSwap(txHash.toHexString());
   }
   return zapSwap as ZapSwap;
+}
+
+export function getInventoryDeposit(txHash: Bytes): InventoryDeposit {
+  let inventoryDeposit = InventoryDeposit.load(txHash.toHexString());
+  if (!inventoryDeposit) {
+    inventoryDeposit = new InventoryDeposit(txHash.toHexString());
+  }
+  return inventoryDeposit as InventoryDeposit;
+}
+
+export function getInventoryWithdrawal(txHash: Bytes): InventoryWithdrawal {
+  let inventoryWithdrawal = InventoryWithdrawal.load(txHash.toHexString());
+  if (!inventoryWithdrawal) {
+    inventoryWithdrawal = new InventoryWithdrawal(txHash.toHexString());
+  }
+  return inventoryWithdrawal as InventoryWithdrawal;
 }

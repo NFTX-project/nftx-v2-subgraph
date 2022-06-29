@@ -11,7 +11,7 @@ import {
 } from '../types/NFTXInventoryStaking/NFTXInventoryStaking';
 import { NFTXVaultFactoryUpgradeable as NFTXVaultFactory } from '../types/templates/NFTXLPStaking/NFTXVaultFactoryUpgradeable';
 import { StakingTokenProvider } from '../types/templates/NFTXLPStaking/StakingTokenProvider';
-import { getInventoryPool, getInventoryPoolUserActivity, getPool, getStakedIpUser, getToken, getVault } from './helpers';
+import { getGlobal, getInventoryDeposit, getInventoryPool, getInventoryWithdrawal, getPool, getToken, getUser, getVault } from './helpers';
 import { RewardDistributionTokenUpgradeable as RewardDistributionTokenTemplate } from '../types/templates';
 import { Address, BigInt } from '@graphprotocol/graph-ts';
 
@@ -84,21 +84,44 @@ function newPool(
 }
 
 export function handleWithdraw(event: WithdrawEvent): void {
-  let user = getStakedIpUser(event.params.sender);
-  let activity = getInventoryPoolUserActivity(event.params.sender, event.params.vaultId);
-  activity.withdrawn = activity.withdrawn.plus(event.params.baseTokenAmount);
+  let global = getGlobal();
+  let stakingAddress = changetype<Address>(global.inventoryStakingAddress);
+  let stakingInstance = NFTXInventoryStaking.bind(stakingAddress);
+  let xTokenAddress = stakingInstance.try_vaultXToken(event.params.vaultId);
 
+  if (xTokenAddress.reverted) {
+    return;
+  }
+
+  let user = getUser(event.params.sender);
+  let inventoryWithdrawal = getInventoryWithdrawal(event.transaction.hash);
+
+  inventoryWithdrawal.amount = event.params.baseTokenAmount;
+  inventoryWithdrawal.xToken = xTokenAddress.value;
+
+  inventoryWithdrawal.save();
   user.save();
-  activity.save();
+  
 }
 
 export function handleDeposit(event: DepositEvent): void {
-  let user = getStakedIpUser(event.params.sender);
-  let activity = getInventoryPoolUserActivity(event.params.sender, event.params.vaultId);
-  activity.deposited = activity.deposited.plus(event.params.baseTokenAmount);
+  let global = getGlobal();
+  let stakingAddress = changetype<Address>(global.inventoryStakingAddress);
+  let stakingInstance = NFTXInventoryStaking.bind(stakingAddress);
+  let xTokenAddress = stakingInstance.try_vaultXToken(event.params.vaultId);
 
+  if (xTokenAddress.reverted) {
+    return;
+  }
+
+  let user = getUser(event.params.sender);
+  let inventoryDeposit = getInventoryDeposit(event.transaction.hash);
+
+  inventoryDeposit.amount = event.params.baseTokenAmount;
+  inventoryDeposit.xToken = xTokenAddress.value;
+
+  inventoryDeposit.save();
   user.save();
-  activity.save();
 }
 
 export function handleXTokenCreated(event: XTokenCreatedEvent): void {
