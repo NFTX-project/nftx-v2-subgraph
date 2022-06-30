@@ -19,7 +19,6 @@
     "deploy-goerli-shared": "graph deploy --product hosted-service nftx-project/nftx-v2-goerli",
     "deploy-mainnet-shared": "graph deploy --product hosted-service nftx-project/nftx-v2",
     "deploy-arbitrum-shared": "graph deploy --product hosted-service nftx-project/nftx-v2-arbitrum",
-    "deploy-goerli-shared": "graph deploy --product hosted-service nftx-project/nftx-v2-goerli",
     "format": "prettier --ignore-path .gitignore --write \"{*,**/*}.{ts,json,md}\""
   },
   "dependencies": {
