@@ -15,7 +15,7 @@ dataSources:
     mapping:
       file: ./src/mappings/factory.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - Global
@@ -60,7 +60,7 @@ dataSources:
     mapping:
       file: ./src/mappings/simpleFeeDistributor.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - Vault
@@ -107,7 +107,7 @@ dataSources:
     mapping:
       file: ./src/mappings/zap.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - Zap
@@ -137,7 +137,7 @@ dataSources:
     mapping:
       file: ./src/mappings/zap.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - Zap
@@ -167,7 +167,7 @@ dataSources:
     mapping:
       file: ./src/mappings/zap.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - Zap
@@ -197,7 +197,7 @@ dataSources:
     mapping:
       file: ./src/mappings/marketplaceZap.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - Buy
@@ -225,7 +225,7 @@ dataSources:
     mapping:
       file: ./src/mappings/staking.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - Vault
@@ -256,7 +256,7 @@ templates:
     mapping:
       file: ./src/mappings/staking.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - Vault
@@ -290,7 +290,7 @@ templates:
     mapping:
       file: ./src/mappings/feeDistributor.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - Vault
@@ -334,7 +334,7 @@ templates:
     mapping:
       file: ./src/mappings/vault.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - FeeReceipt
@@ -401,7 +401,7 @@ templates:
     mapping:
       file: ./src/mappings/pool.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - StakedLpUser
@@ -436,7 +436,7 @@ templates:
     mapping:
       file: ./src/mappings/eligibility.ts
       kind: ethereum/events
-      apiVersion: 0.0.6
+      apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - EligibilityModule
