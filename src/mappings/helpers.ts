@@ -314,6 +314,7 @@ export function getMint(txHash: Bytes): Mint {
   let mint = Mint.load(txHash.toHexString());
   if (!mint) {
     mint = new Mint(txHash.toHexString());
+    mint.source = ADDRESS_ZERO;
   }
   return mint as Mint;
 }
@@ -322,6 +323,7 @@ export function getSwap(txHash: Bytes): Swap {
   let swap = Swap.load(txHash.toHexString());
   if (!swap) {
     swap = new Swap(txHash.toHexString());
+    swap.source = ADDRESS_ZERO;
   }
   return swap as Swap;
 }
@@ -350,6 +352,7 @@ export function getRedeem(txHash: Bytes): Redeem {
   let redeem = Redeem.load(txHash.toHexString());
   if (!redeem) {
     redeem = new Redeem(txHash.toHexString());
+    redeem.source = ADDRESS_ZERO;
   }
   return redeem as Redeem;
 }
