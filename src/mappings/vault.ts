@@ -79,7 +79,7 @@ export function handleMint(event: MintEvent): void {
   mint.amounts = transformMintAmounts(vaultAddress, nftIds, amounts);
   
   if (event.receipt) {
-    mint.source = event.receipt.contractAddress;
+    mint.source = changetype<ethereum.TransactionReceipt>(event.receipt).contractAddress;
   }
 
   let feeReceipt = getFeeReceipt(event.transaction.hash);
@@ -140,7 +140,7 @@ export function handleSwap(event: SwapEvent): void {
   swap.randomCount = BigInt.fromI32(nftIds.length - specificIds.length);
   
   if (event.receipt) {
-    swap.source = event.receipt.contractAddress;
+    swap.source = changetype<ethereum.TransactionReceipt>(event.receipt).contractAddress;
   }
 
   let feeReceipt = getFeeReceipt(event.transaction.hash);
@@ -199,7 +199,7 @@ export function handleRedeem(event: RedeemEvent): void {
   redeem.randomCount = BigInt.fromI32(nftIds.length - specificIds.length);
   
   if (event.receipt) {
-    redeem.source = event.receipt.contractAddress;
+    redeem.source = changetype<ethereum.TransactionReceipt>(event.receipt).contractAddress;
   }
 
   let feeReceipt = getFeeReceipt(event.transaction.hash);

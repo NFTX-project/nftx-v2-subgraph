@@ -164,7 +164,7 @@ type Mint @entity {
   amounts: [BigInt!]
   feeReceipt: FeeReceipt!
   zapAction: ZapSell @derivedFrom(field: "vaultAction")
-  source: Bytes
+  source: Bytes!
 }
 
 type Swap @entity {
@@ -180,7 +180,7 @@ type Swap @entity {
   randomCount: BigInt!
   feeReceipt: FeeReceipt!
   zapAction: ZapSwap @derivedFrom(field: "vaultAction")
-  source: Bytes
+  source: Bytes!
 }
 
 type Redeem @entity {
