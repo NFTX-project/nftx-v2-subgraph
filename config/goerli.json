@@ -1,6 +1,6 @@
 {
   "network": "goerli",
-  "startBlock": "7059116",
+  "startBlock": "7059072",
   "startBlockZaps": "7059116",
   "startBlockZapsV2": "7059116",
   "startBlockZapsV3": "7059116",
