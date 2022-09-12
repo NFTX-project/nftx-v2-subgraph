@@ -127,7 +127,7 @@ dataSources:
         - event: 'UserStaked(uint256,uint256,uint256,uint256,address)'
           handler: handleUserStaked
       file:
-        /: /ipfs/Qmbr5d3nPWQ4jw86XnVnJ1a54vzxQNyPFeRLKURun7miEj
+        /: /ipfs/QmYa2SWVWPtSC6DPDYZru7WhY9khAsavcTp9GiDNz4PV7Q
       kind: ethereum/events
       language: wasm/assemblyscript
     name: NFTXStakingZap
@@ -161,7 +161,7 @@ dataSources:
         - event: 'UserStaked(uint256,uint256,uint256,uint256,address)'
           handler: handleUserStaked
       file:
-        /: /ipfs/Qmbr5d3nPWQ4jw86XnVnJ1a54vzxQNyPFeRLKURun7miEj
+        /: /ipfs/QmYa2SWVWPtSC6DPDYZru7WhY9khAsavcTp9GiDNz4PV7Q
       kind: ethereum/events
       language: wasm/assemblyscript
     name: NFTXStakingZapV2
@@ -195,7 +195,7 @@ dataSources:
         - event: 'UserStaked(uint256,uint256,uint256,uint256,address)'
           handler: handleUserStaked
       file:
-        /: /ipfs/Qmbr5d3nPWQ4jw86XnVnJ1a54vzxQNyPFeRLKURun7miEj
+        /: /ipfs/QmYa2SWVWPtSC6DPDYZru7WhY9khAsavcTp9GiDNz4PV7Q
       kind: ethereum/events
       language: wasm/assemblyscript
     name: NFTXStakingZapV3
@@ -223,7 +223,7 @@ dataSources:
         - event: 'Swap(uint256,uint256,address)'
           handler: handleSwapZap
       file:
-        /: /ipfs/QmerJEukG31dvB1Dgzckchg8EqGiApp9RjuWabGJTvuPaU
+        /: /ipfs/QmZc5h3Nsg6cSary47BAQWy6nE1XSn21rNBNZyuj5gLhS8
       kind: ethereum/events
       language: wasm/assemblyscript
     name: NFTXMarketplaceZap
@@ -260,12 +260,8 @@ dataSources:
       eventHandlers:
         - event: 'XTokenCreated(uint256,address,address)'
           handler: handleXTokenCreated
-        - event: 'Withdraw(uint256,uint256,uint256,address)'
-          handler: handleWithdraw
-        - event: 'Deposit(uint256,uint256,uint256,uint256,address)'
-          handler: handleDeposit
       file:
-        /: /ipfs/QmYwBFWcZq3qmQBcW3ypSTxjqSE7BRoYPd8hQVqToSySg1
+        /: /ipfs/QmUycvStva1mQ6iWyKt1pGNmm6raXJQWqLyj2Ep4cR6uei
       kind: ethereum/events
       language: wasm/assemblyscript
     name: NFTXInventoryStaking
@@ -277,7 +273,7 @@ dataSources:
 description: Mint and trade NFT index tokens
 schema:
   file:
-    /: /ipfs/QmSMKEdKxFyGDNtPr7GP8EhtzNui73yMnviuU4s3gLiAnY
+    /: /ipfs/QmPwazvMDpUtdGc4XD5q2BzzoWZGXGnVosJFxS9EyUhyho
 specVersion: 0.0.2
 templates:
   - kind: ethereum/contract
@@ -314,7 +310,7 @@ templates:
         - event: 'PoolUpdated(uint256,address)'
           handler: handlePoolUpdated
       file:
-        /: /ipfs/QmYwBFWcZq3qmQBcW3ypSTxjqSE7BRoYPd8hQVqToSySg1
+        /: /ipfs/QmUycvStva1mQ6iWyKt1pGNmm6raXJQWqLyj2Ep4cR6uei
       kind: ethereum/events
       language: wasm/assemblyscript
     name: NFTXLPStaking
@@ -432,7 +428,7 @@ templates:
         - event: 'MetaDataChange(string,string,string,string)'
           handler: handleMetaDataChange
       file:
-        /: /ipfs/QmbuHhV44B2jn5pomSVSrPjPqrsv2xNGGoweVzEyJTwaLB
+        /: /ipfs/QmaUHjW9reSCtxL7F3KxsMoSXbd4e6vBFAAsmQ8Q2m7p5V
       kind: ethereum/events
       language: wasm/assemblyscript
     name: NFTXVaultUpgradeable
@@ -474,7 +470,7 @@ templates:
         - event: 'Transfer(indexed address,indexed address,uint256)'
           handler: handleTransfer
       file:
-        /: /ipfs/QmQEBFXcZbSTuV8N3CUW3gGnwaLGcmgBmGZFs5SXbYSqai
+        /: /ipfs/Qmb2KvsWPc9J8NXXKMeWBsysVg2zwR8BU8hQLRivzDQ3m1
       kind: ethereum/events
       language: wasm/assemblyscript
     name: RewardDistributionTokenUpgradeable
@@ -499,7 +495,7 @@ templates:
         - event: 'RangeSet(uint256,uint256)'
           handler: handleRangeSet
       file:
-        /: /ipfs/Qma2nBERw716m4Y9gAwCwrk28fFMsbKTYBmbURj3nciQvU
+        /: /ipfs/QmbmbUyVBuzKsciF3cyd9NDFzySD1vQfGFtUTTkxoKW2QK
       kind: ethereum/events
       language: wasm/assemblyscript
     name: EligibilityModule
