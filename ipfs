@@ -1,0 +1,508 @@
+dataSources:
+  - kind: ethereum/contract
+    mapping:
+      abis:
+        - file:
+            /: /ipfs/QmbJYANzocvQpP1UUnhF5R5NBsL7DCgCuNzsuPMskLX2Sv
+          name: NFTXVaultFactoryUpgradeable
+        - file:
+            /: /ipfs/QmYz5KsiNnsYVcmJPBuJCArbbpo8cutpgp9jDzc9Vsc1o3
+          name: NFTXFeeDistributor
+        - file:
+            /: /ipfs/QmUa2VNhLFvUMCTvRK6Mw3kXZfkGz2nyLHi8TttzfijgzA
+          name: NFTXVaultUpgradeable
+        - file:
+            /: /ipfs/QmT1JPP2HbneKVH6h3mkoMgDnJrs16HJQTvroE61NNoABU
+          name: ERC20Metadata
+        - file:
+            /: /ipfs/QmU6rmzQC37nsm3hkpormd4bFbBP57YFEUgYA3VxZEApXf
+          name: ERC677Metadata
+        - file:
+            /: /ipfs/QmSpLoT4BXpEhucVxbwgi7S8bL8JDxk5xQqJdjpwUFirR2
+          name: NFTXEligibilityManager
+        - file:
+            /: /ipfs/QmQSMryz8qgMeYi55soxKgUJ5XmaeiWTNWy4EmbisKwNge
+          name: EligibilityModule
+      apiVersion: 0.0.6
+      entities:
+        - Global
+        - Vault
+      eventHandlers:
+        - event: 'NewFeeDistributor(address,address)'
+          handler: handleNewFeeDistributor
+        - event: 'NewEligibilityManager(address,address)'
+          handler: handleNewEligibilityManager
+        - event: 'NewVault(indexed uint256,address,address)'
+          handler: handleNewVault
+        - event: 'UpdateFactoryFees(uint256,uint256,uint256,uint256,uint256)'
+          handler: handleUpdateFactoryFees
+        - event: 'UpdateVaultFees(uint256,uint256,uint256,uint256,uint256,uint256)'
+          handler: handleUpdateVaultFees
+        - event: DisableVaultFees(uint256)
+          handler: handleDisableVaultFees
+      file:
+        /: /ipfs/QmUjegi77736HwsdZhNfi74KrpBujKojLmvxK524j5T8NB
+      kind: ethereum/events
+      language: wasm/assemblyscript
+    name: NFTXVaultFactoryUpgradeable
+    network: mainnet
+    source:
+      abi: NFTXVaultFactoryUpgradeable
+      address: '0xBE86f647b167567525cCAAfcd6f881F1Ee558216'
+      startBlock: 12675821
+  - kind: ethereum/contract
+    mapping:
+      abis:
+        - file:
+            /: /ipfs/QmbJYANzocvQpP1UUnhF5R5NBsL7DCgCuNzsuPMskLX2Sv
+          name: NFTXVaultFactoryUpgradeable
+        - file:
+            /: /ipfs/QmXaGnDD7VZt7Ys5oxFj8xitJCF1rmZUNAgWH72BpDDUFA
+          name: NFTXSimpleFeeDistributor
+        - file:
+            /: /ipfs/QmUa2VNhLFvUMCTvRK6Mw3kXZfkGz2nyLHi8TttzfijgzA
+          name: NFTXVaultUpgradeable
+        - file:
+            /: /ipfs/QmTBFhSukf7hyCiE1G1Hc3yTjCPFesp3F8KiH5BD8mqqGE
+          name: NFTXInventoryStaking
+        - file:
+            /: /ipfs/QmT1JPP2HbneKVH6h3mkoMgDnJrs16HJQTvroE61NNoABU
+          name: ERC20Metadata
+        - file:
+            /: /ipfs/QmU6rmzQC37nsm3hkpormd4bFbBP57YFEUgYA3VxZEApXf
+          name: ERC677Metadata
+      apiVersion: 0.0.6
+      entities:
+        - Vault
+        - FeeReceiver
+      eventHandlers:
+        - event: 'AddFeeReceiver(address,uint256)'
+          handler: handleAddFeeReceiver
+        - event: 'UpdateFeeReceiverAlloc(address,uint256)'
+          handler: handleUpdateFeeReceiverAlloc
+        - event: 'UpdateFeeReceiverAddress(address,address)'
+          handler: handleUpdateFeeReceiverAddress
+        - event: RemoveFeeReceiver(address)
+          handler: handleRemoveFeeReceiver
+        - event: UpdateTreasuryAddress(address)
+          handler: handleUpdateTreasuryAddress
+        - event: UpdateLPStakingAddress(address)
+          handler: handleUpdateLPStakingAddress
+        - event: UpdateInventoryStakingAddress(address)
+          handler: handleUpdateInventoryStakingAddress
+        - event: UpdateNFTXVaultFactory(address)
+          handler: handleUpdateNFTXVaultFactory
+      file:
+        /: /ipfs/QmRxifJW1VaD8DM2LJ71e8yHgyCsA14rLw8HFBZc7SCCt7
+      kind: ethereum/events
+      language: wasm/assemblyscript
+    name: NFTXSimpleFeeDistributor
+    network: mainnet
+    source:
+      abi: NFTXSimpleFeeDistributor
+      address: '0xFD8a76dC204e461dB5da4f38687AdC9CC5ae4a86'
+      startBlock: 13510484
+  - kind: ethereum/contract
+    mapping:
+      abis:
+        - file:
+            /: /ipfs/QmXafboDW9piKGLdcGf2wAMt8iEbYjnE7AWa2ePc8S73ek
+          name: NFTXStakingZap
+        - file:
+            /: /ipfs/QmbJYANzocvQpP1UUnhF5R5NBsL7DCgCuNzsuPMskLX2Sv
+          name: NFTXVaultFactoryUpgradeable
+        - file:
+            /: /ipfs/QmUa2VNhLFvUMCTvRK6Mw3kXZfkGz2nyLHi8TttzfijgzA
+          name: NFTXVaultUpgradeable
+        - file:
+            /: /ipfs/QmT1JPP2HbneKVH6h3mkoMgDnJrs16HJQTvroE61NNoABU
+          name: ERC20Metadata
+        - file:
+            /: /ipfs/QmU6rmzQC37nsm3hkpormd4bFbBP57YFEUgYA3VxZEApXf
+          name: ERC677Metadata
+      apiVersion: 0.0.6
+      entities:
+        - Zap
+      eventHandlers:
+        - event: 'UserStaked(uint256,uint256,uint256,uint256,address)'
+          handler: handleUserStaked
+      file:
+        /: /ipfs/Qmbr5d3nPWQ4jw86XnVnJ1a54vzxQNyPFeRLKURun7miEj
+      kind: ethereum/events
+      language: wasm/assemblyscript
+    name: NFTXStakingZap
+    network: mainnet
+    source:
+      abi: NFTXStakingZap
+      address: '0x28E9162fC10Bb3A7f98f44e90fA7273698fce360'
+      startBlock: 13004561
+  - kind: ethereum/contract
+    mapping:
+      abis:
+        - file:
+            /: /ipfs/QmXafboDW9piKGLdcGf2wAMt8iEbYjnE7AWa2ePc8S73ek
+          name: NFTXStakingZap
+        - file:
+            /: /ipfs/QmbJYANzocvQpP1UUnhF5R5NBsL7DCgCuNzsuPMskLX2Sv
+          name: NFTXVaultFactoryUpgradeable
+        - file:
+            /: /ipfs/QmUa2VNhLFvUMCTvRK6Mw3kXZfkGz2nyLHi8TttzfijgzA
+          name: NFTXVaultUpgradeable
+        - file:
+            /: /ipfs/QmT1JPP2HbneKVH6h3mkoMgDnJrs16HJQTvroE61NNoABU
+          name: ERC20Metadata
+        - file:
+            /: /ipfs/QmU6rmzQC37nsm3hkpormd4bFbBP57YFEUgYA3VxZEApXf
+          name: ERC677Metadata
+      apiVersion: 0.0.6
+      entities:
+        - Zap
+      eventHandlers:
+        - event: 'UserStaked(uint256,uint256,uint256,uint256,address)'
+          handler: handleUserStaked
+      file:
+        /: /ipfs/Qmbr5d3nPWQ4jw86XnVnJ1a54vzxQNyPFeRLKURun7miEj
+      kind: ethereum/events
+      language: wasm/assemblyscript
+    name: NFTXStakingZapV2
+    network: mainnet
+    source:
+      abi: NFTXStakingZap
+      address: '0x7a5e0B4069709cF4D02423b8cafDc608f4436791'
+      startBlock: 14034114
+  - kind: ethereum/contract
+    mapping:
+      abis:
+        - file:
+            /: /ipfs/QmXafboDW9piKGLdcGf2wAMt8iEbYjnE7AWa2ePc8S73ek
+          name: NFTXStakingZap
+        - file:
+            /: /ipfs/QmbJYANzocvQpP1UUnhF5R5NBsL7DCgCuNzsuPMskLX2Sv
+          name: NFTXVaultFactoryUpgradeable
+        - file:
+            /: /ipfs/QmUa2VNhLFvUMCTvRK6Mw3kXZfkGz2nyLHi8TttzfijgzA
+          name: NFTXVaultUpgradeable
+        - file:
+            /: /ipfs/QmT1JPP2HbneKVH6h3mkoMgDnJrs16HJQTvroE61NNoABU
+          name: ERC20Metadata
+        - file:
+            /: /ipfs/QmU6rmzQC37nsm3hkpormd4bFbBP57YFEUgYA3VxZEApXf
+          name: ERC677Metadata
+      apiVersion: 0.0.6
+      entities:
+        - Zap
+      eventHandlers:
+        - event: 'UserStaked(uint256,uint256,uint256,uint256,address)'
+          handler: handleUserStaked
+      file:
+        /: /ipfs/Qmbr5d3nPWQ4jw86XnVnJ1a54vzxQNyPFeRLKURun7miEj
+      kind: ethereum/events
+      language: wasm/assemblyscript
+    name: NFTXStakingZapV3
+    network: mainnet
+    source:
+      abi: NFTXStakingZap
+      address: '0xdC774D5260ec66e5DD4627E1DD800Eff3911345C'
+      startBlock: 14712503
+  - kind: ethereum/contract
+    mapping:
+      abis:
+        - file:
+            /: /ipfs/QmXeH4MniAnLfDfbfLDAJxbmF3pV77ezeXJPpfPAP3pKgR
+          name: NFTXMarketplaceZap
+      apiVersion: 0.0.6
+      entities:
+        - Buy
+        - Sell
+        - Swap
+      eventHandlers:
+        - event: 'Buy(uint256,uint256,address)'
+          handler: handleBuyZap
+        - event: 'Sell(uint256,uint256,address)'
+          handler: handleSellZap
+        - event: 'Swap(uint256,uint256,address)'
+          handler: handleSwapZap
+      file:
+        /: /ipfs/QmerJEukG31dvB1Dgzckchg8EqGiApp9RjuWabGJTvuPaU
+      kind: ethereum/events
+      language: wasm/assemblyscript
+    name: NFTXMarketplaceZap
+    network: mainnet
+    source:
+      abi: NFTXMarketplaceZap
+      address: '0x0fc584529a2AEfA997697FAfAcbA5831faC0c22d'
+      startBlock: 14034159
+  - kind: ethereum/contract
+    mapping:
+      abis:
+        - file:
+            /: /ipfs/QmTBFhSukf7hyCiE1G1Hc3yTjCPFesp3F8KiH5BD8mqqGE
+          name: NFTXInventoryStaking
+        - file:
+            /: /ipfs/QmbJYANzocvQpP1UUnhF5R5NBsL7DCgCuNzsuPMskLX2Sv
+          name: NFTXVaultFactoryUpgradeable
+        - file:
+            /: /ipfs/QmYz5KsiNnsYVcmJPBuJCArbbpo8cutpgp9jDzc9Vsc1o3
+          name: NFTXFeeDistributor
+        - file:
+            /: /ipfs/QmUa2VNhLFvUMCTvRK6Mw3kXZfkGz2nyLHi8TttzfijgzA
+          name: NFTXVaultUpgradeable
+        - file:
+            /: /ipfs/QmT1JPP2HbneKVH6h3mkoMgDnJrs16HJQTvroE61NNoABU
+          name: ERC20Metadata
+        - file:
+            /: /ipfs/QmU6rmzQC37nsm3hkpormd4bFbBP57YFEUgYA3VxZEApXf
+          name: ERC677Metadata
+      apiVersion: 0.0.6
+      entities:
+        - Vault
+        - InventoryPool
+      eventHandlers:
+        - event: 'XTokenCreated(uint256,address,address)'
+          handler: handleXTokenCreated
+        - event: 'Withdraw(uint256,uint256,uint256,address)'
+          handler: handleWithdraw
+        - event: 'Deposit(uint256,uint256,uint256,uint256,address)'
+          handler: handleDeposit
+      file:
+        /: /ipfs/QmYwBFWcZq3qmQBcW3ypSTxjqSE7BRoYPd8hQVqToSySg1
+      kind: ethereum/events
+      language: wasm/assemblyscript
+    name: NFTXInventoryStaking
+    network: mainnet
+    source:
+      abi: NFTXInventoryStaking
+      address: '0x3E135c3E981fAe3383A5aE0d323860a34CfAB893'
+      startBlock: 14026322
+description: Mint and trade NFT index tokens
+schema:
+  file:
+    /: /ipfs/QmSMKEdKxFyGDNtPr7GP8EhtzNui73yMnviuU4s3gLiAnY
+specVersion: 0.0.2
+templates:
+  - kind: ethereum/contract
+    mapping:
+      abis:
+        - file:
+            /: /ipfs/QmfFQnwuAcCuU6KatKhi4Cmo2y1GxJNfmRQP2g4PFy3adh
+          name: NFTXLPStaking
+        - file:
+            /: /ipfs/QmekQWh1ip26rBnZzzjsTTByQwUECr214RFqB5UMGPB37m
+          name: StakingTokenProvider
+        - file:
+            /: /ipfs/QmbJYANzocvQpP1UUnhF5R5NBsL7DCgCuNzsuPMskLX2Sv
+          name: NFTXVaultFactoryUpgradeable
+        - file:
+            /: /ipfs/QmYz5KsiNnsYVcmJPBuJCArbbpo8cutpgp9jDzc9Vsc1o3
+          name: NFTXFeeDistributor
+        - file:
+            /: /ipfs/QmUa2VNhLFvUMCTvRK6Mw3kXZfkGz2nyLHi8TttzfijgzA
+          name: NFTXVaultUpgradeable
+        - file:
+            /: /ipfs/QmT1JPP2HbneKVH6h3mkoMgDnJrs16HJQTvroE61NNoABU
+          name: ERC20Metadata
+        - file:
+            /: /ipfs/QmU6rmzQC37nsm3hkpormd4bFbBP57YFEUgYA3VxZEApXf
+          name: ERC677Metadata
+      apiVersion: 0.0.6
+      entities:
+        - Vault
+        - Pool
+      eventHandlers:
+        - event: 'PoolCreated(uint256,address)'
+          handler: handlePoolCreated
+        - event: 'PoolUpdated(uint256,address)'
+          handler: handlePoolUpdated
+      file:
+        /: /ipfs/QmYwBFWcZq3qmQBcW3ypSTxjqSE7BRoYPd8hQVqToSySg1
+      kind: ethereum/events
+      language: wasm/assemblyscript
+    name: NFTXLPStaking
+    network: mainnet
+    source:
+      abi: NFTXLPStaking
+  - kind: ethereum/contract
+    mapping:
+      abis:
+        - file:
+            /: /ipfs/QmbJYANzocvQpP1UUnhF5R5NBsL7DCgCuNzsuPMskLX2Sv
+          name: NFTXVaultFactoryUpgradeable
+        - file:
+            /: /ipfs/QmYz5KsiNnsYVcmJPBuJCArbbpo8cutpgp9jDzc9Vsc1o3
+          name: NFTXFeeDistributor
+        - file:
+            /: /ipfs/QmUa2VNhLFvUMCTvRK6Mw3kXZfkGz2nyLHi8TttzfijgzA
+          name: NFTXVaultUpgradeable
+        - file:
+            /: /ipfs/QmT1JPP2HbneKVH6h3mkoMgDnJrs16HJQTvroE61NNoABU
+          name: ERC20Metadata
+        - file:
+            /: /ipfs/QmU6rmzQC37nsm3hkpormd4bFbBP57YFEUgYA3VxZEApXf
+          name: ERC677Metadata
+      apiVersion: 0.0.6
+      entities:
+        - Vault
+        - FeeReceiver
+      eventHandlers:
+        - event: 'AddFeeReceiver(uint256,address,uint256)'
+          handler: handleAddFeeReceiver
+        - event: 'UpdateFeeReceiverAlloc(uint256,address,uint256)'
+          handler: handleUpdateFeeReceiverAlloc
+        - event: 'UpdateFeeReceiverAddress(uint256,address,address)'
+          handler: handleUpdateFeeReceiverAddress
+        - event: 'RemoveFeeReceiver(uint256,address)'
+          handler: handleRemoveFeeReceiver
+        - event: UpdateTreasuryAddress(address)
+          handler: handleUpdateTreasuryAddress
+        - event: UpdateDefaultTreasuryAlloc(uint256)
+          handler: handleUpdateDefaultTreasuryAlloc
+        - event: 'UpdateSpecificTreasuryAlloc(uint256,uint256)'
+          handler: handleUpdateSpecificTreasuryAlloc
+        - event: UpdateLPStakingAddress(address)
+          handler: handleUpdateLPStakingAddress
+        - event: UpdateDefaultLPAlloc(uint256)
+          handler: handleUpdateDefaultLPAlloc
+      file:
+        /: /ipfs/QmVRBHEEsC65pBiRejZRJKQ4iurkQyMV8r8d656ZYSJX2t
+      kind: ethereum/events
+      language: wasm/assemblyscript
+    name: NFTXFeeDistributor
+    network: mainnet
+    source:
+      abi: NFTXFeeDistributor
+  - kind: ethereum/contract
+    mapping:
+      abis:
+        - file:
+            /: /ipfs/QmbJYANzocvQpP1UUnhF5R5NBsL7DCgCuNzsuPMskLX2Sv
+          name: NFTXVaultFactoryUpgradeable
+        - file:
+            /: /ipfs/QmYz5KsiNnsYVcmJPBuJCArbbpo8cutpgp9jDzc9Vsc1o3
+          name: NFTXFeeDistributor
+        - file:
+            /: /ipfs/QmUa2VNhLFvUMCTvRK6Mw3kXZfkGz2nyLHi8TttzfijgzA
+          name: NFTXVaultUpgradeable
+        - file:
+            /: /ipfs/QmT1JPP2HbneKVH6h3mkoMgDnJrs16HJQTvroE61NNoABU
+          name: ERC20Metadata
+        - file:
+            /: /ipfs/QmU6rmzQC37nsm3hkpormd4bFbBP57YFEUgYA3VxZEApXf
+          name: ERC677Metadata
+        - file:
+            /: /ipfs/QmSpLoT4BXpEhucVxbwgi7S8bL8JDxk5xQqJdjpwUFirR2
+          name: NFTXEligibilityManager
+        - file:
+            /: /ipfs/QmQSMryz8qgMeYi55soxKgUJ5XmaeiWTNWy4EmbisKwNge
+          name: EligibilityModule
+      apiVersion: 0.0.6
+      blockHandlers:
+        - filter:
+            kind: call
+          handler: handleBlock
+      entities:
+        - FeeReceipt
+        - Mint
+        - Redeem
+        - User
+      eventHandlers:
+        - event: 'Transfer(indexed address,indexed address,uint256)'
+          handler: handleTransfer
+        - event: 'Minted(uint256[],uint256[],address)'
+          handler: handleMint
+        - event: 'Redeemed(uint256[],uint256[],address)'
+          handler: handleRedeem
+        - event: 'Swapped(uint256[],uint256[],uint256[],uint256[],address)'
+          handler: handleSwap
+        - event: ManagerSet(address)
+          handler: handleManagerSet
+        - event: EnableMintUpdated(bool)
+          handler: handleEnableMintUpdated
+        - event: EnableRandomRedeemUpdated(bool)
+          handler: handleEnableRandomRedeemUpdated
+        - event: EnableTargetRedeemUpdated(bool)
+          handler: handleEnableTargetRedeemUpdated
+        - event: EnableRandomSwapUpdated(bool)
+          handler: handleEnableRandomSwapUpdated
+        - event: EnableTargetSwapUpdated(bool)
+          handler: handleEnableTargetSwapUpdated
+        - event: 'EligibilityDeployed(uint256,address)'
+          handler: handleEligibilityDeployed
+        - event: 'VaultShutdown(address,uint256,address)'
+          handler: handleVaultShutdown
+        - event: 'MetaDataChange(string,string,string,string)'
+          handler: handleMetaDataChange
+      file:
+        /: /ipfs/QmbuHhV44B2jn5pomSVSrPjPqrsv2xNGGoweVzEyJTwaLB
+      kind: ethereum/events
+      language: wasm/assemblyscript
+    name: NFTXVaultUpgradeable
+    network: mainnet
+    source:
+      abi: NFTXVaultUpgradeable
+  - kind: ethereum/contract
+    mapping:
+      abis:
+        - file:
+            /: /ipfs/QmRjmoVXtBxxnz4HHBH8RkYJcv14WAVxJGj7mn4mVQu5dd
+          name: RewardDistributionTokenUpgradeable
+        - file:
+            /: /ipfs/QmfFQnwuAcCuU6KatKhi4Cmo2y1GxJNfmRQP2g4PFy3adh
+          name: NFTXLPStaking
+        - file:
+            /: /ipfs/QmbJYANzocvQpP1UUnhF5R5NBsL7DCgCuNzsuPMskLX2Sv
+          name: NFTXVaultFactoryUpgradeable
+        - file:
+            /: /ipfs/QmYz5KsiNnsYVcmJPBuJCArbbpo8cutpgp9jDzc9Vsc1o3
+          name: NFTXFeeDistributor
+        - file:
+            /: /ipfs/QmUa2VNhLFvUMCTvRK6Mw3kXZfkGz2nyLHi8TttzfijgzA
+          name: NFTXVaultUpgradeable
+        - file:
+            /: /ipfs/QmT1JPP2HbneKVH6h3mkoMgDnJrs16HJQTvroE61NNoABU
+          name: ERC20Metadata
+        - file:
+            /: /ipfs/QmU6rmzQC37nsm3hkpormd4bFbBP57YFEUgYA3VxZEApXf
+          name: ERC677Metadata
+      apiVersion: 0.0.6
+      entities:
+        - StakedLpUser
+        - Pool
+        - Rewards
+      eventHandlers:
+        - event: 'RewardWithdrawn(indexed address,uint256)'
+          handler: handleRewardWithdrawn
+        - event: 'Transfer(indexed address,indexed address,uint256)'
+          handler: handleTransfer
+      file:
+        /: /ipfs/QmQEBFXcZbSTuV8N3CUW3gGnwaLGcmgBmGZFs5SXbYSqai
+      kind: ethereum/events
+      language: wasm/assemblyscript
+    name: RewardDistributionTokenUpgradeable
+    network: mainnet
+    source:
+      abi: RewardDistributionTokenUpgradeable
+  - kind: ethereum/contract
+    mapping:
+      abis:
+        - file:
+            /: /ipfs/QmSpLoT4BXpEhucVxbwgi7S8bL8JDxk5xQqJdjpwUFirR2
+          name: NFTXEligibilityManager
+        - file:
+            /: /ipfs/QmQSMryz8qgMeYi55soxKgUJ5XmaeiWTNWy4EmbisKwNge
+          name: EligibilityModule
+      apiVersion: 0.0.6
+      entities:
+        - EligibilityModule
+      eventHandlers:
+        - event: 'UniqueEligibilitiesSet(uint256[],bool)'
+          handler: handleUniqueEligibilitiesSet
+        - event: 'RangeSet(uint256,uint256)'
+          handler: handleRangeSet
+      file:
+        /: /ipfs/Qma2nBERw716m4Y9gAwCwrk28fFMsbKTYBmbURj3nciQvU
+      kind: ethereum/events
+      language: wasm/assemblyscript
+    name: EligibilityModule
+    network: mainnet
+    source:
+      abi: EligibilityModule
