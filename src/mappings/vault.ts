@@ -1,4 +1,4 @@
-import { Address } from '@graphprotocol/graph-ts';
+import { Address, log } from '@graphprotocol/graph-ts';
 import {
   Transfer as TransferEvent,
   Minted as MintEvent,
@@ -78,8 +78,18 @@ export function handleMint(event: MintEvent): void {
   mint.nftIds = nftIds;
   mint.amounts = transformMintAmounts(vaultAddress, nftIds, amounts);
   
-  if(event.receipt != null) {
-    mint.source = changetype<ethereum.TransactionReceipt>(event.receipt).contractAddress;
+  var receipt = event.receipt;
+  if(receipt != null) {
+    if(!receipt.contractAddress){
+      log.info("EVENT RECEIPT CONTRACT NULL MINT - TxHash: {}", [event.transaction.hash.toHexString()])
+    }
+    else {
+      mint.source = receipt.contractAddress;
+      log.info("EVENT RECEIPT MINT- Contract: {}", [receipt.contractAddress.toHexString() ])
+    }
+  }
+  else {
+    log.info("EVENT RECEIPT NULL MINT- TxHash: {}", [event.transaction.hash.toHexString()])
   }
 
   let feeReceipt = getFeeReceipt(event.transaction.hash);
@@ -139,8 +149,18 @@ export function handleSwap(event: SwapEvent): void {
   swap.targetCount = BigInt.fromI32(specificIds.length);
   swap.randomCount = BigInt.fromI32(nftIds.length - specificIds.length);
   
-  if(event.receipt != null) {
-    swap.source = changetype<ethereum.TransactionReceipt>(event.receipt).contractAddress;
+  var receipt = event.receipt;
+  if(receipt != null) {
+    if(!receipt.contractAddress){
+      log.info("EVENT RECEIPT CONTRACT NULL SWAP - TxHash: {}", [event.transaction.hash.toHexString()])
+    }
+    else {
+      swap.source = receipt.contractAddress;
+      log.info("EVENT RECEIPT SWAP- Contract: {}", [receipt.contractAddress.toHexString() ])
+    }
+  }
+  else {
+    log.info("EVENT RECEIPT NULL SWAP- TxHash: {}", [event.transaction.hash.toHexString()])
   }
 
   let feeReceipt = getFeeReceipt(event.transaction.hash);
@@ -198,8 +218,18 @@ export function handleRedeem(event: RedeemEvent): void {
   redeem.targetCount = BigInt.fromI32(specificIds.length);
   redeem.randomCount = BigInt.fromI32(nftIds.length - specificIds.length);
   
-  if(event.receipt != null) {
-    redeem.source = changetype<ethereum.TransactionReceipt>(event.receipt).contractAddress;
+  var receipt = event.receipt;
+  if(receipt != null) {
+    if(!receipt.contractAddress){
+      log.info("EVENT RECEIPT CONTRACT NULL REDEEM- TxHash: {}", [event.transaction.hash.toHexString()])
+    }
+    else {
+      redeem.source = receipt.contractAddress;
+      log.info("EVENT RECEIPT REDEEM- Contract: {}", [receipt.contractAddress.toHexString() ])
+    }
+  }
+  else {
+    log.info("EVENT RECEIPT NULL REDEEM- TxHash: {}", [event.transaction.hash.toHexString()])
   }
 
   let feeReceipt = getFeeReceipt(event.transaction.hash);
