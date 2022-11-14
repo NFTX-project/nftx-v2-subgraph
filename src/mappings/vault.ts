@@ -39,6 +39,7 @@ import {
 import { BigInt, ethereum, dataSource } from '@graphprotocol/graph-ts';
 import { SECS_PER_DAY, SECS_PER_HOUR, getDay, getHour } from './datetime';
 
+
 export function handleTransfer(event: TransferEvent): void {
   let global = getGlobal();
   let vaultAddress = event.address;
