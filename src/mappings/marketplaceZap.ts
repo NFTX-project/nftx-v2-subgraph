@@ -21,9 +21,6 @@ export function handleBuyZap(event: BuyZapEvent): void {
   zapBuy.ethAmount = event.params.ethSpent;
   zapBuy.vaultAction = redeem.id;
   zapBuy.save();
-
-  redeem.vaultInteraction = false;
-  redeem.save();
 }
 
 export function handleSellZap(event: SellZapEvent): void {
@@ -34,9 +31,6 @@ export function handleSellZap(event: SellZapEvent): void {
   zapSell.ethAmount = event.params.ethReceived;
   zapSell.vaultAction = mint.id;
   zapSell.save();
-
-  mint.vaultInteraction = false;
-  mint.save();
 }
 
 export function handleSwapZap(event: SwapZapEvent): void {
@@ -47,7 +41,4 @@ export function handleSwapZap(event: SwapZapEvent): void {
   zapSwap.ethAmount = event.params.ethSpent;
   zapSwap.vaultAction = swap.id;
   zapSwap.save();
-
-  swap.vaultInteraction = false;
-  swap.save();
 }
