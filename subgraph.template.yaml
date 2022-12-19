@@ -231,6 +231,8 @@ dataSources:
         - Vault
         - InventoryPool
       abis:
+        - name: RewardDistributionTokenUpgradeable
+          file: ./src/abis/RewardDistributionTokenUpgradeable.json
         - name: NFTXInventoryStaking
           file: ./src/abis/NFTXInventoryStaking.json
         - name: NFTXVaultFactoryUpgradeable
