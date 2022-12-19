@@ -58,7 +58,7 @@ export function getGlobal(): Global {
     global.nftxVaultFactory = ADDRESS_ZERO;
     global.feeDistributorAddress = ADDRESS_ZERO;
     global.eligibilityManagerAddress = ADDRESS_ZERO;
-
+    global.inventoryStakingAddress = ADDRESS_ZERO;
     let fees = getGlobalFee();
     fees.save();
 
