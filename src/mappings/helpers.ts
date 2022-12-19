@@ -29,8 +29,6 @@ import {
   Deposit,
   Holding,
   Zap,
-  VaultDayData,
-  VaultHourData,
   VaultCreator,
   EligibilityModule,
   Withdrawal,
@@ -43,7 +41,6 @@ import {
 import { ERC20Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC20Metadata';
 import { ERC677Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC677Metadata';
 import { ADDRESS_ZERO } from './constants';
-import { getDateString, getTimeString } from './datetime';
 
 export function getGlobal(): Global {
   let global_id = dataSource.network();
@@ -507,51 +504,7 @@ export function removeFromHoldings(
   }
 }
 
-export function getVaultDayData(
-  vaultAddress: Address,
-  date: BigInt,
-): VaultDayData {
-  let dateString = getDateString(date);
-  let vaultDayDataId = dateString + '-' + vaultAddress.toHexString();
-  let vaultDayData = VaultDayData.load(vaultDayDataId);
-  if (!vaultDayData) {
-    vaultDayData = new VaultDayData(vaultDayDataId);
-    vaultDayData.date = date;
-    vaultDayData.mintsCount = BigInt.fromI32(0);
-    vaultDayData.swapsCount = BigInt.fromI32(0);
-    vaultDayData.redeemsCount = BigInt.fromI32(0);
-    vaultDayData.holdingsCount = BigInt.fromI32(0);
-    vaultDayData.totalMints = BigInt.fromI32(0);
-    vaultDayData.totalSwaps = BigInt.fromI32(0);
-    vaultDayData.totalRedeems = BigInt.fromI32(0);
-    vaultDayData.totalHoldings = BigInt.fromI32(0);
-    vaultDayData.vault = vaultAddress.toHexString();
-  }
-  return vaultDayData as VaultDayData;
-}
 
-export function getVaultHourData(
-  vaultAddress: Address,
-  date: BigInt,
-): VaultHourData {
-  let timeString = getTimeString(date);
-  let vaultHourDataId = timeString + '-' + vaultAddress.toHexString();
-  let vaultHourData = VaultHourData.load(vaultHourDataId);
-  if (!vaultHourData) {
-    vaultHourData = new VaultHourData(vaultHourDataId);
-    vaultHourData.date = date;
-    vaultHourData.mintsCount = BigInt.fromI32(0);
-    vaultHourData.swapsCount = BigInt.fromI32(0);
-    vaultHourData.redeemsCount = BigInt.fromI32(0);
-    vaultHourData.holdingsCount = BigInt.fromI32(0);
-    vaultHourData.totalMints = BigInt.fromI32(0);
-    vaultHourData.totalSwaps = BigInt.fromI32(0);
-    vaultHourData.totalRedeems = BigInt.fromI32(0);
-    vaultHourData.totalHoldings = BigInt.fromI32(0);
-    vaultHourData.vault = vaultAddress.toHexString();
-  }
-  return vaultHourData as VaultHourData;
-}
 
 export function getEligibilityModule(
   moduleAddress: Address,

@@ -30,14 +30,11 @@ import {
   getToken,
   addToHoldings,
   removeFromHoldings,
-  getVaultDayData,
-  getVaultHourData,
   getEligibilityModule,
   transformMintAmounts,
   getFeeTransfer,
 } from './helpers';
-import { BigInt, ethereum, dataSource } from '@graphprotocol/graph-ts';
-import { SECS_PER_DAY, SECS_PER_HOUR, getDay, getHour } from './datetime';
+import { BigInt} from '@graphprotocol/graph-ts';
 
 export function handleTransfer(event: TransferEvent): void {
   let global = getGlobal();
@@ -260,49 +257,6 @@ export function handleEnableTargetSwapUpdated(event: EnableTargetSwapUpdatedEven
   let features = getFeature(event.address);
   features.enableTargetSwap = event.params.enabled;
   features.save();
-}
-
-var ONE_DAY = BigInt.fromI32(SECS_PER_DAY);
-var ONE_HOUR = BigInt.fromI32(SECS_PER_HOUR);
-
-export function handleBlock(block: ethereum.Block): void {
-  let timestamp = block.timestamp;
-  let vaultAddress = dataSource.address();
-  let vault = getVault(vaultAddress);
-  let vaultCreatedAt = vault.createdAt;
-  if (vaultCreatedAt.gt(BigInt.fromI32(0))) {
-    let lastDay = getDay(timestamp);
-    let lastDayData = getVaultDayData(vaultAddress, lastDay);
-    let day = lastDay.plus(ONE_DAY);
-    let vaultDayData = getVaultDayData(vaultAddress, day);
-    vaultDayData.mintsCount = vault.totalMints.minus(lastDayData.totalMints);
-    vaultDayData.redeemsCount = vault.totalRedeems.minus(
-      lastDayData.totalRedeems,
-    );
-    vaultDayData.holdingsCount = vault.totalHoldings.minus(
-      lastDayData.totalHoldings,
-    );
-    vaultDayData.totalMints = vault.totalMints;
-    vaultDayData.totalRedeems = vault.totalRedeems;
-    vaultDayData.totalHoldings = vault.totalHoldings;
-    vaultDayData.save();
-
-    let lastHour = getHour(timestamp);
-    let lastHourData = getVaultHourData(vaultAddress, lastHour);
-    let hour = lastHour.plus(ONE_HOUR);
-    let vaultHourData = getVaultHourData(vaultAddress, hour);
-    vaultHourData.mintsCount = vault.totalMints.minus(lastHourData.totalMints);
-    vaultHourData.redeemsCount = vault.totalRedeems.minus(
-      lastHourData.totalRedeems,
-    );
-    vaultHourData.holdingsCount = vault.totalHoldings.minus(
-      lastHourData.totalHoldings,
-    );
-    vaultHourData.totalMints = vault.totalMints;
-    vaultHourData.totalRedeems = vault.totalRedeems;
-    vaultHourData.totalHoldings = vault.totalHoldings;
-    vaultHourData.save();
-  }
 }
 
 export function handleEligibilityDeployed(

@@ -383,12 +383,6 @@ templates:
           handler: handleVaultShutdown
         - event: MetaDataChange(string,string,string,string)
           handler: handleMetaDataChange
-      blockHandlers:
-        - handler: handleBlock
-          {{#callFilterEnabled}}
-          filter:
-            kind: call
-          {{/callFilterEnabled}}
   - kind: ethereum/contract
     name: RewardDistributionTokenUpgradeable
     # prettier-ignore

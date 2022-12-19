@@ -36,7 +36,6 @@ type Vault @entity {
   treasuryAlloc: BigInt!
   allocTotal: BigInt!
   createdAt: BigInt!
-  vaultDayData: [VaultDayData!]! @derivedFrom(field: "vault")
   totalMints: BigInt!
   totalSwaps: BigInt!
   totalRedeems: BigInt!
@@ -234,34 +233,6 @@ type Withdrawal @entity {
   pool: Pool!
   user: StakedLpUser!
   withdrawal: BigInt!
-}
-
-type VaultDayData @entity {
-  id: ID!
-  date: BigInt! # end of range
-  mintsCount: BigInt!
-  swapsCount: BigInt!
-  redeemsCount: BigInt!
-  holdingsCount: BigInt!
-  totalMints: BigInt!
-  totalSwaps: BigInt!
-  totalRedeems: BigInt!
-  totalHoldings: BigInt!
-  vault: Vault!
-}
-
-type VaultHourData @entity {
-  id: ID!
-  date: BigInt! # end of range
-  mintsCount: BigInt!
-  swapsCount: BigInt!
-  redeemsCount: BigInt!
-  holdingsCount: BigInt!
-  totalMints: BigInt!
-  totalSwaps: BigInt!
-  totalRedeems: BigInt!
-  totalHoldings: BigInt!
-  vault: Vault!
 }
 
 type Zap @entity {
