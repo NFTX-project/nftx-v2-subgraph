@@ -45,6 +45,11 @@ type Vault @entity {
   shutdownDate: BigInt!
 }
 
+type VaultToAddressLookup @entity {
+  id: ID! # vaultID
+  vaultAddress: Bytes!
+}
+
 type EligibilityModule @entity {
   id: ID! # address
   eligibilityManager: Bytes! # address
