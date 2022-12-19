@@ -3,18 +3,25 @@ import {
   PoolUpdated as PoolUpdatedEvent,
   NFTXLPStaking,
 } from '../types/templates/NFTXLPStaking/NFTXLPStaking';
-import {
-RewardDistributionTokenUpgradeable as RewardDistributionToken,
-} from '../types/templates/RewardDistributionTokenUpgradeable/RewardDistributionTokenUpgradeable';
+import { RewardDistributionTokenUpgradeable as RewardDistributionToken } from '../types/templates/RewardDistributionTokenUpgradeable/RewardDistributionTokenUpgradeable';
 import {
   XTokenCreated as XTokenCreatedEvent,
   NFTXInventoryStaking,
   Withdraw as WithdrawEvent,
-  Deposit as DepositEvent
+  Deposit as DepositEvent,
 } from '../types/NFTXInventoryStaking/NFTXInventoryStaking';
 import { NFTXVaultFactoryUpgradeable as NFTXVaultFactory } from '../types/templates/NFTXLPStaking/NFTXVaultFactoryUpgradeable';
 import { StakingTokenProvider } from '../types/templates/NFTXLPStaking/StakingTokenProvider';
-import { getDeposit, getInventoryPool, getPool, getStakedLpUser, getToken, getVault, getWithdrawal, updatePools } from './helpers';
+import {
+  getDeposit,
+  getInventoryPool,
+  getPool,
+  getStakedLpUser,
+  getToken,
+  getVault,
+  getWithdrawal,
+  updatePools,
+} from './helpers';
 import { RewardDistributionTokenUpgradeable as RewardDistributionTokenTemplate } from '../types/templates';
 import { Address, BigInt } from '@graphprotocol/graph-ts';
 import { VaultToAddressLookup } from '../types/schema';
@@ -22,7 +29,7 @@ import { VaultToAddressLookup } from '../types/schema';
 function newInventoryPool(
   stakingAddress: Address,
   xTokenAddress: Address,
-  vaultId: BigInt
+  vaultId: BigInt,
 ): void {
   let stakingInstance = NFTXInventoryStaking.bind(stakingAddress);
   let vaultFactoryAddress = stakingInstance.nftxVaultFactory();
@@ -52,7 +59,7 @@ function newPool(
   stakingAddress: Address,
   poolAddress: Address,
   vaultId: BigInt,
-  blockNumber: BigInt
+  blockNumber: BigInt,
 ): void {
   let stakingInstance = NFTXLPStaking.bind(stakingAddress);
   let vaultFactoryAddress = stakingInstance.nftxVaultFactory();
@@ -88,25 +95,35 @@ function newPool(
 }
 
 export function handleXTokenCreated(event: XTokenCreatedEvent): void {
-  newInventoryPool(event.address, event.params.xToken, event.params.vaultId)
+  newInventoryPool(event.address, event.params.xToken, event.params.vaultId);
 }
 
 export function handlePoolCreated(event: PoolCreatedEvent): void {
-  newPool(event.address, event.params.pool, event.params.vaultId, event.block.number);
+  newPool(
+    event.address,
+    event.params.pool,
+    event.params.vaultId,
+    event.block.number,
+  );
 }
 
 export function handlePoolUpdated(event: PoolUpdatedEvent): void {
-  newPool(event.address, event.params.pool, event.params.vaultId, event.block.number);
+  newPool(
+    event.address,
+    event.params.pool,
+    event.params.vaultId,
+    event.block.number,
+  );
 }
 
 // Inventory Staking Handlers
 
 export function handleWithdraw(event: WithdrawEvent): void {
   let lookup = VaultToAddressLookup.load(event.params.vaultId.toHexString());
-  if(lookup) {
+  if (lookup) {
     let vault = getVault(Address.fromBytes(lookup.vaultAddress));
     let stakingPoolAddress = vault.lpStakingPool;
-    if(stakingPoolAddress) {
+    if (stakingPoolAddress) {
       let poolAddress = Address.fromString(stakingPoolAddress);
       let user = getStakedLpUser(event.params.sender);
       let poolInstance = RewardDistributionToken.bind(poolAddress);
@@ -128,19 +145,15 @@ export function handleWithdraw(event: WithdrawEvent): void {
       withdrawal.date = event.block.timestamp;
       withdrawal.save();
     }
-   
   }
-  
-
-  
 }
 
 export function handleDeposit(event: DepositEvent): void {
   let lookup = VaultToAddressLookup.load(event.params.vaultId.toHexString());
-  if(lookup) {
+  if (lookup) {
     let vault = getVault(Address.fromBytes(lookup.vaultAddress));
     let stakingPoolAddress = vault.lpStakingPool;
-    if(stakingPoolAddress) {
+    if (stakingPoolAddress) {
       let poolAddress = Address.fromString(stakingPoolAddress);
       let user = getStakedLpUser(event.params.sender);
       let deposit = getDeposit(event.transaction.hash);
