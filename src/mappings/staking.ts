@@ -2,12 +2,13 @@ import {
   PoolCreated as PoolCreatedEvent,
   PoolUpdated as PoolUpdatedEvent,
   NFTXLPStaking,
+  Deposit as LPDepositEvent,
 } from '../types/templates/NFTXLPStaking/NFTXLPStaking';
 import {
   XTokenCreated as XTokenCreatedEvent,
   NFTXInventoryStaking,
   Withdraw as WithdrawEvent,
-  Deposit as DepositEvent
+  Deposit as DepositEvent,
 } from '../types/NFTXInventoryStaking/NFTXInventoryStaking';
 import { NFTXVaultFactoryUpgradeable as NFTXVaultFactory } from '../types/templates/NFTXLPStaking/NFTXVaultFactoryUpgradeable';
 import { StakingTokenProvider } from '../types/templates/NFTXLPStaking/StakingTokenProvider';
@@ -100,5 +101,10 @@ export function handleWithdraw(event: WithdrawEvent): void {
 }
 
 export function handleDeposit(event: DepositEvent): void {
+
+}
+
+
+export function handleLPDeposit(event: LPDepositEvent): void {
 
 }

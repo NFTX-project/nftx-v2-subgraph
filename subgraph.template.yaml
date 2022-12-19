@@ -213,6 +213,34 @@ dataSources:
           handler: handleSellZap
         - event: Swap(uint256,uint256,address)
           handler: handleSwapZap
+  - kind: ethereum
+    name: ZeroXMarketplaceZap
+    network: goerli
+    source:
+      address: '{{zeroXMarketplaceZap}}'
+      startBlock: {{startBlockZeroXMarketplaceZap}}
+      abi: ZeroXMarketplaceZap
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Vault
+      abis:
+        - name: ZeroXMarketplaceZap
+          file: ./src/abis/ZeroXMarketplaceZap.json
+      eventHandlers:
+        - event: Buy(uint256,uint256,address)
+          handler: handleBuy
+        - event: DustReturned(uint256,uint256,address)
+          handler: handleDustReturned
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Sell(uint256,uint256,address)
+          handler: handleSell
+        - event: Swap(uint256,uint256,address)
+          handler: handleSwap
+      file: ./src/mappings/zero-x-marketplace-zap.ts
   - kind: ethereum/contract
     name: NFTXInventoryStaking
     # prettier-ignore
@@ -285,6 +313,8 @@ templates:
           handler: handlePoolCreated
         - event: PoolUpdated(uint256,address)
           handler: handlePoolUpdated
+        - event: Deposit(uint256,address,uint256,address,uint256)
+          handler: handleLPDeposit
   - kind: ethereum/contract
     name: NFTXFeeDistributor
     # prettier-ignore
