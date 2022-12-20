@@ -361,13 +361,10 @@ templates:
           handler: handleTransfer
         - event: Minted(uint256[],uint256[],address)
           handler: handleMint
-          receipt: true
         - event: Redeemed(uint256[],uint256[],address)
           handler: handleRedeem
-          receipt: true
         - event: Swapped(uint256[],uint256[],uint256[],uint256[],address)
           handler: handleSwap
-          receipt: true
         - event: ManagerSet(address)
           handler: handleManagerSet
         - event: EnableMintUpdated(bool)
