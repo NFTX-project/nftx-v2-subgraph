@@ -214,6 +214,62 @@ dataSources:
         - event: Swap(uint256,uint256,address)
           handler: handleSwapZap
   - kind: ethereum/contract
+    name: NFTX0xMarketplaceZap
+    # prettier-ignore
+    network: {{network}}
+    source:
+      address: '{{0xMarketplaceZap}}'
+      abi: NFTX0xMarketplaceZap
+      # prettier-ignore
+      startBlock: {{startBlock0xMarketplaceZap}}
+    mapping:
+      file: ./src/mappings/marketplaceZap.ts
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Buy
+        - Sell
+        - Swap
+      abis:
+        - name: NFTX0xMarketplaceZap
+          file: ./src/abis/NFTX0xMarketplaceZap.json
+      eventHandlers:
+        - event: Buy(uint256,uint256,address)
+          handler: handleBuyZap
+        - event: Sell(uint256,uint256,address)
+          handler: handleSellZap
+        - event: Swap(uint256,uint256,address)
+          handler: handleSwapZap
+  - kind: ethereum/contract
+    name: NFTX0xMarketplaceZapV2
+    # prettier-ignore
+    network: {{network}}
+    source:
+      address: '{{0xMarketplaceZapV2}}'
+      abi: NFTX0xMarketplaceZap
+      # prettier-ignore
+      startBlock: {{startBlock0xMarketplaceZap}}
+    mapping:
+      file: ./src/mappings/marketplaceZap.ts
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Buy
+        - Sell
+        - Swap
+      abis:
+        - name: NFTX0xMarketplaceZap
+          file: ./src/abis/NFTX0xMarketplaceZap.json
+      eventHandlers:
+        - event: Buy(uint256,uint256,address)
+          handler: handleBuyZap
+        - event: Sell(uint256,uint256,address)
+          handler: handleSellZap
+        - event: Swap(uint256,uint256,address)
+          handler: handleSwapZap
+  - kind: ethereum/contract
     name: NFTXInventoryStaking
     # prettier-ignore
     network: {{network}}
