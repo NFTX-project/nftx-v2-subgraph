@@ -215,7 +215,7 @@ dataSources:
           handler: handleSwapZap
   - kind: ethereum
     name: ZeroXMarketplaceZap
-    network: goerli
+    network: {{network}}
     source:
       address: '{{zeroXMarketplaceZap}}'
       startBlock: {{startBlockZeroXMarketplaceZap}}
