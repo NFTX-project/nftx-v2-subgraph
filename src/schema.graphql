@@ -167,8 +167,8 @@ type Mint @entity {
   nftIds: [BigInt!]
   amounts: [BigInt!]
   feeReceipt: FeeReceipt!
-  vaultInteraction: Boolean!
   zapAction: ZapSell @derivedFrom(field: "vaultAction")
+  source: Bytes
 }
 
 type Swap @entity {
@@ -183,8 +183,8 @@ type Swap @entity {
   targetCount: BigInt!
   randomCount: BigInt!
   feeReceipt: FeeReceipt!
-  vaultInteraction: Boolean!
   zapAction: ZapSwap @derivedFrom(field: "vaultAction")
+  source: Bytes
 }
 
 type Redeem @entity {
@@ -197,8 +197,8 @@ type Redeem @entity {
   targetCount: BigInt!
   randomCount: BigInt!
   feeReceipt: FeeReceipt!
-  vaultInteraction: Boolean!
   zapAction: ZapBuy @derivedFrom(field: "vaultAction")
+  source: Bytes
 }
 
 type User @entity {
