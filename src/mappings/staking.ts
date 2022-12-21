@@ -173,7 +173,13 @@ export function handleDeposit(event: DepositEvent): void {
 
 
 export function handleLPDeposit(event: LPDepositEvent): void {
-      let poolAddress = event.params.stakingToken;
+      
+  let lookup = VaultToAddressLookup.load(event.params.vaultId.toHexString());
+  if (lookup) {
+    let vault = getVault(Address.fromBytes(lookup.vaultAddress));
+    let stakingPoolAddress = vault.lpStakingPool;
+    if (stakingPoolAddress) {
+      let poolAddress = Address.fromString(stakingPoolAddress);
       let user = getStakedLpUser(event.params.account);
       let deposit = getDeposit(event.transaction.hash);
       deposit.pool = poolAddress.toHexString();
@@ -185,4 +191,6 @@ export function handleLPDeposit(event: LPDepositEvent): void {
       deposit.deposit = event.params.amount;
       deposit.date = event.block.timestamp;
       deposit.save();
+    }
+  }
 }
