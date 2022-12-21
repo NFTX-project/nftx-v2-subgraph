@@ -22,6 +22,7 @@ import {
 } from '../types/templates';
 import { Address, BigInt, log } from '@graphprotocol/graph-ts';
 import { ADDRESS_ZERO } from './constants';
+import { VaultToAddressLookup } from '../types/schema';
 
 function newFeeDistributor(
   nftxVaultFactoryAddress: Address,
@@ -105,6 +106,10 @@ export function handleNewVault(event: NewVaultEvent): void {
   vault.createdAt = event.block.timestamp;
   vault.createdBy = vaultCreator.id;
   vault.save();
+
+  let lookup = new VaultToAddressLookup( event.params.vaultId.toHexString());
+  lookup.vaultAddress = vaultAddress;
+  lookup.save();
 
   NFTXVaultTemplate.create(vaultAddress);
 
