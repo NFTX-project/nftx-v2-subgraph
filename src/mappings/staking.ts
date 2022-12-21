@@ -173,5 +173,16 @@ export function handleDeposit(event: DepositEvent): void {
 
 
 export function handleLPDeposit(event: LPDepositEvent): void {
+      let poolAddress = event.params.stakingToken;
+      let user = getStakedLpUser(event.params.account);
+      let deposit = getDeposit(event.transaction.hash);
+      deposit.pool = poolAddress.toHexString();
+      deposit.user = user.id;
 
+      user = updatePools(user, poolAddress, true);
+      user.save();
+
+      deposit.deposit = event.params.amount;
+      deposit.date = event.block.timestamp;
+      deposit.save();
 }
