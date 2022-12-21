@@ -232,10 +232,6 @@ dataSources:
       eventHandlers:
         - event: Buy(uint256,uint256,address)
           handler: handleBuy
-        - event: DustReturned(uint256,uint256,address)
-          handler: handleDustReturned
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
         - event: Sell(uint256,uint256,address)
           handler: handleSell
         - event: Swap(uint256,uint256,address)
