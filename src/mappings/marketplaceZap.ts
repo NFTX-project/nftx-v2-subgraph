@@ -15,8 +15,9 @@ import {
 
 export function handleBuyZap(event: BuyZapEvent): void {
   let txHash = event.transaction.hash;
-  let redeem = getRedeem(txHash);
-  let zapBuy = getZapBuy(txHash);
+  let logIndex = event.logIndex;
+  let redeem = getRedeem(txHash, logIndex);
+  let zapBuy = getZapBuy(txHash, logIndex);
 
   zapBuy.ethAmount = event.params.ethSpent;
   zapBuy.vaultAction = redeem.id;
@@ -25,8 +26,9 @@ export function handleBuyZap(event: BuyZapEvent): void {
 
 export function handleSellZap(event: SellZapEvent): void {
   let txHash = event.transaction.hash;
-  let mint = getMint(txHash);
-  let zapSell = getZapSell(txHash);
+  let logIndex = event.logIndex;
+  let mint = getMint(txHash, logIndex);
+  let zapSell = getZapSell(txHash, logIndex);
 
   zapSell.ethAmount = event.params.ethReceived;
   zapSell.vaultAction = mint.id;
@@ -35,8 +37,9 @@ export function handleSellZap(event: SellZapEvent): void {
 
 export function handleSwapZap(event: SwapZapEvent): void {
   let txHash = event.transaction.hash;
-  let swap = getSwap(txHash);
-  let zapSwap = getZapSwap(txHash);
+  let logIndex = event.logIndex;
+  let swap = getSwap(txHash, logIndex);
+  let zapSwap = getZapSwap(txHash, logIndex);
 
   zapSwap.ethAmount = event.params.ethSpent;
   zapSwap.vaultAction = swap.id;

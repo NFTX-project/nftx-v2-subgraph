@@ -1,9 +1,6 @@
-import { BigInt } from "@graphprotocol/graph-ts"
 import {
-  ZeroXMarketplaceZap,
   Buy,
   DustReturned,
-  OwnershipTransferred,
   Sell,
   Swap
 } from "../types/ZeroXMarketplaceZap/ZeroXMarketplaceZap"
@@ -11,8 +8,9 @@ import { getMint, getRedeem, getSwap, getZapBuy, getZapSell, getZapSwap } from "
 
 export function handleBuy(event: Buy): void {
   let txHash = event.transaction.hash;
-  let redeem = getRedeem(txHash, event.address);
-  let zapBuy = getZapBuy(txHash);
+  let logIndex = event.logIndex;
+  let redeem = getRedeem(txHash, logIndex, event.address);
+  let zapBuy = getZapBuy(txHash, logIndex);
 
   zapBuy.ethAmount = event.params.ethSpent;
   zapBuy.vaultAction = redeem.id;
@@ -22,8 +20,9 @@ export function handleBuy(event: Buy): void {
 
 export function handleSell(event: Sell): void {
   let txHash = event.transaction.hash;
-  let mint = getMint(txHash, event.address);
-  let zapSell = getZapSell(txHash);
+  let logIndex = event.logIndex;
+  let mint = getMint(txHash, logIndex, event.address);
+  let zapSell = getZapSell(txHash, logIndex);
 
   zapSell.ethAmount = event.params.ethReceived;
   zapSell.vaultAction = mint.id;
@@ -32,10 +31,13 @@ export function handleSell(event: Sell): void {
 
 export function handleSwap(event: Swap): void {
   let txHash = event.transaction.hash;
-  let swap = getSwap(txHash, event.address);
-  let zapSwap = getZapSwap(txHash);
+  let logIndex = event.logIndex;
+  let swap = getSwap(txHash, logIndex, event.address);
+  let zapSwap = getZapSwap(txHash, logIndex);
 
   zapSwap.ethAmount = event.params.ethSpent;
   zapSwap.vaultAction = swap.id;
   zapSwap.save();
 }
+
+export function handleDustReturned(event: DustReturned): void {}

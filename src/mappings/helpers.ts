@@ -308,7 +308,7 @@ export function getUser(userAddress: Address): User {
   return user as User;
 }
 
-export function getMint(txHash: Bytes, source: Address = ADDRESS_ZERO): Mint {
+export function getMint(txHash: Bytes, logIndex: BigInt, source: Address = ADDRESS_ZERO): Mint {
   let mint = Mint.load(txHash.toHexString());
   if (!mint) {
     mint = new Mint(txHash.toHexString());
@@ -317,7 +317,7 @@ export function getMint(txHash: Bytes, source: Address = ADDRESS_ZERO): Mint {
   return mint as Mint;
 }
 
-export function getSwap(txHash: Bytes, source: Address =ADDRESS_ZERO): Swap {
+export function getSwap(txHash: Bytes, logIndex: BigInt, source: Address =ADDRESS_ZERO): Swap {
   let swap = Swap.load(txHash.toHexString());
   if (!swap) {
     swap = new Swap(txHash.toHexString());
@@ -346,10 +346,10 @@ export function getZap(
   return zap as Zap;
 }
 
-export function getRedeem(txHash: Bytes, source: Address = ADDRESS_ZERO): Redeem {
-  let redeem = Redeem.load(txHash.toHexString());
+export function getRedeem(txHash: Bytes, logIndex: BigInt, source: Address = ADDRESS_ZERO): Redeem {
+  let redeem = Redeem.load(txHash.toHexString().concat("-").concat(logIndex.toHexString()));
   if (!redeem) {
-    redeem = new Redeem(txHash.toHexString());
+    redeem = new Redeem(txHash.toHexString().concat("-").concat(logIndex.toHexString()));
     redeem.source = source;
   }
   return redeem as Redeem;
@@ -364,8 +364,8 @@ export function getStakedLpUser(userAddress: Address): StakedLpUser {
   return user as StakedLpUser;
 }
 
-export function getReward(txHash: Bytes): Reward {
-  let rewardId = txHash.toHexString();
+export function getReward(txHash: Bytes, logIndex: BigInt): Reward {
+  let rewardId = txHash.toHexString().concat("-").concat(logIndex.toHexString());
   let rewards = Reward.load(rewardId);
   if (!rewards) {
     rewards = new Reward(rewardId);
@@ -412,8 +412,8 @@ export function updatePools(
   return user;
 }
 
-export function getDeposit(txHash: Bytes): Deposit {
-  let depositId = txHash.toHexString();
+export function getDeposit(txHash: Bytes, logIndex: BigInt): Deposit {
+  let depositId = txHash.toHexString().concat("-").concat(logIndex.toHexString());
   let deposit = Deposit.load(depositId);
   if (!deposit) {
     deposit = new Deposit(depositId);
@@ -423,8 +423,8 @@ export function getDeposit(txHash: Bytes): Deposit {
   return deposit as Deposit;
 }
 
-export function getWithdrawal(txHash: Bytes): Withdrawal {
-  let withdrawalId = txHash.toHexString();
+export function getWithdrawal(txHash: Bytes, logIndex: BigInt): Withdrawal {
+  let withdrawalId = txHash.toHexString().concat("-").concat(logIndex.toHexString());
   let withdrawal = Withdrawal.load(withdrawalId);
   if (!withdrawal) {
     withdrawal = new Withdrawal(withdrawalId);
@@ -557,26 +557,26 @@ export function updateEligibleTokenIds(
   return module;
 }
 
-export function getZapBuy(txHash: Bytes): ZapBuy {
-  let zapBuy = ZapBuy.load(txHash.toHexString());
+export function getZapBuy(txHash: Bytes, logIndex: BigInt): ZapBuy {
+  let zapBuy = ZapBuy.load(txHash.toHexString().concat("-").concat(logIndex.toHexString()));
   if (!zapBuy) {
-    zapBuy = new ZapBuy(txHash.toHexString());
+    zapBuy = new ZapBuy(txHash.toHexString().concat("-").concat(logIndex.toHexString()));
   }
   return zapBuy as ZapBuy;
 }
 
-export function getZapSell(txHash: Bytes): ZapSell {
-  let zapSell = ZapSell.load(txHash.toHexString());
+export function getZapSell(txHash: Bytes, logIndex: BigInt): ZapSell {
+  let zapSell = ZapSell.load(txHash.toHexString().concat("-").concat(logIndex.toHexString()));
   if (!zapSell) {
-    zapSell = new ZapSell(txHash.toHexString());
+    zapSell = new ZapSell(txHash.toHexString().concat("-").concat(logIndex.toHexString()));
   }
   return zapSell as ZapSell;
 }
 
-export function getZapSwap(txHash: Bytes): ZapSwap {
-  let zapSwap = ZapSwap.load(txHash.toHexString());
+export function getZapSwap(txHash: Bytes, logIndex: BigInt): ZapSwap {
+  let zapSwap = ZapSwap.load(txHash.toHexString().concat("-").concat(logIndex.toHexString()));
   if (!zapSwap) {
-    zapSwap = new ZapSwap(txHash.toHexString());
+    zapSwap = new ZapSwap(txHash.toHexString().concat("-").concat(logIndex.toHexString()));
   }
   return zapSwap as ZapSwap;
 }

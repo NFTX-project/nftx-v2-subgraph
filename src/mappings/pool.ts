@@ -26,7 +26,7 @@ export function handleRewardWithdrawn(event: RewardWithdrawnEvent): void {
   let user = getStakedLpUser(userAddress);
   user.save();
 
-  let rewards = getReward(txHash);
+  let rewards = getReward(txHash, event.logIndex);
   rewards.date = event.block.timestamp;
   rewards.pool = pool.id;
   rewards.reward = amount;
@@ -59,7 +59,7 @@ export function handleTransfer(event: TransferEvent): void {
   if (event.params.from == ADDRESS_ZERO) {
     let userAddress = event.params.to;
     let user = getStakedLpUser(userAddress);
-    let deposit = getDeposit(txHash);
+    let deposit = getDeposit(txHash, event.logIndex);
     deposit.pool = pool.id;
     deposit.user = user.id;
 
@@ -78,7 +78,7 @@ export function handleTransfer(event: TransferEvent): void {
       ? BigInt.fromI32(0)
       : balanceFromInstance.value;
 
-    let withdrawal = getWithdrawal(txHash);
+    let withdrawal = getWithdrawal(txHash, event.logIndex);
     withdrawal.pool = pool.id;
     withdrawal.user = user.id;
 
