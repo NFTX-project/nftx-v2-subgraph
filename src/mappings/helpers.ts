@@ -413,7 +413,7 @@ export function updatePools(
 }
 
 export function getDeposit(txHash: Bytes, logIndex: BigInt): Deposit {
-  let depositId = txHash.toHexString().concat("-").concat(logIndex.toHexString());
+  let depositId = txHash.toHexString();
   let deposit = Deposit.load(depositId);
   if (!deposit) {
     deposit = new Deposit(depositId);
@@ -424,7 +424,7 @@ export function getDeposit(txHash: Bytes, logIndex: BigInt): Deposit {
 }
 
 export function getWithdrawal(txHash: Bytes, logIndex: BigInt): Withdrawal {
-  let withdrawalId = txHash.toHexString().concat("-").concat(logIndex.toHexString());
+  let withdrawalId = txHash.toHexString();
   let withdrawal = Withdrawal.load(withdrawalId);
   if (!withdrawal) {
     withdrawal = new Withdrawal(withdrawalId);
