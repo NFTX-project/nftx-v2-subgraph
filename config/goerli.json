@@ -16,5 +16,5 @@
   "inventoryStaking": "0x6e91A3f27cE6753f47C66B76B03E6A7bFdDB605B",
   "marketplaceZap": "0x528bDBe1DB8452bD4643F85695eE0628D900C195",
   "zeroXMarketplaceZap" : "0xe10ccc09561c9429501E602ac60E30cA8643bf99",
-  "callFilterEnabled": "true"
+  "zeroXMarketplaceZapV2" : "0x177246adb119ed83f982d1e3c4859f354578d5ef"
 }
