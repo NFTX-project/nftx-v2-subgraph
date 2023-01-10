@@ -266,3 +266,12 @@ type ZapSwap @entity {
   vaultAction: Swap!
   ethAmount: BigInt!
 }
+
+type DustReturned @entity {
+  id: ID! # txhash
+  type: String! #Redeem, Swap or Mint
+  linkedID: String! #RedeemID or SwapID or MintID  - txHash (Same as DustReturned ID)
+  ethAmount: BigInt!
+  vTokenAmount: BigInt!
+  to: User!
+}

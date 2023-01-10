@@ -133,7 +133,7 @@ export function handleWithdraw(event: WithdrawEvent): void {
         ? BigInt.fromI32(0)
         : balanceFromInstance.value;
 
-      let withdrawal = getWithdrawal(event.transaction.hash, event.logIndex);
+      let withdrawal = getWithdrawal(event.transaction.hash);
       withdrawal.pool = poolAddress.toHexString();
       withdrawal.user = user.id;
 
@@ -157,7 +157,7 @@ export function handleDeposit(event: DepositEvent): void {
     if (stakingPoolAddress) {
       let poolAddress = Address.fromString(stakingPoolAddress);
       let user = getStakedLpUser(event.params.sender);
-      let deposit = getDeposit(event.transaction.hash, event.logIndex);
+      let deposit = getDeposit(event.transaction.hash);
       deposit.pool = poolAddress.toHexString();
       deposit.user = user.id;
 
@@ -181,7 +181,7 @@ export function handleLPDeposit(event: LPDepositEvent): void {
     if (stakingPoolAddress) {
       let poolAddress = Address.fromString(stakingPoolAddress);
       let user = getStakedLpUser(event.params.account);
-      let deposit = getDeposit(event.transaction.hash, event.logIndex);
+      let deposit = getDeposit(event.transaction.hash);
       deposit.pool = poolAddress.toHexString();
       deposit.user = user.id;
 

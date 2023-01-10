@@ -15,6 +15,5 @@
   "simpleFeeDistributor": "0xFD8a76dC204e461dB5da4f38687AdC9CC5ae4a86",
   "inventoryStaking": "0x3E135c3E981fAe3383A5aE0d323860a34CfAB893",
   "marketplaceZap": "0x0fc584529a2AEfA997697FAfAcbA5831faC0c22d",
-  "zeroXMarketplaceZap" : "0x0000000000000000000000000000000000000000",
-  "callFilterEnabled": "true"
+  "zeroXMarketplaceZap" : "0x0000000000000000000000000000000000000000"
 }

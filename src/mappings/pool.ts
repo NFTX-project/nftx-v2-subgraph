@@ -59,7 +59,7 @@ export function handleTransfer(event: TransferEvent): void {
   if (event.params.from == ADDRESS_ZERO) {
     let userAddress = event.params.to;
     let user = getStakedLpUser(userAddress);
-    let deposit = getDeposit(txHash, event.logIndex);
+    let deposit = getDeposit(txHash);
     deposit.pool = pool.id;
     deposit.user = user.id;
 
@@ -78,7 +78,7 @@ export function handleTransfer(event: TransferEvent): void {
       ? BigInt.fromI32(0)
       : balanceFromInstance.value;
 
-    let withdrawal = getWithdrawal(txHash, event.logIndex);
+    let withdrawal = getWithdrawal(txHash);
     withdrawal.pool = pool.id;
     withdrawal.user = user.id;
 
