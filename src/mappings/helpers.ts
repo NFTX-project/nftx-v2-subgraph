@@ -591,8 +591,8 @@ export function createDustReturned(txHash: Bytes, type: string) : DustReturned {
   dustReturned.ethAmount = BigInt.fromI32(0);
   dustReturned.vTokenAmount = BigInt.fromI32(0);
   dustReturned.type = type;
-  dustReturned.to = ADDRESS_ZERO.toString();
-  dustReturned.linkedID = txHash.toHexString();
+  dustReturned.to = ADDRESS_ZERO.toHexString();
+  dustReturned.linkedEvent = txHash.toHexString();
   dustReturned.save();
   return dustReturned;
 }

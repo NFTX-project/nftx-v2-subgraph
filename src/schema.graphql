@@ -159,7 +159,22 @@ type Token @entity {
   totalSupply: BigInt!
 }
 
-type Mint @entity {
+enum ActivityEventType {
+  Swap
+  Redeem
+  Mint
+}
+
+interface ActivityEvent @entity {
+  id: ID! # tx
+  date: BigInt!
+  user: User!
+  vault: Vault!
+  feeReceipt: FeeReceipt!
+  source: Bytes
+}
+
+type Mint implements ActivityEvent @entity {
   id: ID! # tx
   date: BigInt!
   user: User!
@@ -171,7 +186,7 @@ type Mint @entity {
   source: Bytes
 }
 
-type Swap @entity {
+type Swap implements ActivityEvent @entity {
   id: ID! # tx
   date: BigInt!
   user: User!
@@ -187,7 +202,7 @@ type Swap @entity {
   source: Bytes
 }
 
-type Redeem @entity {
+type Redeem implements ActivityEvent @entity {
   id: ID! # tx
   date: BigInt!
   user: User!
@@ -269,9 +284,9 @@ type ZapSwap @entity {
 
 type DustReturned @entity {
   id: ID! # txhash
-  type: String! #Redeem, Swap or Mint
-  linkedID: String! #RedeemID or SwapID or MintID  - txHash (Same as DustReturned ID)
+  type: ActivityEventType! #Redeem, Swap or Mint
+  linkedEvent: ActivityEvent! #RedeemID or SwapID or MintID  - txHash (Same as DustReturned ID)
   ethAmount: BigInt!
   vTokenAmount: BigInt!
-  to: User!
+  to: String!
 }

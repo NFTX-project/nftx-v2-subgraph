@@ -8,7 +8,6 @@ import { createDustReturned, getDustReturned, getMint, getRedeem, getSwap, getUs
 
 export function handleBuy(event: Buy): void {
   let txHash = event.transaction.hash;
-  let logIndex = event.logIndex;
   let redeem = getRedeem(txHash, event.address);
   let zapBuy = getZapBuy(txHash);
 
@@ -16,13 +15,12 @@ export function handleBuy(event: Buy): void {
   zapBuy.vaultAction = redeem.id;
   zapBuy.save();
 
-  createDustReturned(txHash, "REDEEM");
+  createDustReturned(txHash, "Redeem");
 }
 
 
 export function handleSell(event: Sell): void {
   let txHash = event.transaction.hash;
-  let logIndex = event.logIndex;
   let mint = getMint(txHash, event.address);
   let zapSell = getZapSell(txHash);
 
@@ -30,12 +28,11 @@ export function handleSell(event: Sell): void {
   zapSell.vaultAction = mint.id;
   zapSell.save();
 
-  createDustReturned(txHash, "MINT");
+  createDustReturned(txHash, "Mint");
 }
 
 export function handleSwap(event: Swap): void {
   let txHash = event.transaction.hash;
-  let logIndex = event.logIndex;
   let swap = getSwap(txHash, event.address);
   let zapSwap = getZapSwap(txHash);
 
@@ -43,7 +40,7 @@ export function handleSwap(event: Swap): void {
   zapSwap.vaultAction = swap.id;
   zapSwap.save();
 
-  createDustReturned(txHash, "SWAP");
+  createDustReturned(txHash, "Swap");
 }
 
 export function handleDustReturned(event: DustReturned): void {
