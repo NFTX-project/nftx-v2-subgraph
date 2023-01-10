@@ -26,7 +26,7 @@ export function handleRewardWithdrawn(event: RewardWithdrawnEvent): void {
   let user = getStakedLpUser(userAddress);
   user.save();
 
-  let rewards = getReward(txHash, event.logIndex);
+  let rewards = getReward(txHash);
   rewards.date = event.block.timestamp;
   rewards.pool = pool.id;
   rewards.reward = amount;
