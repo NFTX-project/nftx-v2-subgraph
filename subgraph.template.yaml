@@ -239,6 +239,32 @@ dataSources:
         - event: Swap(uint256,uint256,address)
           handler: handleSwap
       file: ./src/mappings/zero-x-marketplace-zap.ts
+  - kind: ethereum
+    name: ZeroXMarketplaceZapV2
+    network: {{network}}
+    source:
+      address: '{{zeroXMarketplaceZapV2}}'
+      startBlock: {{startBlockZeroXMarketplaceZapV2}}
+      abi: ZeroXMarketplaceZap
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Vault
+      abis:
+        - name: ZeroXMarketplaceZap
+          file: ./src/abis/ZeroXMarketplaceZap.json
+      eventHandlers:
+        - event: Buy(uint256,uint256,address)
+          handler: handleBuy
+        - event: DustReturned(uint256,uint256,address)
+          handler: handleDustReturned
+        - event: Sell(uint256,uint256,address)
+          handler: handleSell
+        - event: Swap(uint256,uint256,address)
+          handler: handleSwap
+      file: ./src/mappings/zero-x-marketplace-zap.ts
   - kind: ethereum/contract
     name: NFTXInventoryStaking
     # prettier-ignore
