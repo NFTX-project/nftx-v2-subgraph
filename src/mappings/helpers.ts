@@ -309,18 +309,18 @@ export function getUser(userAddress: Address): User {
   return user as User;
 }
 export function getMint(txHash: Bytes,  source: Address = ADDRESS_ZERO): Mint {
-  let mint = Mint.load(txHash.toHexString());
+  let mint = Mint.load("MINT-" + txHash.toHexString());
   if (!mint) {
-    mint = new Mint(txHash.toHexString());
+    mint = new Mint("MINT-" + txHash.toHexString());
     mint.source = source;
   }
   return mint as Mint;
 }
 
 export function getSwap(txHash: Bytes, source: Address =ADDRESS_ZERO): Swap {
-  let swap = Swap.load(txHash.toHexString());
+  let swap = Swap.load("SWAP-" + txHash.toHexString());
   if (!swap) {
-    swap = new Swap(txHash.toHexString());
+    swap = new Swap("SWAP-" + txHash.toHexString());
     swap.source = source;
   }
   return swap as Swap;
@@ -347,9 +347,9 @@ export function getZap(
 }
 
 export function getRedeem(txHash: Bytes, source: Address = ADDRESS_ZERO): Redeem {
-  let redeem = Redeem.load(txHash.toHexString());
+  let redeem = Redeem.load("REDEEM-" + txHash.toHexString());
   if (!redeem) {
-    redeem = new Redeem(txHash.toHexString());
+    redeem = new Redeem("REDEEM-" + txHash.toHexString());
     redeem.source = source;
   }
   return redeem as Redeem;
