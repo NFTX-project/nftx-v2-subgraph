@@ -137,6 +137,14 @@ export function handleWithdraw(event: WithdrawEvent): void {
       withdrawal.pool = poolAddress.toHexString();
       withdrawal.user = user.id;
 
+
+      withdrawal.type = "Withdrawal";
+      withdrawal.vault = vault.id;
+
+      if(event.transaction.to != event.address){
+        withdrawal.source = event.transaction.to;
+      }
+
       if (balance == BigInt.fromI32(0)) {
         user = updatePools(user, poolAddress, false);
         user.save();
@@ -161,6 +169,13 @@ export function handleDeposit(event: DepositEvent): void {
       deposit.pool = poolAddress.toHexString();
       deposit.user = user.id;
 
+      deposit.type = "Deposit";
+      deposit.vault = vault.id;
+  
+      if(event.transaction.to != event.address){
+        deposit.source = event.transaction.to;
+      }
+
       user = updatePools(user, poolAddress, true);
       user.save();
 
@@ -184,6 +199,14 @@ export function handleLPDeposit(event: LPDepositEvent): void {
       let deposit = getDeposit(event.transaction.hash);
       deposit.pool = poolAddress.toHexString();
       deposit.user = user.id;
+
+      deposit.type = "LPDeposit";
+      deposit.vault = vault.id;
+  
+      if(event.transaction.to != event.address){
+        deposit.source = event.transaction.to;
+      }
+
 
       user = updatePools(user, poolAddress, true);
       user.save();

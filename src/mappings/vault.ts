@@ -70,13 +70,13 @@ export function handleMint(event: MintEvent): void {
   let user = getUser(event.params.to);
   let amounts = event.params.amounts;
   let nftIds = event.params.nftIds;
+  mint.type = "Mint";
   mint.user = user.id;
   mint.vault = vaultAddress.toHexString();
   mint.date = event.block.timestamp;
   mint.nftIds = nftIds;
   mint.amounts = transformMintAmounts(vaultAddress, nftIds, amounts);
-  
-  
+
   if(event.transaction.to != vaultAddress){
     mint.source = event.transaction.to;
   }
@@ -129,6 +129,7 @@ export function handleSwap(event: SwapEvent): void {
   let redeemedIds = event.params.redeemedIds;
   let user = getUser(event.params.to);
 
+  swap.type = "Swap";
   swap.user = user.id;
   swap.vault = vaultAddress.toHexString();
   swap.date = event.block.timestamp;
@@ -190,6 +191,7 @@ export function handleRedeem(event: RedeemEvent): void {
   let specificIds = event.params.specificIds;
   let user = getUser(event.params.to);
 
+  redeem.type = "Redeem";
   redeem.user = user.id;
   redeem.vault = vaultAddress.toHexString();
   redeem.date = event.block.timestamp;

@@ -163,15 +163,21 @@ enum ActivityEventType {
   Swap
   Redeem
   Mint
+  Deposit
+  Withdrawal
+  LPDeposit
+  LPWithdrawal
+  ZapSell
+  ZapSwap
+  ZapBuy
 }
 
 interface ActivityEvent @entity {
   id: ID! # tx
   date: BigInt!
-  user: User!
   vault: Vault!
-  feeReceipt: FeeReceipt!
   source: Bytes
+  type: ActivityEventType!
 }
 
 type Mint implements ActivityEvent @entity {
@@ -184,6 +190,7 @@ type Mint implements ActivityEvent @entity {
   feeReceipt: FeeReceipt!
   zapAction: ZapSell @derivedFrom(field: "vaultAction")
   source: Bytes
+  type: ActivityEventType!
 }
 
 type Swap implements ActivityEvent @entity {
@@ -200,6 +207,7 @@ type Swap implements ActivityEvent @entity {
   feeReceipt: FeeReceipt!
   zapAction: ZapSwap @derivedFrom(field: "vaultAction")
   source: Bytes
+  type: ActivityEventType!
 }
 
 type Redeem implements ActivityEvent @entity {
@@ -214,6 +222,7 @@ type Redeem implements ActivityEvent @entity {
   feeReceipt: FeeReceipt!
   zapAction: ZapBuy @derivedFrom(field: "vaultAction")
   source: Bytes
+  type: ActivityEventType!
 }
 
 type User @entity {
@@ -239,20 +248,26 @@ type Reward @entity {
   reward: BigInt!
 }
 
-type Deposit @entity {
+type Deposit implements ActivityEvent @entity {
   id: ID! # tx
   date: BigInt!
   pool: Pool!
+  vault: Vault!
   user: StakedLpUser!
   deposit: BigInt!
+  source: Bytes
+  type: ActivityEventType!
 }
 
-type Withdrawal @entity {
+type Withdrawal implements ActivityEvent @entity {
   id: ID! # tx
   date: BigInt!
   pool: Pool!
+  vault: Vault!
   user: StakedLpUser!
   withdrawal: BigInt!
+  source: Bytes
+  type: ActivityEventType!
 }
 
 type Zap @entity {

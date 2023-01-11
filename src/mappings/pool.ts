@@ -62,6 +62,12 @@ export function handleTransfer(event: TransferEvent): void {
     let deposit = getDeposit(txHash);
     deposit.pool = pool.id;
     deposit.user = user.id;
+    deposit.type = "Deposit";
+    deposit.vault = pool.vault;
+
+    if(event.transaction.to != event.address){
+      deposit.source = event.transaction.to;
+    }
 
     user = updatePools(user, poolAddress, true);
     user.save();
@@ -81,6 +87,12 @@ export function handleTransfer(event: TransferEvent): void {
     let withdrawal = getWithdrawal(txHash);
     withdrawal.pool = pool.id;
     withdrawal.user = user.id;
+    withdrawal.type = "LPWithdrawal";
+    withdrawal.vault = pool.vault;
+
+    if(event.transaction.to != event.address){
+      withdrawal.source = event.transaction.to;
+    }
 
     if (balance == BigInt.fromI32(0)) {
       user = updatePools(user, poolAddress, false);
