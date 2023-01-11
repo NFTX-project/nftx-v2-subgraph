@@ -308,19 +308,19 @@ export function getUser(userAddress: Address): User {
   }
   return user as User;
 }
-export function getMint(txHash: Bytes, logIndex: BigInt, source: Address = ADDRESS_ZERO): Mint {
-  let mint = Mint.load(txHash.toHexString().concat("-").concat(logIndex.toHexString()));
+export function getMint(txHash: Bytes,  source: Address = ADDRESS_ZERO): Mint {
+  let mint = Mint.load(txHash.toHexString());
   if (!mint) {
-    mint = new Mint(txHash.toHexString().concat("-").concat(logIndex.toHexString()));
+    mint = new Mint(txHash.toHexString());
     mint.source = source;
   }
   return mint as Mint;
 }
 
-export function getSwap(txHash: Bytes, logIndex: BigInt, source: Address =ADDRESS_ZERO): Swap {
-  let swap = Swap.load(txHash.toHexString().concat("-").concat(logIndex.toHexString()));
+export function getSwap(txHash: Bytes, source: Address =ADDRESS_ZERO): Swap {
+  let swap = Swap.load(txHash.toHexString());
   if (!swap) {
-    swap = new Swap(txHash.toHexString().concat("-").concat(logIndex.toHexString()));
+    swap = new Swap(txHash.toHexString());
     swap.source = source;
   }
   return swap as Swap;
@@ -346,10 +346,10 @@ export function getZap(
   return zap as Zap;
 }
 
-export function getRedeem(txHash: Bytes, logIndex: BigInt, source: Address = ADDRESS_ZERO): Redeem {
-  let redeem = Redeem.load(txHash.toHexString().concat("-").concat(logIndex.toHexString()));
+export function getRedeem(txHash: Bytes, source: Address = ADDRESS_ZERO): Redeem {
+  let redeem = Redeem.load(txHash.toHexString());
   if (!redeem) {
-    redeem = new Redeem(txHash.toHexString().concat("-").concat(logIndex.toHexString()));
+    redeem = new Redeem(txHash.toHexString());
     redeem.source = source;
   }
   return redeem as Redeem;
@@ -585,13 +585,26 @@ export function getDustReturned(txHash: Bytes) : DustReturned | null {
   return DustReturned.load(txHash.toHexString())
 }
 
-export function createDustReturned(txHash: Bytes, type: string, logIndex: BigInt) : DustReturned {
-  let dustReturned = new DustReturned(txHash.toHexString());
-  dustReturned.ethAmount = BigInt.fromI32(0);
-  dustReturned.vTokenAmount = BigInt.fromI32(0);
-  dustReturned.type = type;
-  dustReturned.to = ADDRESS_ZERO.toHexString();
-  dustReturned.linkedEvent = txHash.toHexString().concat("-").concat(logIndex.toHexString());
-  dustReturned.save();
-  return dustReturned;
+export function createDustReturned(txHash: Bytes, eventID: string) : DustReturned {
+  let dustReturned = DustReturned.load(txHash.toHexString());
+  if(!dustReturned) {
+    let dustReturned = new DustReturned(txHash.toHexString());
+
+    let eventList = new Array<string>();
+    eventList.push(eventID);
+
+    dustReturned.ethAmount = BigInt.fromI32(0);
+    dustReturned.vTokenAmount = BigInt.fromI32(0);
+    dustReturned.to = ADDRESS_ZERO.toHexString();
+    dustReturned.linkedEvents = eventList;
+    dustReturned.save();
+    return dustReturned;
+  }
+  else {
+    let linkedEvents = dustReturned.linkedEvents;
+    linkedEvents.push(eventID);
+    dustReturned.linkedEvents = linkedEvents;
+    dustReturned.save();
+    return dustReturned;
+  }
 }

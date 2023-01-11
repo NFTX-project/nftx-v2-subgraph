@@ -1,3 +1,4 @@
+import { log } from "@graphprotocol/graph-ts";
 import {
   Buy,
   DustReturned,
@@ -8,39 +9,40 @@ import { createDustReturned, getDustReturned, getMint, getRedeem, getSwap, getUs
 
 export function handleBuy(event: Buy): void {
   let txHash = event.transaction.hash;
-  let redeem = getRedeem(txHash,event.logIndex, event.address);
+  let redeem = getRedeem(txHash, event.address);
   let zapBuy = getZapBuy(txHash);
 
   zapBuy.ethAmount = event.params.ethSpent;
   zapBuy.vaultAction = redeem.id;
   zapBuy.save();
 
-  createDustReturned(txHash, "Redeem", event.logIndex);
+  log.info("REDEEM : Redeem.ID = {}", [redeem.id])
+  createDustReturned(txHash, redeem.id);
 }
 
 
 export function handleSell(event: Sell): void {
   let txHash = event.transaction.hash;
-  let mint = getMint(txHash, event.logIndex,  event.address);
+  let mint = getMint(txHash, event.address);
   let zapSell = getZapSell(txHash);
 
   zapSell.ethAmount = event.params.ethReceived;
   zapSell.vaultAction = mint.id;
   zapSell.save();
-
-  createDustReturned(txHash, "Mint", event.logIndex);
+  log.info("MINT : Mint.ID = {}", [mint.id])
+  createDustReturned(txHash, mint.id);
 }
 
 export function handleSwap(event: Swap): void {
   let txHash = event.transaction.hash;
-  let swap = getSwap(txHash, event.logIndex, event.address);
+  let swap = getSwap(txHash,  event.address);
   let zapSwap = getZapSwap(txHash);
 
   zapSwap.ethAmount = event.params.ethSpent;
   zapSwap.vaultAction = swap.id;
   zapSwap.save();
-
-  createDustReturned(txHash, "Swap", event.logIndex);
+  log.info("SWAP : Swap.ID = {}", [swap.id])
+  createDustReturned(txHash,  swap.id);
 }
 
 export function handleDustReturned(event: DustReturned): void {
@@ -51,5 +53,8 @@ export function handleDustReturned(event: DustReturned): void {
     dustReturned.vTokenAmount = event.params.vTokenAmount;
     dustReturned.to = getUser(event.params.to).id;
     dustReturned.save();
+  }
+  else {
+    log.warning("Warning : DustReturned not found; TxHash = {}", [txHash.toHexString()])
   }
 }

@@ -66,7 +66,7 @@ export function handleMint(event: MintEvent): void {
   let vaultAddress = event.address;
 
   let txHash = event.transaction.hash;
-  let mint = getMint(txHash, event.logIndex);
+  let mint = getMint(txHash);
   let user = getUser(event.params.to);
   let amounts = event.params.amounts;
   let nftIds = event.params.nftIds;
@@ -122,7 +122,7 @@ export function handleSwap(event: SwapEvent): void {
   let vaultAddress = event.address;
 
   let txHash = event.transaction.hash;
-  let swap = getSwap(txHash, event.logIndex);
+  let swap = getSwap(txHash);
   let nftIds = event.params.nftIds;
   let amounts = event.params.amounts;
   let specificIds = event.params.specificIds;
@@ -185,7 +185,7 @@ export function handleRedeem(event: RedeemEvent): void {
   let vaultAddress = event.address;
 
   let txHash = event.transaction.hash;
-  let redeem = getRedeem(txHash, event.logIndex);
+  let redeem = getRedeem(txHash);
   let nftIds = event.params.nftIds;
   let specificIds = event.params.specificIds;
   let user = getUser(event.params.to);

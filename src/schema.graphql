@@ -284,8 +284,7 @@ type ZapSwap @entity {
 
 type DustReturned @entity {
   id: ID! # txhash
-  type: ActivityEventType! #Redeem, Swap or Mint
-  linkedEvent: ActivityEvent! #RedeemID or SwapID or MintID  - txHash (Same as DustReturned ID)
+  linkedEvents: [ActivityEvent!]! #RedeemID or SwapID or MintID  - txHash (Same as DustReturned ID)
   ethAmount: BigInt!
   vTokenAmount: BigInt!
   to: String!
