@@ -170,6 +170,9 @@ enum ActivityEventType {
   ZapSell
   ZapSwap
   ZapBuy
+  UnstakeInventory
+  VaultCreated
+  VaultPublished
 }
 
 interface ActivityEvent @entity {
@@ -269,6 +272,24 @@ type Withdrawal implements ActivityEvent @entity {
   source: Bytes
   type: ActivityEventType!
 }
+
+type VaultCreated implements ActivityEvent @entity {
+  id: ID! # tx
+  date: BigInt!
+  vault: Vault!
+  source: Bytes
+  type: ActivityEventType!
+}
+
+
+type VaultPublished implements ActivityEvent @entity {
+  id: ID! # tx
+  date: BigInt!
+  vault: Vault!
+  source: Bytes
+  type: ActivityEventType!
+}
+
 
 type Zap @entity {
   id: ID!

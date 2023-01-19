@@ -38,6 +38,8 @@ import {
   ZapSwap,
   FeeTransfer,
   DustReturned,
+  VaultPublished,
+  VaultCreated,
 } from '../types/schema';
 import { ERC20Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC20Metadata';
 import { ERC677Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC677Metadata';
@@ -608,3 +610,22 @@ export function createDustReturned(txHash: Bytes, eventID: string) : DustReturne
     return dustReturned;
   }
 }
+
+export function vaultCreated(txHash: Bytes, vaultId: string, date: BigInt) : void {
+  let vaultCreated = new VaultCreated("VAULT_CREATED-" + txHash.toHexString());
+  vaultCreated.date = date;
+  vaultCreated.vault = vaultId;
+  vaultCreated.source = ADDRESS_ZERO;
+  vaultCreated.type = "VaultCreated";
+  vaultCreated.save()
+}
+
+export function vaultPublished(txHash: Bytes, vaultId: string, date: BigInt) : void {
+  let vaultPublished = new VaultPublished("VAULT_PUBLISHED-" + txHash.toHexString());
+  vaultPublished.date = date;
+  vaultPublished.vault = vaultId;
+  vaultPublished.source = ADDRESS_ZERO;
+  vaultPublished.type = "VaultPublished";
+  vaultPublished.save()
+}
+

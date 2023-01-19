@@ -154,7 +154,7 @@ dataSources:
           file: ./src/abis/ERC677Metadata.json
       eventHandlers:
         - event: UserStaked(uint256,uint256,uint256,uint256,address)
-          handler: handleUserStaked
+          handler: handleUserStaked 
   - kind: ethereum/contract
     name: NFTXStakingZapV3
     # prettier-ignore
@@ -185,6 +185,28 @@ dataSources:
       eventHandlers:
         - event: UserStaked(uint256,uint256,uint256,uint256,address)
           handler: handleUserStaked
+  - kind: ethereum/contract
+    name: NFTXUnstakingInventoryZap
+    # prettier-ignore
+    network: {{network}}
+    source:
+      address: '{{unstakingZap}}'
+      abi: NFTXUnstakingInventoryZap
+      # prettier-ignore
+      startBlock: {{startBlockUnstakingZaps}}
+    mapping:
+      file: ./src/mappings/unstake-inventory-zap.ts
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Zap
+      abis:
+        - name: NFTXUnstakingInventoryZap
+          file: ./src/abis/NFTXUnstakingInventoryZap.json
+      eventHandlers:
+        - event: InventoryUnstaked(uint256,uint256,uint256,address)
+          handler: handleInventoryUnstaked
   - kind: ethereum/contract
     name: NFTXMarketplaceZap
     # prettier-ignore

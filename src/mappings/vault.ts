@@ -33,8 +33,10 @@ import {
   getEligibilityModule,
   transformMintAmounts,
   getFeeTransfer,
+  vaultPublished,
 } from './helpers';
 import { BigInt} from '@graphprotocol/graph-ts';
+import { ADDRESS_ZERO } from './constants';
 
 
 export function handleTransfer(event: TransferEvent): void {
@@ -236,6 +238,10 @@ export function handleManagerSet(event: ManagerSetEvent): void {
   let vault = getVault(event.address);
   vault = updateManager(vault, managerAddress);
   vault.save();
+
+  if(event.params.manager == ADDRESS_ZERO) {
+    vaultPublished(event.transaction.hash, vault.id, event.block.timestamp);
+  }
 }
 
 export function handleEnableMintUpdated(event: EnableMintUpdatedEvent): void {

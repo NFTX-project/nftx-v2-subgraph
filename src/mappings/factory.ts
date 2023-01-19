@@ -14,6 +14,7 @@ import {
   getGlobalFee,
   getVault,
   getVaultCreator,
+  vaultCreated,
 } from './helpers';
 import {
   NFTXVaultUpgradeable as NFTXVaultTemplate,
@@ -97,7 +98,6 @@ export function handleNewEligibilityManager(
 export function handleNewVault(event: NewVaultEvent): void {
   let vaultAddress = event.params.vaultAddress;
   let vaultCreatorAddress = event.transaction.from;
-
   let vaultCreator = getVaultCreator(vaultCreatorAddress);
   vaultCreator.save();
 
@@ -133,6 +133,8 @@ export function handleNewVault(event: NewVaultEvent): void {
     fee.save();
   }
   newFeeDistributor(nftxVaultFactoryAddress, feeDistributorAddress);
+  
+  vaultCreated(event.transaction.hash, vault.id, event.block.timestamp);
 }
 
 function getVaultAddress(
