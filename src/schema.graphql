@@ -173,6 +173,9 @@ enum ActivityEventType {
   UnstakeInventory
   VaultCreated
   VaultPublished
+  VaultNameChange
+  VaultShutdown
+  VaultFeeUpdate
 }
 
 interface ActivityEvent @entity {
@@ -284,6 +287,39 @@ type VaultCreated implements ActivityEvent @entity {
 
 type VaultPublished implements ActivityEvent @entity {
   id: ID! # tx
+  date: BigInt!
+  vault: Vault!
+  source: Bytes
+  type: ActivityEventType!
+}
+
+type VaultShutdown implements ActivityEvent @entity {
+  id: ID! # tx
+  date: BigInt!
+  vault: Vault!
+  source: Bytes
+  type: ActivityEventType!
+}
+
+type VaultNameChange implements ActivityEvent @entity {
+  id: ID! # tx
+  nameBefore: String! #Name before
+  nameAfter: String! #Name after
+  symbolBefore: String! #Symbol before
+  symbolAfter: String! #Symbol after
+  date: BigInt!
+  vault: Vault!
+  source: Bytes
+  type: ActivityEventType!
+}
+
+type VaultFeeUpdate implements ActivityEvent @entity {
+  id: ID! # tx
+  mintFee: BigInt!
+  randomRedeemFee: BigInt!
+  targetRedeemFee: BigInt!
+  randomSwapFee: BigInt!
+  targetSwapFee: BigInt!
   date: BigInt!
   vault: Vault!
   source: Bytes

@@ -34,6 +34,8 @@ import {
   transformMintAmounts,
   getFeeTransfer,
   vaultPublished,
+  vaultShutdown,
+  vaultNameChange,
 } from './helpers';
 import { BigInt} from '@graphprotocol/graph-ts';
 import { ADDRESS_ZERO } from './constants';
@@ -328,13 +330,20 @@ export function handleVaultShutdown(
   vault.shutdownDate = event.block.timestamp;
   vault.totalHoldings = BigInt.fromI32(0);
   vault.save();
+
+  vaultShutdown(event.transaction.hash, vault.id, event.block.timestamp);
 }
 
 export function handleMetaDataChange(
   event: MetaDataChangeEvent
 ): void {
   let token = getToken(event.address);
+  
+  vaultNameChange(event.transaction.hash, event.address.toHexString(), event.block.timestamp, token.name,  event.params.newName, token.symbol, event.params.newSymbol);
+
   token.symbol = event.params.newSymbol;
   token.name = event.params.newName;
   token.save();
+
+  
 }

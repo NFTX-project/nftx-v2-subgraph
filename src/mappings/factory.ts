@@ -15,6 +15,7 @@ import {
   getVault,
   getVaultCreator,
   vaultCreated,
+  vaultFeeChange,
 } from './helpers';
 import {
   NFTXVaultUpgradeable as NFTXVaultTemplate,
@@ -180,6 +181,8 @@ export function handleUpdateVaultFees(event: UpdateVaultFeesEvent): void {
   fee.randomSwapFee = event.params.randomSwapFee;
   fee.targetSwapFee = event.params.targetSwapFee;
   fee.save();
+
+  vaultFeeChange(event.transaction.hash, vault.id, event.block.timestamp, event.params.mintFee,event.params.randomRedeemFee,event.params.targetRedeemFee,event.params.randomSwapFee, event.params.targetSwapFee)
 }
 
 export function handleDisableVaultFees(event: DisableVaultFeesEvent): void {

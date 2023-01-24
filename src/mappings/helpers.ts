@@ -40,6 +40,9 @@ import {
   DustReturned,
   VaultPublished,
   VaultCreated,
+  VaultFeeUpdate,
+  VaultNameChange,
+  VaultShutdown,
 } from '../types/schema';
 import { ERC20Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC20Metadata';
 import { ERC677Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC677Metadata';
@@ -627,5 +630,45 @@ export function vaultPublished(txHash: Bytes, vaultId: string, date: BigInt) : v
   vaultPublished.source = ADDRESS_ZERO;
   vaultPublished.type = "VaultPublished";
   vaultPublished.save()
+}
+
+export function vaultShutdown(txHash: Bytes, vaultId: string, date: BigInt) : void {
+  let vaultPublished = new VaultShutdown("VAULT_SHUTDOWN-" + txHash.toHexString());
+  vaultPublished.date = date;
+  vaultPublished.vault = vaultId;
+  vaultPublished.source = ADDRESS_ZERO;
+  vaultPublished.type = "VaultShutdown";
+  vaultPublished.save()
+}
+
+export function vaultNameChange(txHash: Bytes, vaultId: string, date: BigInt, nameBefore: string, nameAfter: string, symbolBefore: string, symbolAfter: string) : void {
+  let vaultPublished = new VaultNameChange("VAULT_NAME_CHANGE-" + txHash.toHexString());
+  vaultPublished.date = date;
+  vaultPublished.vault = vaultId;
+  vaultPublished.source = ADDRESS_ZERO;
+  vaultPublished.type = "VaultNameChange";
+  vaultPublished.nameBefore = nameBefore;
+  vaultPublished.nameAfter = nameAfter;
+  vaultPublished.symbolBefore = symbolBefore;
+  vaultPublished.symbolAfter = symbolAfter;
+  vaultPublished.save()
+}
+
+export function vaultFeeChange(txHash: Bytes, vaultId: string, date: BigInt, mintFee: BigInt,
+  randomRedeemFee: BigInt,
+  targetRedeemFee: BigInt,
+  randomSwapFee: BigInt,
+  targetSwapFee: BigInt,) : void {
+  let vaultFeeUpdate = new VaultFeeUpdate("VAULT_FEE_UPDATE-" + txHash.toHexString());
+  vaultFeeUpdate.date = date;
+  vaultFeeUpdate.vault = vaultId;
+  vaultFeeUpdate.source = ADDRESS_ZERO;
+  vaultFeeUpdate.type = "VaultFeeUpdate";
+  vaultFeeUpdate.mintFee = mintFee;
+  vaultFeeUpdate.randomRedeemFee = randomRedeemFee;
+  vaultFeeUpdate.targetRedeemFee = targetRedeemFee;
+  vaultFeeUpdate.randomSwapFee = randomSwapFee;
+  vaultFeeUpdate.targetSwapFee = targetSwapFee;
+  vaultFeeUpdate.save()
 }
 
