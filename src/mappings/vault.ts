@@ -159,8 +159,9 @@ export function handleSwap(event: SwapEvent): void {
   swap.save();
   user.save();
 
-  addToHoldings(vaultAddress, nftIds, amounts, event.block.timestamp);
   removeFromHoldings(vaultAddress, redeemedIds);
+  addToHoldings(vaultAddress, nftIds, amounts, event.block.timestamp);
+  
 
   let added = BigInt.fromI32(nftIds.length);
   let removed = BigInt.fromI32(redeemedIds.length);
