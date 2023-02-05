@@ -39,21 +39,23 @@ function newInventoryPool(
 
   let pool = getInventoryPool(xTokenAddress);
   let vault = getVault(vaultAddress);
-  vault.inventoryStakingPool = pool.id;
-  vault.save();
+  if(!vault.inventoryStakingPool){
+    vault.inventoryStakingPool = pool.id;
+    vault.save();
+  
+    let rewardToken = getToken(vaultAddress);
+    rewardToken.save();
+    let dividendToken = getToken(xTokenAddress);
+    dividendToken.save();
+    let stakingToken = getToken(vaultAddress);
+    stakingToken.save();
 
-  let rewardToken = getToken(vaultAddress);
-  rewardToken.save();
-  let dividendToken = getToken(xTokenAddress);
-  dividendToken.save();
-  let stakingToken = getToken(vaultAddress);
-  stakingToken.save();
-
-  pool.rewardToken = rewardToken.id;
-  pool.stakingToken = stakingToken.id;
-  pool.dividendToken = dividendToken.id;
-  pool.vault = vaultAddress.toHexString();
-  pool.save();
+    pool.rewardToken = rewardToken.id;
+    pool.stakingToken = stakingToken.id;
+    pool.dividendToken = dividendToken.id;
+    pool.vault = vaultAddress.toHexString();
+    pool.save();
+  }
 }
 
 function newPool(
