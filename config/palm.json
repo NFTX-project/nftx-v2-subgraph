@@ -5,6 +5,5 @@
   "startBlockSimpleFees": "1930177",
   "vaultFactory": "0x3fA12AE3936fD25De464A3E7a16DcA95d0Ec0aBe",
   "stakingZap": "0x732E5F7FE7c40333DfeFF57755666F85d1e164c1",
-  "simpleFeeDistributor": "0x0000000000000000000000000000000000000000",
-  "callFilterEnabled": "true"
+  "simpleFeeDistributor": "0x0000000000000000000000000000000000000000"
 }

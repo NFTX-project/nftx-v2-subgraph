@@ -29,8 +29,6 @@ import {
   Deposit,
   Holding,
   Zap,
-  VaultDayData,
-  VaultHourData,
   VaultCreator,
   EligibilityModule,
   Withdrawal,
@@ -39,11 +37,16 @@ import {
   ZapSell,
   ZapSwap,
   FeeTransfer,
+  DustReturned,
+  VaultPublished,
+  VaultCreated,
+  VaultFeeUpdate,
+  VaultNameChange,
+  VaultShutdown,
 } from '../types/schema';
 import { ERC20Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC20Metadata';
 import { ERC677Metadata } from '../types/NFTXVaultFactoryUpgradeable/ERC677Metadata';
 import { ADDRESS_ZERO } from './constants';
-import { getDateString, getTimeString } from './datetime';
 
 export function getGlobal(): Global {
   let global_id = dataSource.network();
@@ -62,7 +65,7 @@ export function getGlobal(): Global {
     global.nftxVaultFactory = ADDRESS_ZERO;
     global.feeDistributorAddress = ADDRESS_ZERO;
     global.eligibilityManagerAddress = ADDRESS_ZERO;
-
+    global.inventoryStakingAddress = ADDRESS_ZERO;
     let fees = getGlobalFee();
     fees.save();
 
@@ -310,21 +313,20 @@ export function getUser(userAddress: Address): User {
   }
   return user as User;
 }
-
-export function getMint(txHash: Bytes): Mint {
-  let mint = Mint.load(txHash.toHexString());
+export function getMint(txHash: Bytes,  source: Address = ADDRESS_ZERO): Mint {
+  let mint = Mint.load("MINT-" + txHash.toHexString());
   if (!mint) {
-    mint = new Mint(txHash.toHexString());
-    mint.source = ADDRESS_ZERO;
+    mint = new Mint("MINT-" + txHash.toHexString());
+    mint.source = source;
   }
   return mint as Mint;
 }
 
-export function getSwap(txHash: Bytes): Swap {
-  let swap = Swap.load(txHash.toHexString());
+export function getSwap(txHash: Bytes, source: Address =ADDRESS_ZERO): Swap {
+  let swap = Swap.load("SWAP-" + txHash.toHexString());
   if (!swap) {
-    swap = new Swap(txHash.toHexString());
-    swap.source = ADDRESS_ZERO;
+    swap = new Swap("SWAP-" + txHash.toHexString());
+    swap.source = source;
   }
   return swap as Swap;
 }
@@ -349,11 +351,11 @@ export function getZap(
   return zap as Zap;
 }
 
-export function getRedeem(txHash: Bytes): Redeem {
-  let redeem = Redeem.load(txHash.toHexString());
+export function getRedeem(txHash: Bytes, source: Address = ADDRESS_ZERO): Redeem {
+  let redeem = Redeem.load("REDEEM-" + txHash.toHexString());
   if (!redeem) {
-    redeem = new Redeem(txHash.toHexString());
-    redeem.source = ADDRESS_ZERO;
+    redeem = new Redeem("REDEEM-" + txHash.toHexString());
+    redeem.source = source;
   }
   return redeem as Redeem;
 }
@@ -416,7 +418,7 @@ export function updatePools(
 }
 
 export function getDeposit(txHash: Bytes): Deposit {
-  let depositId = txHash.toHexString();
+  let depositId = "DEPOSIT-" + txHash.toHexString();
   let deposit = Deposit.load(depositId);
   if (!deposit) {
     deposit = new Deposit(depositId);
@@ -427,7 +429,7 @@ export function getDeposit(txHash: Bytes): Deposit {
 }
 
 export function getWithdrawal(txHash: Bytes): Withdrawal {
-  let withdrawalId = txHash.toHexString();
+  let withdrawalId = "WITHDRAWAL-" + txHash.toHexString();
   let withdrawal = Withdrawal.load(withdrawalId);
   if (!withdrawal) {
     withdrawal = new Withdrawal(withdrawalId);
@@ -511,51 +513,7 @@ export function removeFromHoldings(
   }
 }
 
-export function getVaultDayData(
-  vaultAddress: Address,
-  date: BigInt,
-): VaultDayData {
-  let dateString = getDateString(date);
-  let vaultDayDataId = dateString + '-' + vaultAddress.toHexString();
-  let vaultDayData = VaultDayData.load(vaultDayDataId);
-  if (!vaultDayData) {
-    vaultDayData = new VaultDayData(vaultDayDataId);
-    vaultDayData.date = date;
-    vaultDayData.mintsCount = BigInt.fromI32(0);
-    vaultDayData.swapsCount = BigInt.fromI32(0);
-    vaultDayData.redeemsCount = BigInt.fromI32(0);
-    vaultDayData.holdingsCount = BigInt.fromI32(0);
-    vaultDayData.totalMints = BigInt.fromI32(0);
-    vaultDayData.totalSwaps = BigInt.fromI32(0);
-    vaultDayData.totalRedeems = BigInt.fromI32(0);
-    vaultDayData.totalHoldings = BigInt.fromI32(0);
-    vaultDayData.vault = vaultAddress.toHexString();
-  }
-  return vaultDayData as VaultDayData;
-}
 
-export function getVaultHourData(
-  vaultAddress: Address,
-  date: BigInt,
-): VaultHourData {
-  let timeString = getTimeString(date);
-  let vaultHourDataId = timeString + '-' + vaultAddress.toHexString();
-  let vaultHourData = VaultHourData.load(vaultHourDataId);
-  if (!vaultHourData) {
-    vaultHourData = new VaultHourData(vaultHourDataId);
-    vaultHourData.date = date;
-    vaultHourData.mintsCount = BigInt.fromI32(0);
-    vaultHourData.swapsCount = BigInt.fromI32(0);
-    vaultHourData.redeemsCount = BigInt.fromI32(0);
-    vaultHourData.holdingsCount = BigInt.fromI32(0);
-    vaultHourData.totalMints = BigInt.fromI32(0);
-    vaultHourData.totalSwaps = BigInt.fromI32(0);
-    vaultHourData.totalRedeems = BigInt.fromI32(0);
-    vaultHourData.totalHoldings = BigInt.fromI32(0);
-    vaultHourData.vault = vaultAddress.toHexString();
-  }
-  return vaultHourData as VaultHourData;
-}
 
 export function getEligibilityModule(
   moduleAddress: Address,
@@ -627,3 +585,90 @@ export function getZapSwap(txHash: Bytes): ZapSwap {
   }
   return zapSwap as ZapSwap;
 }
+
+export function getDustReturned(txHash: Bytes) : DustReturned | null {
+  return DustReturned.load(txHash.toHexString())
+}
+
+export function createDustReturned(txHash: Bytes, eventID: string) : DustReturned {
+  let dustReturned = DustReturned.load(txHash.toHexString());
+  if(!dustReturned) {
+    let dustReturned = new DustReturned(txHash.toHexString());
+
+    let eventList = new Array<string>();
+    eventList.push(eventID);
+
+    dustReturned.ethAmount = BigInt.fromI32(0);
+    dustReturned.vTokenAmount = BigInt.fromI32(0);
+    dustReturned.to = ADDRESS_ZERO.toHexString();
+    dustReturned.linkedEvents = eventList;
+    dustReturned.save();
+    return dustReturned;
+  }
+  else {
+    let linkedEvents = dustReturned.linkedEvents;
+    linkedEvents.push(eventID);
+    dustReturned.linkedEvents = linkedEvents;
+    dustReturned.save();
+    return dustReturned;
+  }
+}
+
+export function vaultCreated(txHash: Bytes, vaultId: string, date: BigInt) : void {
+  let vaultCreated = new VaultCreated("VAULT_CREATED-" + txHash.toHexString());
+  vaultCreated.date = date;
+  vaultCreated.vault = vaultId;
+  vaultCreated.source = ADDRESS_ZERO;
+  vaultCreated.type = "VaultCreated";
+  vaultCreated.save()
+}
+
+export function vaultPublished(txHash: Bytes, vaultId: string, date: BigInt) : void {
+  let vaultPublished = new VaultPublished("VAULT_PUBLISHED-" + txHash.toHexString());
+  vaultPublished.date = date;
+  vaultPublished.vault = vaultId;
+  vaultPublished.source = ADDRESS_ZERO;
+  vaultPublished.type = "VaultPublished";
+  vaultPublished.save()
+}
+
+export function vaultShutdown(txHash: Bytes, vaultId: string, date: BigInt) : void {
+  let vaultPublished = new VaultShutdown("VAULT_SHUTDOWN-" + txHash.toHexString());
+  vaultPublished.date = date;
+  vaultPublished.vault = vaultId;
+  vaultPublished.source = ADDRESS_ZERO;
+  vaultPublished.type = "VaultShutdown";
+  vaultPublished.save()
+}
+
+export function vaultNameChange(txHash: Bytes, vaultId: string, date: BigInt, nameBefore: string, nameAfter: string, symbolBefore: string, symbolAfter: string) : void {
+  let vaultPublished = new VaultNameChange("VAULT_NAME_CHANGE-" + txHash.toHexString());
+  vaultPublished.date = date;
+  vaultPublished.vault = vaultId;
+  vaultPublished.source = ADDRESS_ZERO;
+  vaultPublished.type = "VaultNameChange";
+  vaultPublished.nameBefore = nameBefore;
+  vaultPublished.nameAfter = nameAfter;
+  vaultPublished.symbolBefore = symbolBefore;
+  vaultPublished.symbolAfter = symbolAfter;
+  vaultPublished.save()
+}
+
+export function vaultFeeChange(txHash: Bytes, vaultId: string, date: BigInt, mintFee: BigInt,
+  randomRedeemFee: BigInt,
+  targetRedeemFee: BigInt,
+  randomSwapFee: BigInt,
+  targetSwapFee: BigInt,) : void {
+  let vaultFeeUpdate = new VaultFeeUpdate("VAULT_FEE_UPDATE-" + txHash.toHexString());
+  vaultFeeUpdate.date = date;
+  vaultFeeUpdate.vault = vaultId;
+  vaultFeeUpdate.source = ADDRESS_ZERO;
+  vaultFeeUpdate.type = "VaultFeeUpdate";
+  vaultFeeUpdate.mintFee = mintFee;
+  vaultFeeUpdate.randomRedeemFee = randomRedeemFee;
+  vaultFeeUpdate.targetRedeemFee = targetRedeemFee;
+  vaultFeeUpdate.randomSwapFee = randomSwapFee;
+  vaultFeeUpdate.targetSwapFee = targetSwapFee;
+  vaultFeeUpdate.save()
+}
+

@@ -14,6 +14,8 @@ import {
   getGlobalFee,
   getVault,
   getVaultCreator,
+  vaultCreated,
+  vaultFeeChange,
 } from './helpers';
 import {
   NFTXVaultUpgradeable as NFTXVaultTemplate,
@@ -22,6 +24,7 @@ import {
 } from '../types/templates';
 import { Address, BigInt, log } from '@graphprotocol/graph-ts';
 import { ADDRESS_ZERO } from './constants';
+import { VaultToAddressLookup } from '../types/schema';
 
 function newFeeDistributor(
   nftxVaultFactoryAddress: Address,
@@ -96,7 +99,6 @@ export function handleNewEligibilityManager(
 export function handleNewVault(event: NewVaultEvent): void {
   let vaultAddress = event.params.vaultAddress;
   let vaultCreatorAddress = event.transaction.from;
-
   let vaultCreator = getVaultCreator(vaultCreatorAddress);
   vaultCreator.save();
 
@@ -105,6 +107,10 @@ export function handleNewVault(event: NewVaultEvent): void {
   vault.createdAt = event.block.timestamp;
   vault.createdBy = vaultCreator.id;
   vault.save();
+
+  let lookup = new VaultToAddressLookup( event.params.vaultId.toHexString());
+  lookup.vaultAddress = vaultAddress;
+  lookup.save();
 
   NFTXVaultTemplate.create(vaultAddress);
 
@@ -128,6 +134,8 @@ export function handleNewVault(event: NewVaultEvent): void {
     fee.save();
   }
   newFeeDistributor(nftxVaultFactoryAddress, feeDistributorAddress);
+  
+  vaultCreated(event.transaction.hash, vault.id, event.block.timestamp);
 }
 
 function getVaultAddress(
@@ -173,6 +181,8 @@ export function handleUpdateVaultFees(event: UpdateVaultFeesEvent): void {
   fee.randomSwapFee = event.params.randomSwapFee;
   fee.targetSwapFee = event.params.targetSwapFee;
   fee.save();
+
+  vaultFeeChange(event.transaction.hash, vault.id, event.block.timestamp, event.params.mintFee,event.params.randomRedeemFee,event.params.targetRedeemFee,event.params.randomSwapFee, event.params.targetSwapFee)
 }
 
 export function handleDisableVaultFees(event: DisableVaultFeesEvent): void {

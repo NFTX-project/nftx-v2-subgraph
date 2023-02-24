@@ -154,7 +154,7 @@ dataSources:
           file: ./src/abis/ERC677Metadata.json
       eventHandlers:
         - event: UserStaked(uint256,uint256,uint256,uint256,address)
-          handler: handleUserStaked
+          handler: handleUserStaked 
   - kind: ethereum/contract
     name: NFTXStakingZapV3
     # prettier-ignore
@@ -186,6 +186,28 @@ dataSources:
         - event: UserStaked(uint256,uint256,uint256,uint256,address)
           handler: handleUserStaked
   - kind: ethereum/contract
+    name: NFTXUnstakingInventoryZap
+    # prettier-ignore
+    network: {{network}}
+    source:
+      address: '{{unstakingZap}}'
+      abi: NFTXUnstakingInventoryZap
+      # prettier-ignore
+      startBlock: {{startBlockUnstakingZaps}}
+    mapping:
+      file: ./src/mappings/unstake-inventory-zap.ts
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Zap
+      abis:
+        - name: NFTXUnstakingInventoryZap
+          file: ./src/abis/NFTXUnstakingInventoryZap.json
+      eventHandlers:
+        - event: InventoryUnstaked(uint256,uint256,uint256,address)
+          handler: handleInventoryUnstaked
+  - kind: ethereum/contract
     name: NFTXMarketplaceZap
     # prettier-ignore
     network: {{network}}
@@ -213,6 +235,58 @@ dataSources:
           handler: handleSellZap
         - event: Swap(uint256,uint256,address)
           handler: handleSwapZap
+  - kind: ethereum
+    name: ZeroXMarketplaceZap
+    network: {{network}}
+    source:
+      address: '{{zeroXMarketplaceZap}}'
+      startBlock: {{startBlockZeroXMarketplaceZap}}
+      abi: ZeroXMarketplaceZap
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Vault
+      abis:
+        - name: ZeroXMarketplaceZap
+          file: ./src/abis/ZeroXMarketplaceZap.json
+      eventHandlers:
+        - event: Buy(uint256,uint256,address)
+          handler: handleBuy
+        - event: DustReturned(uint256,uint256,address)
+          handler: handleDustReturned
+        - event: Sell(uint256,uint256,address)
+          handler: handleSell
+        - event: Swap(uint256,uint256,address)
+          handler: handleSwap
+      file: ./src/mappings/zero-x-marketplace-zap.ts
+  - kind: ethereum
+    name: ZeroXMarketplaceZapV2
+    network: {{network}}
+    source:
+      address: '{{zeroXMarketplaceZapV2}}'
+      startBlock: {{startBlockZeroXMarketplaceZapV2}}
+      abi: ZeroXMarketplaceZap
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Vault
+      abis:
+        - name: ZeroXMarketplaceZap
+          file: ./src/abis/ZeroXMarketplaceZap.json
+      eventHandlers:
+        - event: Buy(uint256,uint256,address)
+          handler: handleBuy
+        - event: DustReturned(uint256,uint256,address)
+          handler: handleDustReturned
+        - event: Sell(uint256,uint256,address)
+          handler: handleSell
+        - event: Swap(uint256,uint256,address)
+          handler: handleSwap
+      file: ./src/mappings/zero-x-marketplace-zap.ts
   - kind: ethereum/contract
     name: NFTXInventoryStaking
     # prettier-ignore
@@ -231,6 +305,8 @@ dataSources:
         - Vault
         - InventoryPool
       abis:
+        - name: RewardDistributionTokenUpgradeable
+          file: ./src/abis/RewardDistributionTokenUpgradeable.json
         - name: NFTXInventoryStaking
           file: ./src/abis/NFTXInventoryStaking.json
         - name: NFTXVaultFactoryUpgradeable
@@ -246,6 +322,10 @@ dataSources:
       eventHandlers:
         - event: XTokenCreated(uint256,address,address)
           handler: handleXTokenCreated
+        - event: Deposit(uint256,uint256,uint256,uint256,address)
+          handler: handleDeposit
+        - event: Withdraw(uint256,uint256,uint256,address)
+          handler: handleWithdraw
 templates:
   - kind: ethereum/contract
     name: NFTXLPStaking
@@ -281,6 +361,8 @@ templates:
           handler: handlePoolCreated
         - event: PoolUpdated(uint256,address)
           handler: handlePoolUpdated
+        - event: Deposit(uint256,address,uint256,address,uint256)
+          handler: handleLPDeposit
   - kind: ethereum/contract
     name: NFTXFeeDistributor
     # prettier-ignore
@@ -383,12 +465,6 @@ templates:
           handler: handleVaultShutdown
         - event: MetaDataChange(string,string,string,string)
           handler: handleMetaDataChange
-      blockHandlers:
-        - handler: handleBlock
-          {{#callFilterEnabled}}
-          filter:
-            kind: call
-          {{/callFilterEnabled}}
   - kind: ethereum/contract
     name: RewardDistributionTokenUpgradeable
     # prettier-ignore

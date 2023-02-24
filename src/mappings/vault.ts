@@ -30,14 +30,15 @@ import {
   getToken,
   addToHoldings,
   removeFromHoldings,
-  getVaultDayData,
-  getVaultHourData,
   getEligibilityModule,
   transformMintAmounts,
   getFeeTransfer,
+  vaultPublished,
+  vaultShutdown,
+  vaultNameChange,
 } from './helpers';
-import { BigInt, ethereum, dataSource } from '@graphprotocol/graph-ts';
-import { SECS_PER_DAY, SECS_PER_HOUR, getDay, getHour } from './datetime';
+import { BigInt} from '@graphprotocol/graph-ts';
+import { ADDRESS_ZERO } from './constants';
 
 
 export function handleTransfer(event: TransferEvent): void {
@@ -73,13 +74,13 @@ export function handleMint(event: MintEvent): void {
   let user = getUser(event.params.to);
   let amounts = event.params.amounts;
   let nftIds = event.params.nftIds;
+  mint.type = "Mint";
   mint.user = user.id;
   mint.vault = vaultAddress.toHexString();
   mint.date = event.block.timestamp;
   mint.nftIds = nftIds;
   mint.amounts = transformMintAmounts(vaultAddress, nftIds, amounts);
-  
-  
+
   if(event.transaction.to != vaultAddress){
     mint.source = event.transaction.to;
   }
@@ -132,6 +133,7 @@ export function handleSwap(event: SwapEvent): void {
   let redeemedIds = event.params.redeemedIds;
   let user = getUser(event.params.to);
 
+  swap.type = "Swap";
   swap.user = user.id;
   swap.vault = vaultAddress.toHexString();
   swap.date = event.block.timestamp;
@@ -157,8 +159,9 @@ export function handleSwap(event: SwapEvent): void {
   swap.save();
   user.save();
 
-  addToHoldings(vaultAddress, nftIds, amounts, event.block.timestamp);
   removeFromHoldings(vaultAddress, redeemedIds);
+  addToHoldings(vaultAddress, nftIds, amounts, event.block.timestamp);
+  
 
   let added = BigInt.fromI32(nftIds.length);
   let removed = BigInt.fromI32(redeemedIds.length);
@@ -193,6 +196,7 @@ export function handleRedeem(event: RedeemEvent): void {
   let specificIds = event.params.specificIds;
   let user = getUser(event.params.to);
 
+  redeem.type = "Redeem";
   redeem.user = user.id;
   redeem.vault = vaultAddress.toHexString();
   redeem.date = event.block.timestamp;
@@ -237,6 +241,10 @@ export function handleManagerSet(event: ManagerSetEvent): void {
   let vault = getVault(event.address);
   vault = updateManager(vault, managerAddress);
   vault.save();
+
+  if(event.params.manager == ADDRESS_ZERO) {
+    vaultPublished(event.transaction.hash, vault.id, event.block.timestamp);
+  }
 }
 
 export function handleEnableMintUpdated(event: EnableMintUpdatedEvent): void {
@@ -271,49 +279,6 @@ export function handleEnableTargetSwapUpdated(event: EnableTargetSwapUpdatedEven
   let features = getFeature(event.address);
   features.enableTargetSwap = event.params.enabled;
   features.save();
-}
-
-var ONE_DAY = BigInt.fromI32(SECS_PER_DAY);
-var ONE_HOUR = BigInt.fromI32(SECS_PER_HOUR);
-
-export function handleBlock(block: ethereum.Block): void {
-  let timestamp = block.timestamp;
-  let vaultAddress = dataSource.address();
-  let vault = getVault(vaultAddress);
-  let vaultCreatedAt = vault.createdAt;
-  if (vaultCreatedAt.gt(BigInt.fromI32(0))) {
-    let lastDay = getDay(timestamp);
-    let lastDayData = getVaultDayData(vaultAddress, lastDay);
-    let day = lastDay.plus(ONE_DAY);
-    let vaultDayData = getVaultDayData(vaultAddress, day);
-    vaultDayData.mintsCount = vault.totalMints.minus(lastDayData.totalMints);
-    vaultDayData.redeemsCount = vault.totalRedeems.minus(
-      lastDayData.totalRedeems,
-    );
-    vaultDayData.holdingsCount = vault.totalHoldings.minus(
-      lastDayData.totalHoldings,
-    );
-    vaultDayData.totalMints = vault.totalMints;
-    vaultDayData.totalRedeems = vault.totalRedeems;
-    vaultDayData.totalHoldings = vault.totalHoldings;
-    vaultDayData.save();
-
-    let lastHour = getHour(timestamp);
-    let lastHourData = getVaultHourData(vaultAddress, lastHour);
-    let hour = lastHour.plus(ONE_HOUR);
-    let vaultHourData = getVaultHourData(vaultAddress, hour);
-    vaultHourData.mintsCount = vault.totalMints.minus(lastHourData.totalMints);
-    vaultHourData.redeemsCount = vault.totalRedeems.minus(
-      lastHourData.totalRedeems,
-    );
-    vaultHourData.holdingsCount = vault.totalHoldings.minus(
-      lastHourData.totalHoldings,
-    );
-    vaultHourData.totalMints = vault.totalMints;
-    vaultHourData.totalRedeems = vault.totalRedeems;
-    vaultHourData.totalHoldings = vault.totalHoldings;
-    vaultHourData.save();
-  }
 }
 
 export function handleEligibilityDeployed(
@@ -366,13 +331,20 @@ export function handleVaultShutdown(
   vault.shutdownDate = event.block.timestamp;
   vault.totalHoldings = BigInt.fromI32(0);
   vault.save();
+
+  vaultShutdown(event.transaction.hash, vault.id, event.block.timestamp);
 }
 
 export function handleMetaDataChange(
   event: MetaDataChangeEvent
 ): void {
   let token = getToken(event.address);
+  
+  vaultNameChange(event.transaction.hash, event.address.toHexString(), event.block.timestamp, token.name,  event.params.newName, token.symbol, event.params.newSymbol);
+
   token.symbol = event.params.newSymbol;
   token.name = event.params.newName;
   token.save();
+
+  
 }

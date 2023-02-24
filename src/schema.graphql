@@ -36,7 +36,6 @@ type Vault @entity {
   treasuryAlloc: BigInt!
   allocTotal: BigInt!
   createdAt: BigInt!
-  vaultDayData: [VaultDayData!]! @derivedFrom(field: "vault")
   totalMints: BigInt!
   totalSwaps: BigInt!
   totalRedeems: BigInt!
@@ -44,6 +43,11 @@ type Vault @entity {
   createdBy: VaultCreator
   eligibilityModule: EligibilityModule
   shutdownDate: BigInt!
+}
+
+type VaultToAddressLookup @entity {
+  id: ID! # vaultID
+  vaultAddress: Bytes!
 }
 
 type EligibilityModule @entity {
@@ -155,7 +159,34 @@ type Token @entity {
   totalSupply: BigInt!
 }
 
-type Mint @entity {
+enum ActivityEventType {
+  Swap
+  Redeem
+  Mint
+  Deposit
+  Withdrawal
+  LPDeposit
+  LPWithdrawal
+  ZapSell
+  ZapSwap
+  ZapBuy
+  UnstakeInventory
+  VaultCreated
+  VaultPublished
+  VaultNameChange
+  VaultShutdown
+  VaultFeeUpdate
+}
+
+interface ActivityEvent @entity {
+  id: ID! # tx
+  date: BigInt!
+  vault: Vault!
+  source: Bytes
+  type: ActivityEventType!
+}
+
+type Mint implements ActivityEvent @entity {
   id: ID! # tx
   date: BigInt!
   user: User!
@@ -165,9 +196,10 @@ type Mint @entity {
   feeReceipt: FeeReceipt!
   zapAction: ZapSell @derivedFrom(field: "vaultAction")
   source: Bytes
+  type: ActivityEventType!
 }
 
-type Swap @entity {
+type Swap implements ActivityEvent @entity {
   id: ID! # tx
   date: BigInt!
   user: User!
@@ -181,9 +213,10 @@ type Swap @entity {
   feeReceipt: FeeReceipt!
   zapAction: ZapSwap @derivedFrom(field: "vaultAction")
   source: Bytes
+  type: ActivityEventType!
 }
 
-type Redeem @entity {
+type Redeem implements ActivityEvent @entity {
   id: ID! # tx
   date: BigInt!
   user: User!
@@ -195,6 +228,7 @@ type Redeem @entity {
   feeReceipt: FeeReceipt!
   zapAction: ZapBuy @derivedFrom(field: "vaultAction")
   source: Bytes
+  type: ActivityEventType!
 }
 
 type User @entity {
@@ -220,49 +254,78 @@ type Reward @entity {
   reward: BigInt!
 }
 
-type Deposit @entity {
+type Deposit implements ActivityEvent @entity {
   id: ID! # tx
   date: BigInt!
   pool: Pool!
+  vault: Vault!
   user: StakedLpUser!
   deposit: BigInt!
+  source: Bytes
+  type: ActivityEventType!
 }
 
-type Withdrawal @entity {
+type Withdrawal implements ActivityEvent @entity {
   id: ID! # tx
   date: BigInt!
   pool: Pool!
+  vault: Vault!
   user: StakedLpUser!
   withdrawal: BigInt!
+  source: Bytes
+  type: ActivityEventType!
 }
 
-type VaultDayData @entity {
-  id: ID!
-  date: BigInt! # end of range
-  mintsCount: BigInt!
-  swapsCount: BigInt!
-  redeemsCount: BigInt!
-  holdingsCount: BigInt!
-  totalMints: BigInt!
-  totalSwaps: BigInt!
-  totalRedeems: BigInt!
-  totalHoldings: BigInt!
+type VaultCreated implements ActivityEvent @entity {
+  id: ID! # tx
+  date: BigInt!
   vault: Vault!
+  source: Bytes
+  type: ActivityEventType!
 }
 
-type VaultHourData @entity {
-  id: ID!
-  date: BigInt! # end of range
-  mintsCount: BigInt!
-  swapsCount: BigInt!
-  redeemsCount: BigInt!
-  holdingsCount: BigInt!
-  totalMints: BigInt!
-  totalSwaps: BigInt!
-  totalRedeems: BigInt!
-  totalHoldings: BigInt!
+
+type VaultPublished implements ActivityEvent @entity {
+  id: ID! # tx
+  date: BigInt!
   vault: Vault!
+  source: Bytes
+  type: ActivityEventType!
 }
+
+type VaultShutdown implements ActivityEvent @entity {
+  id: ID! # tx
+  date: BigInt!
+  vault: Vault!
+  source: Bytes
+  type: ActivityEventType!
+}
+
+type VaultNameChange implements ActivityEvent @entity {
+  id: ID! # tx
+  nameBefore: String! #Name before
+  nameAfter: String! #Name after
+  symbolBefore: String! #Symbol before
+  symbolAfter: String! #Symbol after
+  date: BigInt!
+  vault: Vault!
+  source: Bytes
+  type: ActivityEventType!
+}
+
+type VaultFeeUpdate implements ActivityEvent @entity {
+  id: ID! # tx
+  mintFee: BigInt!
+  randomRedeemFee: BigInt!
+  targetRedeemFee: BigInt!
+  randomSwapFee: BigInt!
+  targetSwapFee: BigInt!
+  date: BigInt!
+  vault: Vault!
+  source: Bytes
+  type: ActivityEventType!
+}
+
 
 type Zap @entity {
   id: ID!
@@ -289,4 +352,12 @@ type ZapSwap @entity {
   id: ID!
   vaultAction: Swap!
   ethAmount: BigInt!
+}
+
+type DustReturned @entity {
+  id: ID! # txhash
+  linkedEvents: [ActivityEvent!]! #RedeemID or SwapID or MintID  - txHash (Same as DustReturned ID)
+  ethAmount: BigInt!
+  vTokenAmount: BigInt!
+  to: String!
 }
