@@ -19,6 +19,7 @@
     "deploy-goerli-shared": "graph deploy --product hosted-service nftx-project/nftx-v2-1-goerli",
     "deploy-mainnet-shared": "graph deploy --product hosted-service nftx-project/nftx-v2",
     "deploy-mainnet-shared-test": "graph deploy --product hosted-service nftx-project/nftx-v2-1-mainnet",
+    "deploy-mainnet-shared-legacy": "graph deploy --product hosted-service nftx-project/nftx-v2-legacy",
     "deploy-arbitrum-shared": "graph deploy --product hosted-service nftx-project/nftx-v2-arbitrum",
     "deploy-arbitrum-shared-test": "graph deploy --product hosted-service nftx-project/nftx-v2-1-arbitrum",
     "deploy-arbitrum-nftx": "graph deploy --ipfs http://116.202.19.181:5001 --node http://116.202.19.181:8020 nftx-hosted/nftx-v2-arbitrum ",
