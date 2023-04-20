@@ -424,6 +424,7 @@ export function getDeposit(txHash: Bytes): Deposit {
     deposit = new Deposit(depositId);
     deposit.deposit = BigInt.fromI32(0);
     deposit.date = BigInt.fromI32(0);
+    deposit.source = ADDRESS_ZERO;
   }
   return deposit as Deposit;
 }
@@ -435,6 +436,7 @@ export function getWithdrawal(txHash: Bytes): Withdrawal {
     withdrawal = new Withdrawal(withdrawalId);
     withdrawal.withdrawal = BigInt.fromI32(0);
     withdrawal.date = BigInt.fromI32(0);
+    withdrawal.source = ADDRESS_ZERO;
   }
   return withdrawal as Withdrawal;
 }
