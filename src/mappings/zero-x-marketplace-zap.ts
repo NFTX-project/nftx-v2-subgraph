@@ -6,11 +6,22 @@ import {
   Swap
 } from "../types/ZeroXMarketplaceZap/ZeroXMarketplaceZap"
 import { createDustReturned, getDustReturned, getMint, getRedeem, getSwap, getUser, getZapBuy, getZapSell, getZapSwap } from "./helpers";
+import { ADDRESS_ZERO } from "./constants";
 
 export function handleBuy(event: Buy): void {
   let txHash = event.transaction.hash;
-  let redeem = getRedeem(txHash, event.address);
+  let redeem = getRedeem(txHash);
   let zapBuy = getZapBuy(txHash);
+
+
+  let txTo = event.transaction.to;
+  if(txTo) {
+    if(txTo != event.address){
+      redeem.source = txTo;
+    } else {
+      redeem.source = ADDRESS_ZERO;
+    }
+  }  
 
   redeem.type = "ZapBuy";
   redeem.save();
@@ -26,8 +37,20 @@ export function handleBuy(event: Buy): void {
 
 export function handleSell(event: Sell): void {
   let txHash = event.transaction.hash;
-  let mint = getMint(txHash, event.address);
+  let mint = getMint(txHash);
   let zapSell = getZapSell(txHash);
+
+
+  let txTo = event.transaction.to;
+  if(txTo) {
+    if(txTo != event.address){
+      mint.source = txTo;
+    } else {
+      mint.source = ADDRESS_ZERO;
+    }
+  }  
+
+  
 
   mint.type = "ZapSell";
   mint.save();
@@ -41,8 +64,17 @@ export function handleSell(event: Sell): void {
 
 export function handleSwap(event: Swap): void {
   let txHash = event.transaction.hash;
-  let swap = getSwap(txHash,  event.address);
+  let swap = getSwap(txHash);
   let zapSwap = getZapSwap(txHash);
+
+  let txTo = event.transaction.to;
+  if(txTo) {
+    if(txTo != event.address){
+      swap.source = txTo;
+    } else {
+      swap.source = ADDRESS_ZERO;
+    }
+  }  
 
   swap.type = "ZapSwap";
   swap.save();

@@ -81,10 +81,12 @@ export function handleMint(event: MintEvent): void {
   mint.nftIds = nftIds;
   mint.amounts = transformMintAmounts(vaultAddress, nftIds, amounts);
 
-  if(event.transaction.to != vaultAddress){
-    mint.source = event.transaction.to;
-  }
-  
+  let txTo = event.transaction.to;
+  if(txTo) {
+    if(txTo != event.address){
+      mint.source = txTo;
+    }
+  }  
 
   let feeReceipt = getFeeReceipt(event.transaction.hash);
   feeReceipt.vault = vaultAddress.toHexString();
@@ -143,10 +145,13 @@ export function handleSwap(event: SwapEvent): void {
   swap.specificIds = specificIds;
   swap.targetCount = BigInt.fromI32(specificIds.length);
   swap.randomCount = BigInt.fromI32(nftIds.length - specificIds.length);
-  
-  if(event.transaction.to != vaultAddress){
-    swap.source = event.transaction.to;
-  }
+
+  let txTo = event.transaction.to;
+  if(txTo) {
+    if(txTo != event.address){
+      swap.source = txTo;
+    }
+  }  
 
   let feeReceipt = getFeeReceipt(event.transaction.hash);
   feeReceipt.vault = vaultAddress.toHexString();
@@ -204,11 +209,15 @@ export function handleRedeem(event: RedeemEvent): void {
   redeem.specificIds = specificIds;
   redeem.targetCount = BigInt.fromI32(specificIds.length);
   redeem.randomCount = BigInt.fromI32(nftIds.length - specificIds.length);
+
   
-  if(event.transaction.to != vaultAddress){
-    redeem.source = event.transaction.to;
-  }
-  
+  let txTo = event.transaction.to;
+  if(txTo) {
+    if(txTo != event.address){
+      redeem.source = txTo;
+    }
+  }  
+
   let feeReceipt = getFeeReceipt(event.transaction.hash);
   feeReceipt.vault = vaultAddress.toHexString();
   feeReceipt.token = vaultAddress.toHexString();
