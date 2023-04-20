@@ -24,6 +24,9 @@ export function handleBuyZap(event: BuyZapEvent): void {
     if(txTo != event.address){
       redeem.source = txTo;
     }
+    else {
+      redeem.source = ADDRESS_ZERO;
+    }
   }  
 
   redeem.type = "ZapBuy";
@@ -43,6 +46,9 @@ export function handleSellZap(event: SellZapEvent): void {
   if(txTo) {
     if(txTo != event.address){
       mint.source = txTo;
+    }
+    else {
+      mint.source = ADDRESS_ZERO;
     }
   }  
 
