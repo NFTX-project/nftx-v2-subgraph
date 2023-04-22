@@ -143,9 +143,12 @@ export function handleWithdraw(event: WithdrawEvent): void {
       withdrawal.type = "Withdrawal";
       withdrawal.vault = vault.id;
 
-      if(event.transaction.to != event.address){
-        withdrawal.source = event.transaction.to;
-      }
+      let txTo = event.transaction.to;
+      if(txTo) {
+        if(txTo != event.address){
+          withdrawal.source = txTo;
+        }
+      }  
 
       if (balance == BigInt.fromI32(0)) {
         user = updatePools(user, poolAddress, false);
@@ -173,11 +176,14 @@ export function handleDeposit(event: DepositEvent): void {
 
       deposit.type = "Deposit";
       deposit.vault = vault.id;
-  
-      if(event.transaction.to != event.address){
-        deposit.source = event.transaction.to;
-      }
 
+      let txTo = event.transaction.to;
+      if(txTo) {
+        if(txTo != event.address){
+          deposit.source = txTo;
+        }
+      }  
+      
       user = updatePools(user, poolAddress, true);
       user.save();
 
@@ -204,10 +210,13 @@ export function handleLPDeposit(event: LPDepositEvent): void {
 
       deposit.type = "LPDeposit";
       deposit.vault = vault.id;
-  
-      if(event.transaction.to != event.address){
-        deposit.source = event.transaction.to;
-      }
+
+      let txTo = event.transaction.to;
+      if(txTo) {
+        if(txTo != event.address){
+          deposit.source = txTo;
+        }
+      } 
 
 
       user = updatePools(user, poolAddress, true);

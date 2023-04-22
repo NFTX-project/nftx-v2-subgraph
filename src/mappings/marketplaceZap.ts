@@ -3,7 +3,7 @@ import {
   Sell as SellZapEvent,
   Swap as SwapZapEvent
 } from '../types/NFTXMarketplaceZap/NFTXMarketplaceZap';
-import { Minted } from '../types/NFTXVaultFactoryUpgradeable/NFTXVaultUpgradeable';
+import { ADDRESS_ZERO } from './constants';
 
 import {
   getSwap,
@@ -18,6 +18,16 @@ export function handleBuyZap(event: BuyZapEvent): void {
   let txHash = event.transaction.hash;
   let redeem = getRedeem(txHash);
   let zapBuy = getZapBuy(txHash);
+  
+  let txTo = event.transaction.to;
+  if(txTo) {
+    if(txTo != event.address){
+      redeem.source = txTo;
+    }
+    else {
+      redeem.source = ADDRESS_ZERO;
+    }
+  }  
 
   redeem.type = "ZapBuy";
   redeem.save();
@@ -31,6 +41,16 @@ export function handleSellZap(event: SellZapEvent): void {
   let txHash = event.transaction.hash;
   let mint = getMint(txHash);
   let zapSell = getZapSell(txHash);
+  
+  let txTo = event.transaction.to;
+  if(txTo) {
+    if(txTo != event.address){
+      mint.source = txTo;
+    }
+    else {
+      mint.source = ADDRESS_ZERO;
+    }
+  }  
 
   mint.type = "ZapSell";
   mint.save();
@@ -44,6 +64,16 @@ export function handleSwapZap(event: SwapZapEvent): void {
   let txHash = event.transaction.hash;
   let swap = getSwap(txHash);
   let zapSwap = getZapSwap(txHash);
+
+  let txTo = event.transaction.to;
+  if(txTo) {
+    if(txTo != event.address){
+      swap.source = txTo;
+    }
+    else {
+      swap.source = ADDRESS_ZERO;
+    }
+  }  
 
   swap.type = "ZapSwap";
   swap.save();
