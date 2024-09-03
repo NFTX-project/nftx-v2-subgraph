@@ -14,7 +14,7 @@
     "deploy-arbitrum": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ nftx-project/nftx-v2-arbitrum",
     "deploy-rinkeby": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ nftx-project/nftx-v2-rinkeby",
     "deploy-goerli": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ nftx-project/nftx-v2-goerli",
-    "deploy-mainnet": "graph deploy --studio nftx",
+    "deploy-mainnet": "graph deploy --studio nftx-v2",
     "deploy-rinkeby-shared": "graph deploy --product hosted-service nftx-project/nftx-v2-rinkeby",
     "deploy-goerli-shared": "graph deploy --product hosted-service nftx-project/nftx-v2-1-goerli",
     "deploy-mainnet-shared": "graph deploy --product hosted-service nftx-project/nftx-v2",
@@ -26,8 +26,8 @@
     "format": "prettier --ignore-path .gitignore --write \"{*,**/*}.{ts,json,md}\""
   },
   "dependencies": {
-    "@graphprotocol/graph-ts": "0.27.0",
-    "@graphprotocol/graph-cli": "0.33.1",
+    "@graphprotocol/graph-ts": "^0.29.3",
+    "@graphprotocol/graph-cli": "0.45.0",
     "mustache": "4.2.0"
   },
   "devDependencies": {

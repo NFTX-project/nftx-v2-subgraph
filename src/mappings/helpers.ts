@@ -424,6 +424,7 @@ export function getDeposit(txHash: Bytes): Deposit {
     deposit = new Deposit(depositId);
     deposit.deposit = BigInt.fromI32(0);
     deposit.date = BigInt.fromI32(0);
+    deposit.source = ADDRESS_ZERO;
   }
   return deposit as Deposit;
 }
@@ -435,6 +436,7 @@ export function getWithdrawal(txHash: Bytes): Withdrawal {
     withdrawal = new Withdrawal(withdrawalId);
     withdrawal.withdrawal = BigInt.fromI32(0);
     withdrawal.date = BigInt.fromI32(0);
+    withdrawal.source = ADDRESS_ZERO;
   }
   return withdrawal as Withdrawal;
 }
@@ -455,14 +457,16 @@ export function addToHoldings(
   vaultAddress: Address,
   nftIds: BigInt[],
   amounts: BigInt[],
-  date: BigInt,
+  date: BigInt | null,
 ): void {
   let vault = getVault(vaultAddress);
   let is1155 = vault.is1155;
   for (let i = 0; i < nftIds.length; i = i + 1) {
     let tokenId = nftIds[i];
     let holding = getHolding(tokenId, vaultAddress);
-    holding.dateAdded = date;
+    if (date !== null) {
+      holding.dateAdded = date;
+    }
     if (is1155) {
       let amount = amounts[i];
       holding.amount = holding.amount.plus(amount);
