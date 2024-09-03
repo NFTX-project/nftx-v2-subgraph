@@ -14,7 +14,7 @@
     "deploy-arbitrum": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ nftx-project/nftx-v2-arbitrum",
     "deploy-rinkeby": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ nftx-project/nftx-v2-rinkeby",
     "deploy-goerli": "graph deploy --node https://api.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ nftx-project/nftx-v2-goerli",
-    "deploy-mainnet": "graph deploy --studio nftx",
+    "deploy-mainnet": "graph deploy --studio nftx-v2",
     "deploy-rinkeby-shared": "graph deploy --product hosted-service nftx-project/nftx-v2-rinkeby",
     "deploy-goerli-shared": "graph deploy --product hosted-service nftx-project/nftx-v2-1-goerli",
     "deploy-mainnet-shared": "graph deploy --product hosted-service nftx-project/nftx-v2",
